@@ -2,6 +2,12 @@ package oficina.telas;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import oficina.Util.Estados;
+import oficina.modelo.ClienteDTO;
+import oficina.modelo.OrcamentoDTO;
+import oficina.modelo.OsDTO;
+import oficina.modelo.ProdutoDTO;
+import oficina.modelo.ServicoDTO;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -10,41 +16,42 @@ public class Principal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    /*public void validaNovoPrincipal() {
-        if (!form_principal.isActive()) {
-            form_principal = new Principal();
-            form_principal.setVisible(true);
-        }
-    }*/
+    private Consulta consulta;
+    private Cadastro cadastro;
+    private Orcamento orcamento = null;
+    private OrdemDeServico ordemServico;
+    private Login login;
+    private Produto novoPdto;
+    private Servico novoServ;
+
     public void formularioFechando(JFrame formulario) {
-        formCadastroUsuarios = null;
+        if (String.valueOf(formulario.getClass()).equals("class oficina.telas.Orcamento")) {
+            orcamento = null;
+        }
     }
 
-    private Orcamento formCadastroUsuarios = null;
-
-    /*public void abrirPrincipal() {
-        /*if (novo_princ == null) {
-            novo_princ = new Principal();
-            novo_princ.setVisible(true);
-        }
-        if (!princip.isActive()) {
-            princip.setLocationRelativeTo(this);
-        } else {
-            princip.setExtendedState(JFrame.NORMAL);
-            princip.toFront();
-        }
-        princip.setVisible(true);
-    }*/
-    //private Principal novoPrincipal = null;
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        labelTitulo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaOrdemServico = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        btnEditar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        botaoNovoOrcamento = new javax.swing.JButton();
+        botaoNovaOS = new javax.swing.JButton();
+        botaoNovoCliente = new javax.swing.JButton();
+        botaoConsultarProdutos = new javax.swing.JButton();
+        botaoConsultarCliente = new javax.swing.JButton();
         barraMenu = new javax.swing.JMenuBar();
         menuOrcamento = new javax.swing.JMenu();
         menuNovoOrcamento = new javax.swing.JMenuItem();
         menuConsultarOrcamento = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuSair = new javax.swing.JMenuItem();
         menuOrdemServico = new javax.swing.JMenu();
         menuNovaOS = new javax.swing.JMenuItem();
@@ -62,12 +69,218 @@ public class Principal extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Fuchina Moto Peças");
-        setBackground(new java.awt.Color(255, 255, 0));
-        setMaximumSize(new java.awt.Dimension(1024, 600));
-        setMinimumSize(new java.awt.Dimension(1024, 600));
-        setPreferredSize(new java.awt.Dimension(1024, 600));
+        setTitle("SIGOMM - Fuchina Moto Peças");
+        setMaximumSize(new java.awt.Dimension(977, 616));
+        setMinimumSize(new java.awt.Dimension(977, 616));
         setResizable(false);
+
+        jPanel1.setBackground(new java.awt.Color(11, 134, 195));
+
+        labelTitulo.setFont(new java.awt.Font("Copperplate Gothic Bold", 1, 36)); // NOI18N
+        labelTitulo.setText("FUCHINA MOTO PEÇAS EIRELI M.E.");
+
+        tabelaOrdemServico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Status", "Data", "Placa", "Moto", "Cliente", "Valor Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaOrdemServico.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabelaOrdemServico);
+        if (tabelaOrdemServico.getColumnModel().getColumnCount() > 0) {
+            tabelaOrdemServico.getColumnModel().getColumn(0).setResizable(false);
+            tabelaOrdemServico.getColumnModel().getColumn(1).setResizable(false);
+            tabelaOrdemServico.getColumnModel().getColumn(2).setResizable(false);
+            tabelaOrdemServico.getColumnModel().getColumn(3).setResizable(false);
+            tabelaOrdemServico.getColumnModel().getColumn(4).setResizable(false);
+            tabelaOrdemServico.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
+        jLabel1.setText("Ordens de Serviço ativas:");
+
+        jSeparator1.setBackground(new java.awt.Color(240, 240, 240));
+
+        btnEditar.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnEditar.setText("Editar");
+
+        jPanel2.setBackground(new java.awt.Color(255, 51, 51));
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.red, null, null));
+
+        botaoNovoOrcamento.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        botaoNovoOrcamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/005-interface.png"))); // NOI18N
+        botaoNovoOrcamento.setText("Novo Orçamento");
+        botaoNovoOrcamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoNovoOrcamentoActionPerformed(evt);
+            }
+        });
+
+        botaoNovaOS.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        botaoNovaOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/011-note.png"))); // NOI18N
+        botaoNovaOS.setText("Nova Ordem de Serviço");
+        botaoNovaOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoNovaOSActionPerformed(evt);
+            }
+        });
+
+        botaoNovoCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        botaoNovoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/004-user.png"))); // NOI18N
+        botaoNovoCliente.setText("Novo Cliente");
+        botaoNovoCliente.setToolTipText("");
+        botaoNovoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoNovoClienteActionPerformed(evt);
+            }
+        });
+
+        botaoConsultarProdutos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        botaoConsultarProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-shopping-2.png"))); // NOI18N
+        botaoConsultarProdutos.setText("Consultar Produtos");
+        botaoConsultarProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoConsultarProdutosActionPerformed(evt);
+            }
+        });
+
+        botaoConsultarCliente.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        botaoConsultarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/003-profile-1.png"))); // NOI18N
+        botaoConsultarCliente.setText("Consultar Clientes");
+        botaoConsultarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoConsultarClienteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(botaoNovoOrcamento)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botaoNovaOS)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botaoNovoCliente)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botaoConsultarCliente)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botaoConsultarProdutos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botaoNovoOrcamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(botaoConsultarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(botaoConsultarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(botaoNovaOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botaoNovoCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 1, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(712, 712, 712))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 16, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(102, 102, 102)
+                                .addComponent(labelTitulo)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(labelTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
 
         menuOrcamento.setText("Orçamento");
 
@@ -86,7 +299,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuOrcamento.add(menuConsultarOrcamento);
-        menuOrcamento.add(jSeparator1);
+        menuOrcamento.add(jSeparator2);
 
         menuSair.setText("Sair");
         menuSair.addActionListener(new java.awt.event.ActionListener() {
@@ -109,6 +322,11 @@ public class Principal extends javax.swing.JFrame {
         menuOrdemServico.add(menuNovaOS);
 
         menuConsultarOS.setText("Consultar OS...");
+        menuConsultarOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuConsultarOSActionPerformed(evt);
+            }
+        });
         menuOrdemServico.add(menuConsultarOS);
 
         barraMenu.add(menuOrdemServico);
@@ -116,9 +334,19 @@ public class Principal extends javax.swing.JFrame {
         menuCliente.setText("Cliente");
 
         menuNovoCliente.setText("Novo Cliente...");
+        menuNovoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuNovoClienteActionPerformed(evt);
+            }
+        });
         menuCliente.add(menuNovoCliente);
 
         menuConsultarCliente.setText("Consultar Cliente...");
+        menuConsultarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuConsultarClienteActionPerformed(evt);
+            }
+        });
         menuCliente.add(menuConsultarCliente);
 
         barraMenu.add(menuCliente);
@@ -182,62 +410,68 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1791, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(1807, 1039));
-        setLocationRelativeTo(null);
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuNovoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoOrcamentoActionPerformed
-        //Novo_Orcamento form = new Novo_Orcamento();
-        //form.setVisible(true);
+        if (orcamento == null) {
+            orcamento = new Orcamento(true, new OrcamentoDTO()/*this*/);
+            orcamento.setVisible(true);
+        } else {
+            menuNovoOrcamento.transferFocus();
+            orcamento.requestFocus();
+        }
     }//GEN-LAST:event_menuNovoOrcamentoActionPerformed
+
+    private void menuConsultarOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarOrcamentoActionPerformed
+        consulta = new Consulta(Estados.modoConsOrcamento, false);
+        //Puxar a tabela de orçamentos do BD
+        consulta.setVisible(true);
+    }//GEN-LAST:event_menuConsultarOrcamentoActionPerformed
 
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
         System.exit(0);
     }//GEN-LAST:event_menuSairActionPerformed
 
-    private void menuConsultarOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarOrcamentoActionPerformed
-        Consultar form = new Consultar();
-        //Puxar a tabela de orçamentos do BD
-        form.setVisible(true);
-    }//GEN-LAST:event_menuConsultarOrcamentoActionPerformed
-
     private void menuNovaOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovaOSActionPerformed
-        OrdemDeServico form = new OrdemDeServico();
-        form.setVisible(true);
+        ordemServico = new OrdemDeServico(new OsDTO());
+        ordemServico.setVisible(true);
     }//GEN-LAST:event_menuNovaOSActionPerformed
 
     private void menuNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoProdutoActionPerformed
-        if (Login.criaLogin()) {
-            Produto novoPdto = new Produto();
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            novoPdto = new Produto(true, new ProdutoDTO());
             novoPdto.setVisible(true);
         }
     }//GEN-LAST:event_menuNovoProdutoActionPerformed
 
     private void menuNovoServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoServicoActionPerformed
-        if (Login.criaLogin()) {
-            Servico novoServ = new Servico();
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            novoServ = new Servico(true, new ServicoDTO());
             novoServ.setVisible(true);
             this.setVisible(false);
         }
     }//GEN-LAST:event_menuNovoServicoActionPerformed
 
     private void menuConsultarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarProdutoActionPerformed
-        Consultar form = new Consultar();
+        consulta = new Consulta(Estados.modoConsPdto, false);
         //Puxar a tabela de produtos do BD
-        form.setVisible(true);
+        consulta.setVisible(true);
     }//GEN-LAST:event_menuConsultarProdutoActionPerformed
 
     private void menuConsultarServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarServicoActionPerformed
-        Consultar form = new Consultar();
+        consulta = new Consulta(Estados.modoConsServico, false);
         //Puxar a tabela de serviços do BD
-        form.setVisible(true);
+        consulta.setVisible(true);
     }//GEN-LAST:event_menuConsultarServicoActionPerformed
 
     private void menuSobreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuSobreMouseClicked
@@ -246,9 +480,73 @@ public class Principal extends javax.swing.JFrame {
                 + "Desenvolvimento de Sistemas do Instituto Federal\nCatarinense - Campus Blumenau.", "TCC", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_menuSobreMouseClicked
 
+    private void botaoNovoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoOrcamentoActionPerformed
+        /*if (orcamento == null) {
+            orcamento = new Orcamento(new OrcamentoDTO()/*this);
+            orcamento.setVisible(true);
+        } else {
+            menuNovoOrcamento.transferFocus();
+            orcamento.requestFocus();
+        }*/
+        
+        orcamento = new Orcamento(true, new OrcamentoDTO()/*this*/);
+        orcamento.setVisible(true);
+    }//GEN-LAST:event_botaoNovoOrcamentoActionPerformed
+
+    private void botaoNovaOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaOSActionPerformed
+        ordemServico = new OrdemDeServico(new OsDTO());
+        ordemServico.setVisible(true);
+    }//GEN-LAST:event_botaoNovaOSActionPerformed
+
+    private void botaoNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoClienteActionPerformed
+        cadastro = new Cadastro(true, new ClienteDTO());
+        cadastro.setVisible(true);
+    }//GEN-LAST:event_botaoNovoClienteActionPerformed
+
+    private void botaoConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarClienteActionPerformed
+        consulta = new Consulta(Estados.modoConsCliente, false);
+        //Puxar a tabela de clientes do BD
+        consulta.setVisible(true);
+    }//GEN-LAST:event_botaoConsultarClienteActionPerformed
+
+    private void botaoConsultarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarProdutosActionPerformed
+        consulta = new Consulta(Estados.modoConsPdto, false);
+        //Puxar a tabela de produtos do BD
+        consulta.setVisible(true);
+    }//GEN-LAST:event_botaoConsultarProdutosActionPerformed
+
+    private void menuConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarOSActionPerformed
+        consulta = new Consulta(Estados.modoConsOS, true);
+        //Puxar a tabela de OS do BD
+        consulta.setVisible(true);
+    }//GEN-LAST:event_menuConsultarOSActionPerformed
+
+    private void menuNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoClienteActionPerformed
+        cadastro = new Cadastro(true, new ClienteDTO());
+        cadastro.setVisible(true);
+    }//GEN-LAST:event_menuNovoClienteActionPerformed
+
+    private void menuConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarClienteActionPerformed
+        consulta = new Consulta(Estados.modoConsCliente, false);
+        //Puxar a tabela de OS do BD
+        consulta.setVisible(true);
+    }//GEN-LAST:event_menuConsultarClienteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JButton botaoConsultarCliente;
+    private javax.swing.JButton botaoConsultarProdutos;
+    private javax.swing.JButton botaoNovaOS;
+    private javax.swing.JButton botaoNovoCliente;
+    private javax.swing.JButton botaoNovoOrcamento;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuConsultarCliente;
     private javax.swing.JMenu menuConsultarEstoque;
@@ -267,6 +565,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu menuOrdemServico;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenu menuSobre;
+    private javax.swing.JTable tabelaOrdemServico;
     // End of variables declaration//GEN-END:variables
-
 }

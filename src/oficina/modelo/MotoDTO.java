@@ -1,20 +1,52 @@
 package oficina.modelo;
 
 public class MotoDTO {
-    private String marca, modelo, chassi, placa, cor;
-    private int cod_moto, ano_modelo, ano_Fabr;
 
-    public MotoDTO(String marca, String modelo, String chassi, String placa, String cor, int cod_moto, int ano_modelo, int ano_Fabr) {
-        this.marca = marca;
-        this.modelo = modelo;
-        this.chassi = chassi;
-        this.placa = placa;
-        this.cor = cor;
+    private String marca, modelo, chassi, placa, cor;
+    private int cod_moto, cod_dono, ano_modelo, ano_Fabr;
+
+    public MotoDTO(int cod_moto, int cod_dono, String placa, String modelo, String cor, String marca, String chassi, int ano_modelo, int ano_Fabr) {
         this.cod_moto = cod_moto;
+        this.cod_dono = cod_dono;
+        this.placa = placa;
+        this.modelo = modelo;
+        this.cor = cor;
+        this.marca = marca;
+        this.chassi = chassi;
         this.ano_modelo = ano_modelo;
         this.ano_Fabr = ano_Fabr;
     }
 
+    public MotoDTO() {
+        this.cod_moto = 0;
+        this.cod_dono = 0;
+        this.placa = "";
+        this.modelo = "";
+        this.cor = "";
+        this.marca = "";
+        this.chassi = "";
+        this.ano_modelo = 0;
+        this.ano_Fabr = 0;
+    }
+
+    public int getCod_moto() {
+        return cod_moto;
+    }
+
+    public void setCod_moto(int cod_moto) {
+        this.cod_moto = cod_moto;
+    }
+
+    public int getCod_dono() {
+        return cod_dono;
+    }
+
+    public void setCod_dono(int cod_dono) {
+        this.cod_dono = cod_dono;
+    }
+
+    
+    
     public String getMarca() {
         return marca;
     }
@@ -70,5 +102,5 @@ public class MotoDTO {
     public void setAno_Fabr(int ano_Fabr) {
         this.ano_Fabr = ano_Fabr;
     }
-    
+
 }

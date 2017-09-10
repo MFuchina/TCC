@@ -1,15 +1,23 @@
 package oficina.modelo;
 
 public class ProdutoDTO {
+
     private String nome, marca;
     private float preco;
-    private int cod_Barras;
+    private int cod;
 
-    public ProdutoDTO(String nome, String marca, float preco, int cod_Barras) {
+    public ProdutoDTO(int cod, String nome, String marca, float preco) {
+        this.cod = cod;
         this.nome = nome;
         this.marca = marca;
         this.preco = preco;
-        this.cod_Barras = cod_Barras;
+    }
+
+    public ProdutoDTO() {
+        this.cod = 0;
+        this.nome = "";
+        this.marca = "";
+        this.preco = (float) 0.0;
     }
 
     public String getNome() {
@@ -36,12 +44,12 @@ public class ProdutoDTO {
         this.preco = preco;
     }
 
-    public int getCod_Barras() {
-        return cod_Barras;
+    public int getCod() {
+        return cod;
     }
 
-    public void setCod_Barras(int cod_Barras) {
-        this.cod_Barras = cod_Barras;
+    public void setCod(int cod) {
+        this.cod = cod;
     }
-    
+
 }

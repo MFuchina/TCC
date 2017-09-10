@@ -1,5 +1,5 @@
 package oficina.Util;
 
 public enum Estados {
-    esIncluir, esAlterar, esConsulta;
+    modoConsMoto, modoConsCliente, modoConsPdto, modoConsServico, modoConsOS, modoConsOrcamento;
 }
