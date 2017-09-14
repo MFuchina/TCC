@@ -1,24 +1,38 @@
 package oficina.modelo;
 
 public class ServicoDTO {
+
     private int cod;
-    private String nome;
+    private String nome, desc;
     private float preco;
 
-    public ServicoDTO(int cod, String nome, float preco) {
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Object[] getLinhaTabela() {
+        Object[] retorno = {this.cod, this.nome, this.preco, this.desc};
+        return retorno;
+    }
+
+    public ServicoDTO(int cod, String nome, float preco, String desc) {
         this.cod = cod;
         this.nome = nome;
         this.preco = preco;
-        
+        this.desc = desc;
     }
 
     public ServicoDTO() {
         this.cod = 0;
         this.nome = "";
         this.preco = (float) 0.0;
-        
+        this.desc = "";
     }
-    
+
     public String getNome() {
         return nome;
     }
@@ -42,5 +56,5 @@ public class ServicoDTO {
     public void setCod(int cod) {
         this.cod = cod;
     }
-    
+
 }

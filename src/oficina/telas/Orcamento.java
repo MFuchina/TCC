@@ -10,9 +10,13 @@ public class Orcamento extends javax.swing.JFrame {
     private final OrcamentoDTO orcamento;
     private final boolean modoInclusao;
     private OrcamentoDAO o = new OrcamentoDAO();
+    private final Principal formularioPrincipal;
+    private Consulta consultaProduto = null;
+    private Consulta consultaServico = null;
+    private Consulta consultaCliente = null;
 
-    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento/*Principal formPrincipal*/) {
-        //this.formularioPrincipal = formPrincipal;
+    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento, Principal formPrincipal) {
+        this.formularioPrincipal = formPrincipal;
         this.orcamento = orcamento;
         this.modoInclusao = modoInclusao;
         initComponents();
@@ -23,8 +27,6 @@ public class Orcamento extends javax.swing.JFrame {
             cod.setText(o.retornaUltimoCodigo());
         }
     }
-
-    //private final Principal formularioPrincipal;
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -290,27 +292,27 @@ public class Orcamento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoConsultarOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOrcamentoActionPerformed
-        Consulta c = new Consulta(Estados.modoConsOrcamento, false);
-        c.setVisible(true);
+        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente);
+        consultaCliente.setVisible(true);
     }//GEN-LAST:event_botaoConsultarOrcamentoActionPerformed
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
-        //formularioPrincipal.formularioFechando(this);
+        formularioPrincipal.telaFechando(this);
         this.setVisible(false);
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        //formularioPrincipal.formularioFechando(this);
+        formularioPrincipal.telaFechando(this);
         this.setVisible(false);
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoActionPerformed
        if(Mensagens.msgConf("Novo produto?")){
-           Consulta p = new Consulta(Estados.modoConsPdto, false);
-           p.setVisible(true);
+           consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto);
+           consultaProduto.setVisible(true);
        }else{
-           Consulta p = new Consulta(Estados.modoConsServico, false);
-           p.setVisible(true);
+           consultaServico= new Consulta(Estados.modoConsServico, null, consultaServico);
+           consultaServico.setVisible(true);
        }
     }//GEN-LAST:event_novoActionPerformed
 

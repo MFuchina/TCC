@@ -5,9 +5,13 @@ public class MotoDTO {
     private String marca, modelo, chassi, placa, cor;
     private int cod_moto, cod_dono, ano_modelo, ano_Fabr;
 
-    public MotoDTO(int cod_moto, int cod_dono, String placa, String modelo, String cor, String marca, String chassi, int ano_modelo, int ano_Fabr) {
+    public Object[] getLinhaTabela() {
+        Object[] retorno = {this.cod_moto, this.placa, this.modelo, this.cor};
+        return retorno;
+    }
+    
+    public MotoDTO(int cod_moto, String placa, String modelo, String cor, String marca, String chassi, int ano_modelo, int ano_Fabr) {
         this.cod_moto = cod_moto;
-        this.cod_dono = cod_dono;
         this.placa = placa;
         this.modelo = modelo;
         this.cor = cor;

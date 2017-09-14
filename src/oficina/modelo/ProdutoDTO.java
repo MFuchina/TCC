@@ -6,6 +6,11 @@ public class ProdutoDTO {
     private float preco;
     private int cod;
 
+    public Object[] getLinhaTabela() {
+        Object[] retorno = {this.cod, this.nome, this.marca, this.preco};
+        return retorno;
+    }
+    
     public ProdutoDTO(int cod, String nome, String marca, float preco) {
         this.cod = cod;
         this.nome = nome;

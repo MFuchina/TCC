@@ -143,7 +143,11 @@ public class ClienteDAO {
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                cod = (rs.getInt(1) + 1);
+                if (String.valueOf(rs.getInt(1)) == null) {
+                    cod = 0;
+                } else {
+                    cod = (rs.getInt(1) + 1);
+                }
             }
             aux = String.valueOf(cod);
             rs.close();
@@ -177,29 +181,4 @@ public class ClienteDAO {
         }
         return cliente;
     }
-
-    /*public String retornaCodigo(int cpf){
-        int cod = 0;
-        String aux = "";
-        String str = "jdbc:mysql://localhost:3307/oficina?"
-                + "user=root&password=root";
-        Connection conn;
-        try {
-            conn = DriverManager.getConnection(str);
-            String sql = "SELECT cod_cliente FROM cliente WHERE cpf_cnpj = ?";
-            PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, cpf);
-            ResultSet rs = p.executeQuery();
-            if (rs.next()) {
-                cod = (rs.getInt(1));
-            }
-            aux = String.valueOf(cod);
-            rs.close();
-            p.close();
-            conn.close();
-        } catch (Exception ex) {
-            Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
-        }
-        return aux;
-    }*/
 }

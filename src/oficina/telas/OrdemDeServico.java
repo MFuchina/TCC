@@ -2,15 +2,27 @@ package oficina.telas;
 
 import oficina.Util.Estados;
 import oficina.modelo.OsDTO;
+import oficina.persistencia.OsDAO;
 
 public class OrdemDeServico extends javax.swing.JFrame {
 
     private final OsDTO os;
+    private final OsDAO ordemServico = new OsDAO();
+    private final boolean inclusao;
+    private final Principal formularioPrincipal;
+    private Consulta consultaCliente = null;
 
-    public OrdemDeServico(OsDTO os) {
+    public OrdemDeServico(boolean modoInclusao, OsDTO os, Principal formPrincipal) {
+        this.formularioPrincipal = formPrincipal;
+        this.inclusao = modoInclusao;
         this.os = os;
         initComponents();
         this.setLocationRelativeTo(null);
+        if (inclusao == false) {
+            cod.setText(String.valueOf(os.getCodOs()));
+        } else {
+            cod.setText(ordemServico.retornaUltimoCodigo());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -19,24 +31,24 @@ public class OrdemDeServico extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        textCodigoOS = new javax.swing.JTextField();
+        cod = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        textCliente = new javax.swing.JTextField();
-        textMoto = new javax.swing.JTextField();
+        cliente = new javax.swing.JTextField();
+        moto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        textPlacaMoto = new javax.swing.JTextField();
+        placa = new javax.swing.JTextField();
         botaoConsultarOS = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        textValorTotal = new javax.swing.JTextField();
+        total = new javax.swing.JTextField();
         botaoSalvar = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
         labelServico = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaNovaOS = new javax.swing.JTable();
+        tabela = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
-        textData = new javax.swing.JFormattedTextField();
+        data = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ordem de Serviço");
@@ -47,7 +59,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel1.setText("Código da Ordem de Serviço:");
 
-        textCodigoOS.setEditable(false);
+        cod.setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel3.setText("Data:");
@@ -71,7 +83,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Semilight", 3, 18)); // NOI18N
         jLabel7.setText("VALOR TOTAL:");
 
-        textValorTotal.setEnabled(false);
+        total.setEnabled(false);
 
         botaoSalvar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         botaoSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-checked.png"))); // NOI18N
@@ -97,7 +109,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
         labelServico.setForeground(new java.awt.Color(0, 111, 153));
         labelServico.setText("NovA O.S.");
 
-        tabelaNovaOS.setModel(new javax.swing.table.DefaultTableModel(
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -133,23 +145,23 @@ public class OrdemDeServico extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabelaNovaOS.setFocusable(false);
-        tabelaNovaOS.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelaNovaOS);
-        tabelaNovaOS.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        if (tabelaNovaOS.getColumnModel().getColumnCount() > 0) {
-            tabelaNovaOS.getColumnModel().getColumn(0).setMinWidth(70);
-            tabelaNovaOS.getColumnModel().getColumn(0).setPreferredWidth(70);
-            tabelaNovaOS.getColumnModel().getColumn(0).setMaxWidth(80);
-            tabelaNovaOS.getColumnModel().getColumn(2).setMinWidth(70);
-            tabelaNovaOS.getColumnModel().getColumn(2).setPreferredWidth(70);
-            tabelaNovaOS.getColumnModel().getColumn(2).setMaxWidth(80);
-            tabelaNovaOS.getColumnModel().getColumn(3).setMinWidth(70);
-            tabelaNovaOS.getColumnModel().getColumn(3).setPreferredWidth(70);
-            tabelaNovaOS.getColumnModel().getColumn(3).setMaxWidth(80);
+        tabela.setFocusable(false);
+        tabela.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabela);
+        tabela.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabela.getColumnModel().getColumnCount() > 0) {
+            tabela.getColumnModel().getColumn(0).setMinWidth(70);
+            tabela.getColumnModel().getColumn(0).setPreferredWidth(70);
+            tabela.getColumnModel().getColumn(0).setMaxWidth(80);
+            tabela.getColumnModel().getColumn(2).setMinWidth(70);
+            tabela.getColumnModel().getColumn(2).setPreferredWidth(70);
+            tabela.getColumnModel().getColumn(2).setMaxWidth(80);
+            tabela.getColumnModel().getColumn(3).setMinWidth(70);
+            tabela.getColumnModel().getColumn(3).setPreferredWidth(70);
+            tabela.getColumnModel().getColumn(3).setMaxWidth(80);
         }
 
-        textData.setText("dd/mm/aaaa");
+        data.setText("dd/mm/aaaa");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -166,17 +178,17 @@ public class OrdemDeServico extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(15, 15, 15)
-                                .addComponent(textCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(botaoConsultarOS, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(moto, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textPlacaMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(placa, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -185,11 +197,11 @@ public class OrdemDeServico extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textCodigoOS, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cod, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textData, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -206,7 +218,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(108, 108, 108))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -217,29 +229,29 @@ public class OrdemDeServico extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(textCodigoOS, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cod, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(textData, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(textCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(botaoConsultarOS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(textPlacaMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(textMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(placa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(moto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,22 +275,27 @@ public class OrdemDeServico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
+        formularioPrincipal.telaFechando(this);
         this.setVisible(false);
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        formularioPrincipal.telaFechando(this);
         this.setVisible(false);
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOSActionPerformed
-        Consulta c = new Consulta(Estados.modoConsCliente, true);
-        c.setVisible(true);
+        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente);
+        consultaCliente.setVisible(true);
     }//GEN-LAST:event_botaoConsultarOSActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
     private javax.swing.JButton botaoConsultarOS;
     private javax.swing.JButton botaoSalvar;
+    private javax.swing.JTextField cliente;
+    private javax.swing.JTextField cod;
+    private javax.swing.JFormattedTextField data;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -289,12 +306,9 @@ public class OrdemDeServico extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelServico;
-    private javax.swing.JTable tabelaNovaOS;
-    private javax.swing.JTextField textCliente;
-    private javax.swing.JTextField textCodigoOS;
-    private javax.swing.JFormattedTextField textData;
-    private javax.swing.JTextField textMoto;
-    private javax.swing.JTextField textPlacaMoto;
-    private javax.swing.JTextField textValorTotal;
+    private javax.swing.JTextField moto;
+    private javax.swing.JTextField placa;
+    private javax.swing.JTable tabela;
+    private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
 }

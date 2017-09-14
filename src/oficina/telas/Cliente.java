@@ -6,13 +6,16 @@ import oficina.Util.Validacao;
 import oficina.modelo.ClienteDTO;
 import oficina.persistencia.ClienteDAO;
 
-public class Cadastro extends javax.swing.JFrame {
+public class Cliente extends javax.swing.JFrame {
 
     private final boolean modoInclusao;
     private final ClienteDTO cliente;
     private final ClienteDAO clienteDAO = new ClienteDAO();
+    private final Principal formularioPrincipal;
+    private Consulta consMoto = null;
 
-    public Cadastro(boolean modoInclusao, ClienteDTO cliente) {
+    public Cliente(boolean modoInclusao, ClienteDTO cliente, Principal formPrincipal) {
+        this.formularioPrincipal = formPrincipal;
         this.modoInclusao = modoInclusao;
         this.cliente = cliente;
         initComponents();
@@ -297,12 +300,10 @@ public class Cadastro extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(radioFem)
-                            .addComponent(radioMasc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(radioOutro))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(radioFem)
+                        .addComponent(radioMasc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(radioOutro)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -340,9 +341,11 @@ public class Cadastro extends javax.swing.JFrame {
         if (cadastraOuAlteraCliente()) {
             this.setVisible(false);
         }
+        formularioPrincipal.telaFechando(this);
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        formularioPrincipal.telaFechando(this);
         this.setVisible(false);
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
@@ -368,8 +371,8 @@ public class Cadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        Consulta conMotos = new Consulta(Estados.modoConsMoto, false);
-        conMotos.setVisible(true);
+        consMoto = new Consulta(Estados.modoConsMoto, null, consMoto);
+        consMoto.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

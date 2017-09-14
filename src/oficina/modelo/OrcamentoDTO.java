@@ -8,6 +8,11 @@ public class OrcamentoDTO {
     private Date data;
     private float total;
     private int cod_cliente, cod_moto;
+    
+    public Object[] getLinhaTabela() {
+        Object[] retorno = {this.cod_Orcamento, this.data, this.cod_cliente, this.total};
+        return retorno;
+    }
 
     public OrcamentoDTO(int cod_Orcamento, int cod_cliente, int cod_moto, Date data, float total) {
         this.cod_Orcamento = cod_Orcamento;

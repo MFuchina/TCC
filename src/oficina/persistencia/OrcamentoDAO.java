@@ -135,7 +135,11 @@ public class OrcamentoDAO {
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                cod = (rs.getInt(1) + 1);
+                if (String.valueOf(rs.getInt(1)) == null) {
+                    cod = 0;
+                } else {
+                    cod = (rs.getInt(1) + 1);
+                }
             }
             aux = String.valueOf(cod);
             rs.close();

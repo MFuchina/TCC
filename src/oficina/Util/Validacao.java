@@ -1,6 +1,7 @@
 package oficina.Util;
 
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Validacao {
@@ -17,6 +18,19 @@ public class Validacao {
         return true;
     }
 
+    public static boolean validaArea(JTextArea campo, String def) {
+        if (campo.getText().trim().isEmpty()) {
+            Mensagens.msgErro(campo.getToolTipText());
+            campo.requestFocus();
+            return false;
+        } else if (campo.getText().trim().length() >= 80) {
+            Mensagens.msgAviso("Você só pode digitar 80 caracteres no campo " + def + ".");
+            return false;
+        }
+        return true;
+    }
+
+    
     public static boolean validaSenha(JPasswordField campo) {
         if (String.copyValueOf(campo.getPassword()).trim().isEmpty()) {
             Mensagens.msgErro(campo.getToolTipText());

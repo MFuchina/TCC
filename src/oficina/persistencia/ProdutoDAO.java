@@ -15,7 +15,7 @@ public class ProdutoDAO {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
-                + "user=root&password=root";
+                    + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into produto (NOME_PDTO, MARCA_PDTO, PRECO_PDTO) values"
                     + " (?, ?, ?)";
@@ -32,12 +32,12 @@ public class ProdutoDAO {
         }
         return aux;
     }
-    
+
     public boolean alteraProduto(ProdutoDTO produto) {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
-                + "user=root&password=root";
+                    + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update produto set NOME_PDTO = ?, MARCA_PDTO = ?, PRECO_PDTO = ?"
                     + " where COD_PDTO = ?";
@@ -55,12 +55,12 @@ public class ProdutoDAO {
         }
         return aux;
     }
-    
+
     public boolean removeProduto(int codigo) {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
-                + "user=root&password=root";
+                    + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "delete from produto where COD_PDTO = ?";
             PreparedStatement p = conn.prepareStatement(sql);
@@ -145,7 +145,7 @@ public class ProdutoDAO {
         }
         return listaPDTO;
     }
-    
+
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
@@ -158,7 +158,11 @@ public class ProdutoDAO {
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                cod = (rs.getInt(1) + 1);
+                if (String.valueOf(rs.getInt(1)) == null) {
+                    cod = 0;
+                } else {
+                    cod = (rs.getInt(1) + 1);
+                }
             }
             aux = String.valueOf(cod);
             rs.close();

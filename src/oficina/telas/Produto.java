@@ -10,18 +10,31 @@ public class Produto extends javax.swing.JFrame {
     private final ProdutoDTO produto;
     private final boolean modoInclusao;
     private ProdutoDAO p = new ProdutoDAO();
+    private final Consulta c;
+    private final Principal formularioPrincipal;
 
-    public Produto(boolean modoInclusao, ProdutoDTO produto) {
+    public Produto(boolean modoInclusao, ProdutoDTO produto, Principal formPrincipal, Consulta c) {
+        this.c = c;
+        this.formularioPrincipal = formPrincipal;
         this.modoInclusao = modoInclusao;
         this.produto = produto;
         initComponents();
+        if (modoInclusao == false) {
+            cod.setText(String.valueOf(produto.getCod()));
+            nome.setText(produto.getNome());
+            marca.setText(produto.getMarca());
+            preco.setText(String.valueOf(produto.getPreco()));
+        } else {
+            cod.setText(String.valueOf(p.retornaUltimoCodigo()));
+        }
+
         this.setLocationRelativeTo(null);
     }
 
     public boolean CadastraAlteraProduto() {
         boolean aux = false;
-        if (Validacao.validaInteiro(cod) && Validacao.validaCampo(nome, "nome do produto")
-                && Validacao.validaCampo(marca, "marca do produto") && Validacao.validaFloat(preco, 1, 10000)) {
+        if (Validacao.validaCampo(nome, "nome do produto") && Validacao.validaCampo(marca, "marca do produto")
+                && Validacao.validaFloat(preco, 0, 10000)) {
             if (modoInclusao) {
                 if (p.verificaNome(nome.getText(), Integer.valueOf(cod.getText()))) {
                     Mensagens.msgAviso("Esse produto já está cadastrado.");
@@ -195,13 +208,25 @@ public class Produto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        if (c == null) {
+            formularioPrincipal.telaFechando(this);
+        } else {
+            c.telaFechando(this);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
         if (CadastraAlteraProduto()) {
+            if (c == null) {
+                formularioPrincipal.telaFechando(this);
+            } else {
+                c.telaFechando(this);
+            }
             this.setVisible(false);
+            c.montaTabela();
         }
+
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

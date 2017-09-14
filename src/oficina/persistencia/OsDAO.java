@@ -78,7 +78,7 @@ public class OsDAO {
         return aux;
     }
 
-    public ArrayList<OsDTO> carregaOS() {
+    public ArrayList<OsDTO> carregaOs() {
         ArrayList<OsDTO> listaOs = new ArrayList();
         String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
@@ -125,7 +125,6 @@ public class OsDAO {
     }
 
     public String retornaUltimoCodigo() {
-        int cod = 0;
         String aux = "";
         String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
@@ -136,9 +135,12 @@ public class OsDAO {
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                cod = (rs.getInt(1) + 1);
+                if (String.valueOf(rs.getInt(1)) == null) {
+                    aux = "0";
+                } else {
+                    aux = String.valueOf(rs.getInt(1) + 1);
+                }
             }
-            aux = String.valueOf(cod);
             rs.close();
             p.close();
             conn.close();

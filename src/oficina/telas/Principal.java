@@ -16,17 +16,164 @@ public class Principal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    private Consulta consulta;
-    private Cadastro cadastro;
-    private Orcamento orcamento = null;
-    private OrdemDeServico ordemServico;
     private Login login;
-    private Produto novoPdto;
-    private Servico novoServ;
 
-    public void formularioFechando(JFrame formulario) {
-        if (String.valueOf(formulario.getClass()).equals("class oficina.telas.Orcamento")) {
-            orcamento = null;
+    private Consulta consultaProduto = null;
+    private Consulta consultaOrcamento = null;
+    private Consulta consultaOs = null;
+    private Consulta consultaServico = null;
+    private Consulta consultaCliente = null;
+    private Consulta consultaMoto = null;
+
+    private Orcamento orcamento = null;
+    private OrdemDeServico ordemServico = null;
+    private Cliente cadastro = null;
+    private Produto novoPdto = null;
+    private Servico novoServ = null;
+
+    public void telaFechando(JFrame tela) {
+        switch (String.valueOf(tela.getClass())) {
+            case "class oficina.telas.Orcamento":
+                orcamento = null;
+                break;
+            case "class oficina.telas.Cliente":
+                cadastro = null;
+                break;
+            case "class oficina.telas.Produto":
+                novoPdto = null;
+                break;
+            case "class oficina.telas.Servico":
+                novoServ = null;
+                break;
+            case "class oficina.telas.OrdemDeServico":
+                ordemServico = null;
+                break;
+            case "class oficina.telas.Moto":
+                System.out.println("Moto");
+                break;
+            case "class oficina.telas.Consulta":
+                consultaProduto = null;
+                break;
+        }
+    }
+
+    //Métodos de consultas:
+    public void consultarMoto() {
+        if (consultaMoto == null) {
+            consultaMoto = new Consulta(Estados.modoConsMoto, this, consultaMoto);
+            consultaMoto.setVisible(true);
+        } else {
+            consultaMoto.requestFocus();
+            consultaMoto.setVisible(true);
+        }
+    }
+
+    public void consultarCliente() {
+        if (consultaCliente == null) {
+            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente);
+            consultaCliente.setVisible(true);
+        } else {
+            consultaCliente.requestFocus();
+            consultaCliente.setVisible(true);
+        }
+    }
+
+    public void consultarProduto() {
+        if (consultaProduto == null) {
+            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto);
+            //Puxar a tabela de produtos do BD
+            consultaProduto.setVisible(true);
+        } else {
+            consultaProduto.requestFocus();
+            consultaProduto.setVisible(true);
+        }
+    }
+
+    public void consultarOrcamento() {
+        if (consultaOrcamento == null) {
+            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento);
+            consultaOrcamento.setVisible(true);
+        } else {
+            consultaOrcamento.requestFocus();
+            consultaOrcamento.setVisible(true);
+        }
+    }
+
+    public void consultarOs() {
+        if (consultaOs == null) {
+            consultaOs = new Consulta(Estados.modoConsOrcamento, this, consultaOs);
+            consultaOs.setVisible(true);
+        } else {
+            consultaOs.requestFocus();
+            consultaOs.setVisible(true);
+        }
+    }
+
+    public void consultarServico() {
+        if (consultaServico == null) {
+            consultaServico = new Consulta(Estados.modoConsOrcamento, this, consultaServico);
+            consultaServico.setVisible(true);
+        } else {
+            consultaServico.requestFocus();
+            consultaServico.setVisible(true);
+        }
+    }
+
+    //Métodos de inserção:
+    public void novoCliente() {
+        if (cadastro == null) {
+            cadastro = new Cliente(true, new ClienteDTO(), this);
+            cadastro.setVisible(true);
+        } else {
+            botaoNovoOrcamento.transferFocus();
+            cadastro.requestFocus();
+            cadastro.setVisible(true);
+        }
+    }
+
+    public void novoProduto() {
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            if (novoPdto == null) {
+                novoPdto = new Produto(true, new ProdutoDTO(), this, null);
+                novoPdto.setVisible(true);
+            } else {
+                novoPdto.requestFocus();
+                novoPdto.setVisible(true);
+            }
+        }
+    }
+
+    public void novoServico() {
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            if (novoServ == null) {
+                novoServ = new Servico(true, new ServicoDTO(), this);
+                novoServ.setVisible(true);
+            } else {
+                novoServ.requestFocus();
+                novoServ.setVisible(true);
+            }
+        }
+    }
+
+    public void novoOrcamento() {
+        if (orcamento == null) {
+            orcamento = new Orcamento(true, new OrcamentoDTO(), this);
+            orcamento.setVisible(true);
+        } else {
+            orcamento.requestFocus();
+            orcamento.setVisible(true);
+        }
+    }
+
+    public void novaOs() {
+        if (ordemServico == null) {
+            ordemServico = new OrdemDeServico(true, new OsDTO(), this);
+            ordemServico.setVisible(true);
+        } else {
+            ordemServico.requestFocus();
+            ordemServico.setVisible(true);
         }
     }
 
@@ -235,34 +382,30 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(712, 712, 712))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 16, Short.MAX_VALUE))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jSeparator1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(102, 102, 102)
-                                .addComponent(labelTitulo)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(102, 102, 102)
+                        .addComponent(labelTitulo)
+                        .addGap(38, 96, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,6 +444,7 @@ public class Principal extends javax.swing.JFrame {
         menuOrcamento.add(menuConsultarOrcamento);
         menuOrcamento.add(jSeparator2);
 
+        menuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         menuSair.setText("Sair");
         menuSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -421,19 +565,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuNovoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoOrcamentoActionPerformed
-        if (orcamento == null) {
-            orcamento = new Orcamento(true, new OrcamentoDTO()/*this*/);
-            orcamento.setVisible(true);
-        } else {
-            menuNovoOrcamento.transferFocus();
-            orcamento.requestFocus();
-        }
+        novoOrcamento();
     }//GEN-LAST:event_menuNovoOrcamentoActionPerformed
 
     private void menuConsultarOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarOrcamentoActionPerformed
-        consulta = new Consulta(Estados.modoConsOrcamento, false);
-        //Puxar a tabela de orçamentos do BD
-        consulta.setVisible(true);
+        consultarOrcamento();
     }//GEN-LAST:event_menuConsultarOrcamentoActionPerformed
 
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
@@ -441,37 +577,23 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuSairActionPerformed
 
     private void menuNovaOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovaOSActionPerformed
-        ordemServico = new OrdemDeServico(new OsDTO());
-        ordemServico.setVisible(true);
+        novaOs();
     }//GEN-LAST:event_menuNovaOSActionPerformed
 
     private void menuNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoProdutoActionPerformed
-        login = new Login(this, true);
-        if (login.criaLogin()) {
-            novoPdto = new Produto(true, new ProdutoDTO());
-            novoPdto.setVisible(true);
-        }
+        novoProduto();
     }//GEN-LAST:event_menuNovoProdutoActionPerformed
 
     private void menuNovoServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoServicoActionPerformed
-        login = new Login(this, true);
-        if (login.criaLogin()) {
-            novoServ = new Servico(true, new ServicoDTO());
-            novoServ.setVisible(true);
-            this.setVisible(false);
-        }
+        novoServico();
     }//GEN-LAST:event_menuNovoServicoActionPerformed
 
     private void menuConsultarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarProdutoActionPerformed
-        consulta = new Consulta(Estados.modoConsPdto, false);
-        //Puxar a tabela de produtos do BD
-        consulta.setVisible(true);
+        consultarProduto();
     }//GEN-LAST:event_menuConsultarProdutoActionPerformed
 
     private void menuConsultarServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarServicoActionPerformed
-        consulta = new Consulta(Estados.modoConsServico, false);
-        //Puxar a tabela de serviços do BD
-        consulta.setVisible(true);
+        consultarServico();
     }//GEN-LAST:event_menuConsultarServicoActionPerformed
 
     private void menuSobreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuSobreMouseClicked
@@ -481,55 +603,35 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuSobreMouseClicked
 
     private void botaoNovoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoOrcamentoActionPerformed
-        /*if (orcamento == null) {
-            orcamento = new Orcamento(new OrcamentoDTO()/*this);
-            orcamento.setVisible(true);
-        } else {
-            menuNovoOrcamento.transferFocus();
-            orcamento.requestFocus();
-        }*/
-        
-        orcamento = new Orcamento(true, new OrcamentoDTO()/*this*/);
-        orcamento.setVisible(true);
+        novoOrcamento();
     }//GEN-LAST:event_botaoNovoOrcamentoActionPerformed
 
     private void botaoNovaOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaOSActionPerformed
-        ordemServico = new OrdemDeServico(new OsDTO());
-        ordemServico.setVisible(true);
+        novaOs();
     }//GEN-LAST:event_botaoNovaOSActionPerformed
 
     private void botaoNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoClienteActionPerformed
-        cadastro = new Cadastro(true, new ClienteDTO());
-        cadastro.setVisible(true);
+        novoCliente();
     }//GEN-LAST:event_botaoNovoClienteActionPerformed
 
     private void botaoConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarClienteActionPerformed
-        consulta = new Consulta(Estados.modoConsCliente, false);
-        //Puxar a tabela de clientes do BD
-        consulta.setVisible(true);
+        consultarCliente();
     }//GEN-LAST:event_botaoConsultarClienteActionPerformed
 
     private void botaoConsultarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarProdutosActionPerformed
-        consulta = new Consulta(Estados.modoConsPdto, false);
-        //Puxar a tabela de produtos do BD
-        consulta.setVisible(true);
+        consultarProduto();
     }//GEN-LAST:event_botaoConsultarProdutosActionPerformed
 
     private void menuConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarOSActionPerformed
-        consulta = new Consulta(Estados.modoConsOS, true);
-        //Puxar a tabela de OS do BD
-        consulta.setVisible(true);
+        consultarOs();
     }//GEN-LAST:event_menuConsultarOSActionPerformed
 
     private void menuNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoClienteActionPerformed
-        cadastro = new Cadastro(true, new ClienteDTO());
-        cadastro.setVisible(true);
+        novoCliente();
     }//GEN-LAST:event_menuNovoClienteActionPerformed
 
     private void menuConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarClienteActionPerformed
-        consulta = new Consulta(Estados.modoConsCliente, false);
-        //Puxar a tabela de OS do BD
-        consulta.setVisible(true);
+        consultarCliente();
     }//GEN-LAST:event_menuConsultarClienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

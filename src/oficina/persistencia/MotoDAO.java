@@ -66,19 +66,18 @@ public class MotoDAO {
         return aux;
     }
 
-    public ArrayList<MotoDTO> carregaMotos(int codigo) {
+    public ArrayList<MotoDTO> carregaMotos() {
         ArrayList<MotoDTO> listaMotos = new ArrayList();
         String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
             conn = DriverManager.getConnection(str);
-            String sql = "select cod_moto, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto where cod_dono = ?";
+            String sql = "select cod_moto, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto";
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, codigo);
             ResultSet rs = p.executeQuery();
             while (rs.next()) {
-                MotoDTO moto = new MotoDTO(rs.getInt(1), codigo, rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
+                MotoDTO moto = new MotoDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
                 listaMotos.add(moto);
             }
             rs.close();
@@ -102,7 +101,7 @@ public class MotoDAO {
             p.setInt(1, codigo);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                moto = new MotoDTO(codigo, rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
+                moto = new MotoDTO(codigo, rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
             }
             rs.close();
             p.close();
@@ -170,7 +169,11 @@ public class MotoDAO {
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                cod = (rs.getInt(1) + 1);
+                if (String.valueOf(rs.getInt(1)) == null) {
+                    cod = 0;
+                } else {
+                    cod = (rs.getInt(1) + 1);
+                }
             }
             aux = String.valueOf(cod);
             rs.close();

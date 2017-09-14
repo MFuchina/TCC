@@ -5,15 +5,20 @@ import java.util.Date;
 public class OsDTO {
     private int codOs, cod_cliente, cod_moto;
     private Date data;
-    private String statusOS;
+    private String statusOs;
     private float total;
 
+    public Object[] getLinhaTabela() {
+        Object[] retorno = {this.codOs, this.data, this.statusOs, this.total};
+        return retorno;
+    }
+    
     public OsDTO(int codOs, int cod_cliente, int cod_moto, Date data, String statusOS, float total) {
         this.codOs = codOs;
         this.cod_cliente = cod_cliente;
         this.cod_moto = cod_moto;
         this.data = data;
-        this.statusOS = statusOS;
+        this.statusOs = statusOS;
         this.total = total;
     }
 
@@ -22,7 +27,7 @@ public class OsDTO {
         this.cod_cliente = 0;
         this.cod_moto = 0;
         this.data = null;
-        this.statusOS = "";
+        this.statusOs = "";
         this.total = (float) 0.0;
     }
 
@@ -53,11 +58,11 @@ public class OsDTO {
     }
 
     public String getStatusOS() {
-        return statusOS;
+        return statusOs;
     }
 
     public void setStatusOS(String statusOS) {
-        this.statusOS = statusOS;
+        this.statusOs = statusOS;
     }
 
     public int getCodOs() {
