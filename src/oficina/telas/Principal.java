@@ -4,10 +4,100 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import oficina.Util.Estados;
 import oficina.modelo.ClienteDTO;
+import oficina.modelo.MotoDTO;
 import oficina.modelo.OrcamentoDTO;
 import oficina.modelo.OsDTO;
 import oficina.modelo.ProdutoDTO;
 import oficina.modelo.ServicoDTO;
+
+/*
+DROP DATABASE if EXISTS Oficina;
+
+CREATE DATABASE Oficina;
+
+USE Oficina;
+
+create table gerente(
+	user varchar(60) not null,
+    senha varchar(60) not null,
+    primeira_ex int
+);
+
+create table cliente(
+	cod_cliente int auto_increment primary key,
+    nome varchar(60) not null,
+    -- PRECISA DE CPF NO NOSSO PROGRAMA?????
+    CPF_CNPJ varchar (11) not null,
+    email varchar(60),
+    telefone varchar (12),
+    sexo enum ('M', 'F', 'O') not null
+);
+
+create table moto(
+	cod_moto int auto_increment primary key,
+    marca varchar(60) not null,
+    modelo varchar(60) not null,
+    chassi varchar(60),
+    placa varchar(8) not null,
+    cor varchar(60),
+    ano_mod int,
+    ano_fabr int,
+    cod_dono int not null,
+    foreign key (cod_dono) references cliente (cod_cliente)
+);
+
+create table produto(
+	cod_pdto int auto_increment primary key,
+    nome_pdto varchar(60) not null,
+    marca_pdto varchar(60),
+    preco_pdto float not null
+);
+
+create table servico(
+	cod_servico int auto_increment primary key,
+    nome_servico varchar(60) not null,
+    preco_servico float not null,
+    descricao_servico varchar(80)
+);
+
+create table ordem_servico(
+	cod_os int auto_increment primary key,
+    data_os date,
+    cod_cliente int not null,
+    cod_moto int not null,
+    status_os enum ('NI', 'I', 'C') not null,
+    valorTotal_os float,
+    -- qnt_pdto int not null,
+    foreign key (cod_cliente) references cliente (cod_cliente),
+    foreign key (cod_moto) references moto (cod_moto)
+);
+
+create table orcamento(
+	cod_orcamento int auto_increment primary key,
+    data_orcamento date,
+    cod_cliente int not null,
+    cod_moto int not null,
+	-- qnt_pdto int not null,
+    valorTotal_orcamento float,
+    foreign key (cod_cliente) references cliente (cod_cliente),
+    foreign key (cod_moto) references moto (cod_moto)
+	
+);
+
+INSERT INTO GERENTE VALUES ('admin', 'admin', 0);
+
+insert into cliente (nome, CPF_CNPJ, email, telefone, sexo) values ('Yuri', 1, 'email', 11, 'M');
+
+-- SELECT MAX(cod_cliente) FROM cliente;
+
+select * from cliente;
+
+select * from produto;
+
+select * from servico;
+
+select * from moto;
+*/
 
 public class Principal extends javax.swing.JFrame {
 
@@ -18,6 +108,7 @@ public class Principal extends javax.swing.JFrame {
 
     private Login login;
 
+    private Consulta c;
     private Consulta consultaProduto = null;
     private Consulta consultaOrcamento = null;
     private Consulta consultaOs = null;
@@ -31,7 +122,7 @@ public class Principal extends javax.swing.JFrame {
     private Produto novoPdto = null;
     private Servico novoServ = null;
 
-    public void telaFechando(JFrame tela) {
+    public void telaFechando(JFrame tela, String tipo) {
         switch (String.valueOf(tela.getClass())) {
             case "class oficina.telas.Orcamento":
                 orcamento = null;
@@ -52,7 +143,26 @@ public class Principal extends javax.swing.JFrame {
                 System.out.println("Moto");
                 break;
             case "class oficina.telas.Consulta":
-                consultaProduto = null;
+                switch (tipo) {
+                    case "modoConsPdto":
+                        consultaProduto = null;
+                        break;
+                    case "modoConsMoto":
+                        consultaMoto = null;
+                        break;
+                    case "modoConsCliente":
+                        consultaCliente = null;
+                        break;
+                    case "modoConsServico":
+                        consultaServico = null;
+                        break;
+                    case "modoConsOS":
+                        consultaOs = null;
+                        break;
+                    case "modoConsOrcamento":
+                        consultaOrcamento = null;
+                        break;
+                }
                 break;
         }
     }
@@ -122,10 +232,9 @@ public class Principal extends javax.swing.JFrame {
     //Métodos de inserção:
     public void novoCliente() {
         if (cadastro == null) {
-            cadastro = new Cliente(true, new ClienteDTO(), this);
+            cadastro = new Cliente(true, new ClienteDTO(), this, null);
             cadastro.setVisible(true);
         } else {
-            botaoNovoOrcamento.transferFocus();
             cadastro.requestFocus();
             cadastro.setVisible(true);
         }
@@ -148,7 +257,7 @@ public class Principal extends javax.swing.JFrame {
         login = new Login(this, true);
         if (login.criaLogin()) {
             if (novoServ == null) {
-                novoServ = new Servico(true, new ServicoDTO(), this);
+                novoServ = new Servico(true, new ServicoDTO(), this, null);
                 novoServ.setVisible(true);
             } else {
                 novoServ.requestFocus();
@@ -159,7 +268,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void novoOrcamento() {
         if (orcamento == null) {
-            orcamento = new Orcamento(true, new OrcamentoDTO(), this);
+            orcamento = new Orcamento(true, new OrcamentoDTO(), this, null);
             orcamento.setVisible(true);
         } else {
             orcamento.requestFocus();
@@ -169,7 +278,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void novaOs() {
         if (ordemServico == null) {
-            ordemServico = new OrdemDeServico(true, new OsDTO(), this);
+            ordemServico = new OrdemDeServico(true, new OsDTO(), this, null);
             ordemServico.setVisible(true);
         } else {
             ordemServico.requestFocus();
@@ -596,12 +705,6 @@ public class Principal extends javax.swing.JFrame {
         consultarServico();
     }//GEN-LAST:event_menuConsultarServicoActionPerformed
 
-    private void menuSobreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuSobreMouseClicked
-        JOptionPane.showMessageDialog(null, "   Esse trabalho de conclusão de curso foi desenvolvido em 2017 pelos alunos:\n"
-                + "                     Matheus Nascimento Fuchina e Nathália Fernanda Tiedt\nna disciplina de Projeto e "
-                + "Desenvolvimento de Sistemas do Instituto Federal\nCatarinense - Campus Blumenau.", "TCC", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_menuSobreMouseClicked
-
     private void botaoNovoOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoOrcamentoActionPerformed
         novoOrcamento();
     }//GEN-LAST:event_botaoNovoOrcamentoActionPerformed
@@ -633,6 +736,13 @@ public class Principal extends javax.swing.JFrame {
     private void menuConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarClienteActionPerformed
         consultarCliente();
     }//GEN-LAST:event_menuConsultarClienteActionPerformed
+
+    private void menuSobreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuSobreMouseClicked
+        JOptionPane.showMessageDialog(null, "       Esse trabalho de conclusão de curso foi desenvolvido em 2017 pelos alunos\n"
+                + "Matheus Nascimento Fuchina e Nathália Fernanda Tiedt na disciplina de Projeto e\n"
+                + "Desenvolvimento de Sistemas do Curso Técnico de Informática Integrado ao Ensino\n"
+                + "Médio do Instituto Federal Catarinense - Campus Blumenau.", "Sobre - SIGOMM", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_menuSobreMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;

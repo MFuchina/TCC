@@ -11,10 +11,12 @@ public class Cliente extends javax.swing.JFrame {
     private final boolean modoInclusao;
     private final ClienteDTO cliente;
     private final ClienteDAO clienteDAO = new ClienteDAO();
-    private final Principal formularioPrincipal;
+    private Principal formularioPrincipal = null;
     private Consulta consMoto = null;
+    private Consulta c = null;
 
-    public Cliente(boolean modoInclusao, ClienteDTO cliente, Principal formPrincipal) {
+    public Cliente(boolean modoInclusao, ClienteDTO cliente, Principal formPrincipal, Consulta c) {
+        this.c = c;
         this.formularioPrincipal = formPrincipal;
         this.modoInclusao = modoInclusao;
         this.cliente = cliente;
@@ -339,14 +341,23 @@ public class Cliente extends javax.swing.JFrame {
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
         if (cadastraOuAlteraCliente()) {
-            this.setVisible(false);
+            if (c == null) {
+                formularioPrincipal.telaFechando(this, "");
+            } else {
+                c.telaFechando(this);
+            }
+            this.dispose();
+            c.montaTabela();
         }
-        formularioPrincipal.telaFechando(this);
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        formularioPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+            formularioPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void radioFemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFemActionPerformed

@@ -11,8 +11,10 @@ public class Servico extends javax.swing.JFrame {
     private final ServicoDAO s = new ServicoDAO();
     private final boolean modoInclusao;
     private final Principal formularioPrincipal;
+    private final Consulta c;
 
-    public Servico(boolean modoInclusao, ServicoDTO servico, Principal formPrincipal) {
+    public Servico(boolean modoInclusao, ServicoDTO servico, Principal formPrincipal, Consulta c) {
+        this.c = c;
         this.formularioPrincipal = formPrincipal;
         this.modoInclusao = modoInclusao;
         this.servico = servico;
@@ -205,14 +207,23 @@ public class Servico extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (cadastraAlteraServico()) {
-            formularioPrincipal.telaFechando(this);
-            this.setVisible(false);
+            if (c == null) {
+                formularioPrincipal.telaFechando(this, "");
+            } else {
+                c.telaFechando(this);
+            }
+            this.dispose();
+            c.montaTabela();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        formularioPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+            formularioPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

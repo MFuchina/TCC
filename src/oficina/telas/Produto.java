@@ -209,21 +209,21 @@ public class Produto extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if (c == null) {
-            formularioPrincipal.telaFechando(this);
+            formularioPrincipal.telaFechando(this, "");
         } else {
             c.telaFechando(this);
         }
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
         if (CadastraAlteraProduto()) {
             if (c == null) {
-                formularioPrincipal.telaFechando(this);
+                formularioPrincipal.telaFechando(this, "");
             } else {
                 c.telaFechando(this);
             }
-            this.setVisible(false);
+            this.dispose();
             c.montaTabela();
         }
 

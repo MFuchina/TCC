@@ -42,16 +42,17 @@ public class Consulta extends javax.swing.JFrame {
     private ArrayList<OrcamentoDTO> listaOrcamentos;
 
     private final Principal telaPrincipal;
+    private Login login;
 
-    //Tipos de consulta
-    private Consulta c;
+    /*//Tipos de consulta
     private Consulta consultaProduto = null;
-    private final Consulta consultaOrcamento = null;
-    private final Consulta consultaOs = null;
-    private final Consulta consultaServico = null;
-    private final Consulta consultaCliente = null;
-
+    private Consulta consultaOrcamento = null;
+    private Consulta consultaOs = null;
+    private Consulta consultaServico = null;
+    private Consulta consultaCliente = null;
+    private Consulta consultaMoto = null;*/
     //Telas
+    private Consulta c;
     private Cliente novoCliente = null;
     private Orcamento novoOrcamento = null;
     private OrdemDeServico novaOrdemServico = null;
@@ -89,18 +90,76 @@ public class Consulta extends javax.swing.JFrame {
             case "class oficina.telas.Moto":
                 System.out.println("Moto");
                 break;
-            case "class oficina.telas.Consulta":
-                //modoConsMoto, modoConsCliente, modoConsPdto, modoConsServico, modoConsOS, modoConsOrcamento;
-                if (tipo.equals(ABORT)) {
-
+            /*case "class oficina.telas.Consulta":
+                switch (tipo) {
+                    case "modoConsPdto":
+                        consultaProduto = null;
+                        break;
+                    case "modoConsMoto":
+                        consultaMoto = null;
+                        break;
+                    case "modoConsCliente":
+                        consultaCliente = null;
+                        break;
+                    case "modoConsServico":
+                        consultaServico = null;
+                        break;
+                    case "modoConsOS":
+                        consultaOs = null;
+                        break;
+                    case "modoConsOrcamento":
+                        consultaOrcamento = null;
+                        break;
                 }
-                consultaProduto = null;
-                break;
+                break;*/
         }
     }
 
     public String getEstado() {
         return tipo;
+    }
+
+    public void montaTabela() {
+        switch (tipo) {
+            case "modoConsCliente":
+                this.listaClientes = clienteDAO.carregaClientes();
+                if (listaClientes != null) {
+                    carrega();
+                }
+                break;
+            case "modoConsMoto":
+                btnNovo.setText("Nova");
+                this.listaMotos = motoDAO.carregaMotos();
+                if (listaProdutos != null) {
+                    carrega();
+                }
+                break;
+            case "modoConsPdto":
+                this.listaProdutos = produtoDAO.carregaProdutos();
+                if (listaProdutos != null) {
+                    carrega();
+                }
+                break;
+            case "modoConsServico":
+                this.listaServicos = servicoDAO.carregaServicos();
+                if (listaServicos != null) {
+                    carrega();
+                }
+                break;
+            case "modoConsOS":
+                btnNovo.setText("Nova");
+                this.listaOs = osDAO.carregaOs();
+                if (listaOs != null) {
+                    carrega();
+                }
+                break;
+            case "modoConsOrcamento":
+                this.listaOrcamentos = orcamentoDAO.carregaOrcamento();
+                if (listaOrcamentos != null) {
+                    carrega();
+                }
+                break;
+        }
     }
 
     public void carrega() {
@@ -117,8 +176,8 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Nome");
                 modelo.addColumn("CPF/CNPJ");
                 modelo.addColumn("Telefone");
-                for (ClienteDTO c : listaClientes) {
-                    modelo.addRow(c.getLinhaTabela());
+                for (ClienteDTO clientes : listaClientes) {
+                    modelo.addRow(clientes.getLinhaTabela());
                 }
                 break;
             case "modoConsMoto":
@@ -127,8 +186,8 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Placa");
                 modelo.addColumn("Modelo");
                 modelo.addColumn("Cor");
-                for (MotoDTO c : listaMotos) {
-                    modelo.addRow(c.getLinhaTabela());
+                for (MotoDTO motos : listaMotos) {
+                    modelo.addRow(motos.getLinhaTabela());
                 }
                 break;
             case "modoConsPdto":
@@ -137,8 +196,8 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Nome");
                 modelo.addColumn("Marca");
                 modelo.addColumn("Preço");
-                for (ProdutoDTO c : listaProdutos) {
-                    modelo.addRow(c.getLinhaTabela());
+                for (ProdutoDTO produtos : listaProdutos) {
+                    modelo.addRow(produtos.getLinhaTabela());
                 }
                 break;
             case "modoConsServico":
@@ -147,8 +206,8 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Nome");
                 modelo.addColumn("Preço");
                 modelo.addColumn("Descrição");
-                for (ServicoDTO c : listaServicos) {
-                    modelo.addRow(c.getLinhaTabela());
+                for (ServicoDTO servicos : listaServicos) {
+                    modelo.addRow(servicos.getLinhaTabela());
                 }
                 break;
             case "modoConsOS":
@@ -157,8 +216,8 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Data");
                 modelo.addColumn("Status");
                 modelo.addColumn("Valor Total");
-                for (OsDTO c : listaOs) {
-                    modelo.addRow(c.getLinhaTabela());
+                for (OsDTO os : listaOs) {
+                    modelo.addRow(os.getLinhaTabela());
                 }
                 break;
             case "modoConsOrcamento":
@@ -167,8 +226,8 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Data");
                 modelo.addColumn("Cliente");
                 modelo.addColumn("Valor Total");
-                for (OrcamentoDTO c : listaOrcamentos) {
-                    modelo.addRow(c.getLinhaTabela());
+                for (OrcamentoDTO orcamentos : listaOrcamentos) {
+                    modelo.addRow(orcamentos.getLinhaTabela());
                 }
                 break;
         }
@@ -191,6 +250,73 @@ public class Consulta extends javax.swing.JFrame {
         tabela.getColumnModel().getColumn(3).setPreferredWidth(151);
 
         tabela.setAutoResizeMode(0);
+    }
+
+    //Métodos de inserção:
+    public void novoCliente() {
+        if (novoCliente == null) {
+            novoCliente = new Cliente(true, new ClienteDTO(), null, this);
+            novoCliente.setVisible(true);
+        } else {
+            novoCliente.requestFocus();
+            novoCliente.setVisible(true);
+        }
+    }
+
+    public void novaMoto() {
+        if (novaMoto == null) {
+            novaMoto = new Moto(true, new MotoDTO(), 1, null, this);
+            novaMoto.setVisible(true);
+        } else {
+            novaMoto.requestFocus();
+            novaMoto.setVisible(true);
+        }
+    }
+
+    public void novoProduto() {
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            if (novoProduto == null) {
+                novoProduto = new Produto(true, new ProdutoDTO(), null, this);
+                novoProduto.setVisible(true);
+            } else {
+                novoProduto.requestFocus();
+                novoProduto.setVisible(true);
+            }
+        }
+    }
+
+    public void novoServico() {
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            if (novoServico == null) {
+                novoServico = new Servico(true, new ServicoDTO(), null, this);
+                novoServico.setVisible(true);
+            } else {
+                novoServico.requestFocus();
+                novoServico.setVisible(true);
+            }
+        }
+    }
+
+    public void novoOrcamento() {
+        if (novoOrcamento == null) {
+            novoOrcamento = new Orcamento(true, new OrcamentoDTO(), null, this);
+            novoOrcamento.setVisible(true);
+        } else {
+            novoOrcamento.requestFocus();
+            novoOrcamento.setVisible(true);
+        }
+    }
+
+    public void novaOs() {
+        if (novaOrdemServico == null) {
+            novaOrdemServico = new OrdemDeServico(true, new OsDTO(), null, this);
+            novaOrdemServico.setVisible(true);
+        } else {
+            novaOrdemServico.requestFocus();
+            novaOrdemServico.setVisible(true);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -376,19 +502,26 @@ public class Consulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        telaPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+            telaPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
         if (tipo.equals("modoConsCliente")) {
             listaDeMotos = new ListaDeMotos(this, true);
             listaDeMotos.setVisible(true);
+        } else {
+            if (c == null) {
+                telaPrincipal.telaFechando(this, "");
+            } else {
+                c.telaFechando(this);
+            }
         }
-        telaPrincipal.telaFechando(this);
-        this.setVisible(false);
     }//GEN-LAST:event_btnContinuarActionPerformed
-
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         int linhaSelecionada;
@@ -477,28 +610,22 @@ public class Consulta extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         switch (tipo) {
             case "modoConsCliente":
-                novoCliente = new Cliente(true, new ClienteDTO(), null);
-                novoCliente.setVisible(true);
+                novoCliente();
                 break;
             case "modoConsMoto":
-                novaMoto = new Moto(true, new MotoDTO(), 1);
-                novaMoto.setVisible(true);
+                novaMoto();
                 break;
             case "modoConsPdto":
-                novoProduto = new Produto(true, new ProdutoDTO(), null, this);
-                novoProduto.setVisible(true);
+                novoProduto();
                 break;
             case "modoConsServico":
-                novoServico = new Servico(true, new ServicoDTO(), null);
-                novoServico.setVisible(true);
+                novoServico();
                 break;
             case "modoConsOS":
-                novaOrdemServico = new OrdemDeServico(true, new OsDTO(), null);
-                novaOrdemServico.setVisible(true);
+                novaOs();
                 break;
             case "modoConsOrcamento":
-                novoOrcamento = new Orcamento(true, new OrcamentoDTO(), null);
-                novoOrcamento.setVisible(true);
+                novoOrcamento();
                 break;
         }
 
@@ -512,10 +639,15 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     ClienteDTO cliente = clienteDAO.puxaCliente(codigo);
-                    novoCliente = new Cliente(false, cliente, null);
-                    novoCliente.setVisible(true);
-                    //this.setVisible(false);
-                    montaTabela();
+                    if (novoCliente == null) {
+                        novoCliente = new Cliente(false, cliente, null, this);
+                        novoCliente.setVisible(true);
+                        //this.setVisible(false);
+                        montaTabela();
+                    } else {
+                        novoCliente.requestFocus();
+                        novoCliente.setVisible(true);
+                    }
                 } else {
                     Mensagens.msgAviso("Selecione um cliente a ser alterado!");
                 }
@@ -525,10 +657,15 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     MotoDTO moto = motoDAO.puxaMoto(codigo);
-                    novaMoto = new Moto(false, moto, moto.getCod_dono());
-                    novaMoto.setVisible(true);
-                   // this.setVisible(false);
-                   montaTabela();
+                    if (novaMoto == null) {
+                        novaMoto = new Moto(false, moto, moto.getCod_dono(), null, this);
+                        novaMoto.setVisible(true);
+                        // this.setVisible(false);
+                        montaTabela();
+                    } else {
+                        novaMoto.requestFocus();
+                        novaMoto.setVisible(true);
+                    }
                 } else {
                     Mensagens.msgAviso("Selecione uma moto a ser alterada!");
                 }
@@ -538,10 +675,18 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     ProdutoDTO produto = produtoDAO.puxaProduto(codigo);
-                    novoProduto = new Produto(false, produto, null, this);
-                    novoProduto.setVisible(true);
-                   // this.setVisible(false);
-                   montaTabela();
+                    login = new Login(this, true);
+                    if (login.criaLogin()) {
+                        if (novoProduto == null) {
+                            novoProduto = new Produto(false, produto, null, this);
+                            novoProduto.setVisible(true);
+                            // this.setVisible(false);
+                            montaTabela();
+                        } else {
+                            novoProduto.requestFocus();
+                            novoProduto.setVisible(true);
+                        }
+                    }
                 } else {
                     Mensagens.msgAviso("Selecione um produto a ser alterado!");
                 }
@@ -551,10 +696,18 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     ServicoDTO servico = servicoDAO.puxaServico(codigo);
-                    novoServico = new Servico(false, servico, null);
-                    novoServico.setVisible(true);
-                    //this.setVisible(false);
-                    montaTabela();
+                    login = new Login(this, true);
+                    if (login.criaLogin()) {
+                        if (novoServico == null) {
+                            novoServico = new Servico(false, servico, null, this);
+                            novoServico.setVisible(true);
+                            //this.setVisible(false);
+                            montaTabela();
+                        } else {
+                            novoServico.requestFocus();
+                            novoServico.setVisible(true);
+                        }
+                    }
                 } else {
                     Mensagens.msgAviso("Selecione um serviço a ser alterado!");
                 }
@@ -564,10 +717,15 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     OsDTO OrdemServico = osDAO.puxaOs(codigo);
-                    novaOrdemServico = new OrdemDeServico(false, OrdemServico, null);
-                    novaOrdemServico.setVisible(true);
-                    //this.setVisible(false);
-                    montaTabela();
+                    if (novaOrdemServico == null) {
+                        novaOrdemServico = new OrdemDeServico(false, OrdemServico, null, this);
+                        novaOrdemServico.setVisible(true);
+                        //this.setVisible(false);
+                        montaTabela();
+                    } else {
+                        novaOrdemServico.requestFocus();
+                        novaOrdemServico.setVisible(true);
+                    }
                 } else {
                     Mensagens.msgAviso("Selecione uma ordem de serviço a ser alterada!");
                 }
@@ -577,10 +735,15 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     OrcamentoDTO orcamento = orcamentoDAO.puxaOrcamento(codigo);
-                    novoOrcamento = new Orcamento(false, orcamento, null);
-                    novoOrcamento.setVisible(true);
-                    //this.setVisible(false);
-                    montaTabela();
+                    if (novoOrcamento == null) {
+                        novoOrcamento = new Orcamento(false, orcamento, null, this);
+                        novoOrcamento.setVisible(true);
+                        //this.setVisible(false);
+                        montaTabela();
+                    } else {
+                        novoOrcamento.requestFocus();
+                        novoOrcamento.setVisible(true);
+                    }
                 } else {
                     Mensagens.msgAviso("Selecione um orçamento a ser alterado!");
                 }
@@ -602,47 +765,4 @@ public class Consulta extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
-
-    public void montaTabela() {
-        switch (tipo) {
-            case "modoConsCliente":
-                this.listaClientes = clienteDAO.carregaClientes();
-                if (listaClientes != null) {
-                    carrega();
-                }
-                break;
-            case "modoConsMoto":
-                btnNovo.setText("Nova");
-                this.listaMotos = motoDAO.carregaMotos();
-                if (listaProdutos != null) {
-                    carrega();
-                }
-                break;
-            case "modoConsPdto":
-                this.listaProdutos = produtoDAO.carregaProdutos();
-                if (listaProdutos != null) {
-                    carrega();
-                }
-                break;
-            case "modoConsServico":
-                this.listaServicos = servicoDAO.carregaServicos();
-                if (listaServicos != null) {
-                    carrega();
-                }
-                break;
-            case "modoConsOS":
-                btnNovo.setText("Nova");
-                this.listaOs = osDAO.carregaOs();
-                if (listaOs != null) {
-                    carrega();
-                }
-                break;
-            case "modoConsOrcamento":
-                this.listaOrcamentos = orcamentoDAO.carregaOrcamento();
-                if (listaOrcamentos != null) {
-                    carrega();
-                }
-                break;
-        }
-    }
 }

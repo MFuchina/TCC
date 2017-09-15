@@ -14,8 +14,10 @@ public class Orcamento extends javax.swing.JFrame {
     private Consulta consultaProduto = null;
     private Consulta consultaServico = null;
     private Consulta consultaCliente = null;
+    private final Consulta c;
 
-    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento, Principal formPrincipal) {
+    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento, Principal formPrincipal, Consulta c) {
+        this.c = c;
         this.formularioPrincipal = formPrincipal;
         this.orcamento = orcamento;
         this.modoInclusao = modoInclusao;
@@ -297,23 +299,32 @@ public class Orcamento extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoConsultarOrcamentoActionPerformed
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
-        formularioPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+                formularioPrincipal.telaFechando(this, "");
+            } else {
+                c.telaFechando(this);
+            }
+            this.dispose();
+            c.montaTabela();
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        formularioPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+            formularioPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoActionPerformed
-       if(Mensagens.msgConf("Novo produto?")){
-           consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto);
-           consultaProduto.setVisible(true);
-       }else{
-           consultaServico= new Consulta(Estados.modoConsServico, null, consultaServico);
-           consultaServico.setVisible(true);
-       }
+        if (Mensagens.msgConf("Novo produto?")) {
+            consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto);
+            consultaProduto.setVisible(true);
+        } else {
+            consultaServico = new Consulta(Estados.modoConsServico, null, consultaServico);
+            consultaServico.setVisible(true);
+        }
     }//GEN-LAST:event_novoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

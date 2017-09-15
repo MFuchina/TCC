@@ -117,7 +117,7 @@ public class ListaDeMotos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoNovaMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaMotoActionPerformed
-        Moto m = new Moto(true, new MotoDTO(), 1);
+        Moto m = new Moto(true, new MotoDTO(), 1, null, null);
         m.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoNovaMotoActionPerformed

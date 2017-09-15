@@ -11,8 +11,12 @@ public class Moto extends javax.swing.JFrame {
     private final MotoDAO m = new MotoDAO();
     private final boolean modoInclusao;
     private final int codDono;
+    private Principal formPrincipal;
+    private Consulta c = null;
 
-    public Moto(boolean modoInclusao, MotoDTO moto, int codDono) {
+    public Moto(boolean modoInclusao, MotoDTO moto, int codDono, Principal formPrincipal, Consulta c) {
+        this.c = c;
+        this.formPrincipal = formPrincipal;
         this.codDono = codDono;
         this.moto = moto;
         this.modoInclusao = modoInclusao;
@@ -269,12 +273,23 @@ public class Moto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        this.setVisible(false);
+        if (c == null) {
+            formPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoSalvarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarMotoActionPerformed
         if (CadastraAlteraMoto()) {
-            this.setVisible(false);
+            if (c == null) {
+                formPrincipal.telaFechando(this, "");
+            } else {
+                c.telaFechando(this);
+            }
+            this.dispose();
+            c.montaTabela();
         }
     }//GEN-LAST:event_botaoSalvarMotoActionPerformed
 

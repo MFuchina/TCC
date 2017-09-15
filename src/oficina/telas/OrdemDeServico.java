@@ -11,8 +11,10 @@ public class OrdemDeServico extends javax.swing.JFrame {
     private final boolean inclusao;
     private final Principal formularioPrincipal;
     private Consulta consultaCliente = null;
+    private final Consulta c;
 
-    public OrdemDeServico(boolean modoInclusao, OsDTO os, Principal formPrincipal) {
+    public OrdemDeServico(boolean modoInclusao, OsDTO os, Principal formPrincipal, Consulta c) {
+        this.c = c;
         this.formularioPrincipal = formPrincipal;
         this.inclusao = modoInclusao;
         this.os = os;
@@ -275,13 +277,22 @@ public class OrdemDeServico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
-        formularioPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+                formularioPrincipal.telaFechando(this, "");
+            } else {
+                c.telaFechando(this);
+            }
+            this.dispose();
+            c.montaTabela();
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        formularioPrincipal.telaFechando(this);
-        this.setVisible(false);
+        if (c == null) {
+            formularioPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOSActionPerformed
