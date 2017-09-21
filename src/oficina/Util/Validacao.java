@@ -65,14 +65,15 @@ public class Validacao {
         try {
             String aux = String.valueOf(campo.getText());
             if (!aux.isEmpty()) {
-                for (int i = 0; i <= aux.length(); i++) {
+                int i = Integer.valueOf(aux);
+                /*for (int i = 0; i <= aux.length(); i++) {
                     if (aux.charAt(i) != '0' || aux.charAt(i) != '1' || aux.charAt(i) != '2' || aux.charAt(i) != '3'
                             || aux.charAt(i) != '4' || aux.charAt(i) != '5' || aux.charAt(i) != '6' || aux.charAt(i) != '7'
                             || aux.charAt(i) != '8' || aux.charAt(i) != '9') {
                         Mensagens.msgErro("Digite apenas números inteiros.");
                         return false;
                     }
-                }
+                }*/
                  return true;
             }else{
                 return false;

@@ -78,7 +78,7 @@ public class Produto extends javax.swing.JFrame {
         cod = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Novo Produto");
+        setTitle("Produto - SIGOMM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));

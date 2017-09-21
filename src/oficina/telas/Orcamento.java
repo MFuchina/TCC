@@ -56,6 +56,7 @@ public class Orcamento extends javax.swing.JFrame {
         novo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Orçamento - SIGOMM");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -294,7 +295,7 @@ public class Orcamento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoConsultarOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOrcamentoActionPerformed
-        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente);
+        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente, true);
         consultaCliente.setVisible(true);
     }//GEN-LAST:event_botaoConsultarOrcamentoActionPerformed
 
@@ -305,7 +306,6 @@ public class Orcamento extends javax.swing.JFrame {
                 c.telaFechando(this);
             }
             this.dispose();
-            c.montaTabela();
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
@@ -319,10 +319,10 @@ public class Orcamento extends javax.swing.JFrame {
 
     private void novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoActionPerformed
         if (Mensagens.msgConf("Novo produto?")) {
-            consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto);
+            consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto, true);
             consultaProduto.setVisible(true);
         } else {
-            consultaServico = new Consulta(Estados.modoConsServico, null, consultaServico);
+            consultaServico = new Consulta(Estados.modoConsServico, null, consultaServico, true);
             consultaServico.setVisible(true);
         }
     }//GEN-LAST:event_novoActionPerformed

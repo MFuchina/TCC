@@ -153,7 +153,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="SIGOMM - Fuchina Moto Pe&#xe7;as"/>
+    <Property name="title" type="java.lang.String" value="Fuchina Moto Pe&#xe7;as - SIGOMM"/>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[977, 616]"/>
     </Property>

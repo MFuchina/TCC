@@ -10,6 +10,11 @@ public class MotoDTO {
         return retorno;
     }
     
+    public MotoDTO(String modelo, String placa){
+        this.modelo = modelo;
+        this.placa = placa;
+    }
+    
     public MotoDTO(int cod_moto, String placa, String modelo, String cor, String marca, String chassi, int ano_modelo, int ano_Fabr) {
         this.cod_moto = cod_moto;
         this.placa = placa;

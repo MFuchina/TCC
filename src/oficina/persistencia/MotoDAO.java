@@ -66,18 +66,19 @@ public class MotoDAO {
         return aux;
     }
 
-    public ArrayList<MotoDTO> carregaMotos() {
+    public ArrayList<MotoDTO> carregaMotos(int codigo_dono) {
         ArrayList<MotoDTO> listaMotos = new ArrayList();
         String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
             conn = DriverManager.getConnection(str);
-            String sql = "select cod_moto, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto";
+            String sql = "select modelo, placa from moto where cod_dono = ?";
             PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, codigo_dono);
             ResultSet rs = p.executeQuery();
             while (rs.next()) {
-                MotoDTO moto = new MotoDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
+                MotoDTO moto = new MotoDTO(rs.getString(1), rs.getString(2));
                 listaMotos.add(moto);
             }
             rs.close();
@@ -138,21 +139,22 @@ public class MotoDAO {
         return aux;
     }
 
-    public boolean removeMoto(int codigo) {
+    public boolean removeMoto(int codigo_dono) {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
-            String sql = "delete from moto where cod_moto = ?";
+            String sql = "delete from moto where cod_dono = ?";
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, codigo);
+            p.setInt(1, codigo_dono);
             p.execute();
             p.close();
             conn.close();
             aux = true;
         } catch (SQLException ex) {
             Mensagens.msgErro("Ocorreu um erro ao remover a moto do banco de dados.");
+            System.out.println(ex.getMessage());
         }
         return aux;
     }

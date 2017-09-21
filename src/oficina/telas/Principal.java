@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import oficina.Util.Estados;
 import oficina.modelo.ClienteDTO;
-import oficina.modelo.MotoDTO;
 import oficina.modelo.OrcamentoDTO;
 import oficina.modelo.OsDTO;
 import oficina.modelo.ProdutoDTO;
@@ -168,19 +167,9 @@ public class Principal extends javax.swing.JFrame {
     }
 
     //Métodos de consultas:
-    public void consultarMoto() {
-        if (consultaMoto == null) {
-            consultaMoto = new Consulta(Estados.modoConsMoto, this, consultaMoto);
-            consultaMoto.setVisible(true);
-        } else {
-            consultaMoto.requestFocus();
-            consultaMoto.setVisible(true);
-        }
-    }
-
     public void consultarCliente() {
         if (consultaCliente == null) {
-            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente);
+            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente, false);
             consultaCliente.setVisible(true);
         } else {
             consultaCliente.requestFocus();
@@ -190,7 +179,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarProduto() {
         if (consultaProduto == null) {
-            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto);
+            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto, false);
             //Puxar a tabela de produtos do BD
             consultaProduto.setVisible(true);
         } else {
@@ -201,7 +190,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarOrcamento() {
         if (consultaOrcamento == null) {
-            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento);
+            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento, false);
             consultaOrcamento.setVisible(true);
         } else {
             consultaOrcamento.requestFocus();
@@ -211,7 +200,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarOs() {
         if (consultaOs == null) {
-            consultaOs = new Consulta(Estados.modoConsOrcamento, this, consultaOs);
+            consultaOs = new Consulta(Estados.modoConsOS, this, consultaOs, false);
             consultaOs.setVisible(true);
         } else {
             consultaOs.requestFocus();
@@ -221,7 +210,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarServico() {
         if (consultaServico == null) {
-            consultaServico = new Consulta(Estados.modoConsOrcamento, this, consultaServico);
+            consultaServico = new Consulta(Estados.modoConsServico, this, consultaServico, false);
             consultaServico.setVisible(true);
         } else {
             consultaServico.requestFocus();
@@ -325,7 +314,7 @@ public class Principal extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SIGOMM - Fuchina Moto Peças");
+        setTitle("Fuchina Moto Peças - SIGOMM");
         setMaximumSize(new java.awt.Dimension(977, 616));
         setMinimumSize(new java.awt.Dimension(977, 616));
         setResizable(false);

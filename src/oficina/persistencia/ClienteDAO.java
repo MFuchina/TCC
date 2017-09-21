@@ -10,6 +10,8 @@ import oficina.Util.Mensagens;
 import oficina.modelo.ClienteDTO;
 
 public class ClienteDAO {
+    
+    MotoDAO moto = new MotoDAO();
 
     public boolean cadastraCliente(ClienteDTO c) {
         boolean aux = false;
@@ -67,6 +69,11 @@ public class ClienteDAO {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
+            if(verificaMoto(codigo)){
+                if(moto.removeMoto(codigo)){
+                    
+                }
+            }
             String sql = "delete from cliente where cod_cliente = ?";
             PreparedStatement p = conexao.prepareStatement(sql);
             p.setInt(1, codigo);
@@ -81,6 +88,30 @@ public class ClienteDAO {
         return aux;
     }
 
+    public boolean verificaMoto(int cod){
+        boolean aux = false;
+        try {
+            String str = "jdbc:mysql://localhost:3307/oficina?"
+                    + "user=root&password=root";
+            Connection conexao = DriverManager.getConnection(str);
+            String sql = "select cod_moto from moto where cod_dono = ?";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setInt(1, cod);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                aux = true;
+            }
+            rs.close();
+            p.close();
+            conexao.close();
+            aux = true;
+        } catch (SQLException ex) {
+            Mensagens.msgErro("Ocorreu um erro ao verificar a existência de uma moto no banco de dados.");
+            System.out.println(ex.getMessage());
+        }
+        return aux;
+    }
+    
     public boolean verificaDispon(String cpf_cnpj, int cod) {
         boolean aux = false;
         String str = "jdbc:mysql://localhost:3307/oficina?"

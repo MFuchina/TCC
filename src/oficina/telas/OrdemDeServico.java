@@ -53,7 +53,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
         data = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Ordem de Serviço");
+        setTitle("Ordem de Serviço - SIGOMM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(177, 177, 177));
@@ -296,7 +296,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOSActionPerformed
-        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente);
+        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente, false);
         consultaCliente.setVisible(true);
     }//GEN-LAST:event_botaoConsultarOSActionPerformed
 

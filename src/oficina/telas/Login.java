@@ -23,13 +23,14 @@ public class Login extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        nomeUsuario = new javax.swing.JTextField();
+        usuario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        senhaUsuario = new javax.swing.JPasswordField();
+        senha = new javax.swing.JPasswordField();
         botaoEntrar = new javax.swing.JButton();
-        BotaoFechar = new javax.swing.JButton();
+        botaoFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Autenticação - SIGOMM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 51, 51));
@@ -42,17 +43,17 @@ public class Login extends javax.swing.JDialog {
         jLabel1.setForeground(new java.awt.Color(240, 240, 240));
         jLabel1.setText("Usuário:");
 
-        nomeUsuario.setBackground(new java.awt.Color(240, 240, 240));
-        nomeUsuario.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        nomeUsuario.setToolTipText("Digite o nome de usuário para acessar o sistema.");
+        usuario.setBackground(new java.awt.Color(240, 240, 240));
+        usuario.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        usuario.setToolTipText("Digite o nome de usuário para acessar o sistema.");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(240, 240, 240));
         jLabel2.setText("Senha:");
 
-        senhaUsuario.setBackground(new java.awt.Color(240, 240, 240));
-        senhaUsuario.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        senhaUsuario.setToolTipText("Digite a senha de usuário.");
+        senha.setBackground(new java.awt.Color(240, 240, 240));
+        senha.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        senha.setToolTipText("Digite a senha de usuário.");
 
         botaoEntrar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         botaoEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/forward.png"))); // NOI18N
@@ -64,13 +65,13 @@ public class Login extends javax.swing.JDialog {
             }
         });
 
-        BotaoFechar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        BotaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/001-cancel.png"))); // NOI18N
-        BotaoFechar.setText("Fechar");
-        BotaoFechar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 0, 0)));
-        BotaoFechar.addActionListener(new java.awt.event.ActionListener() {
+        botaoFechar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/001-cancel.png"))); // NOI18N
+        botaoFechar.setText("Fechar");
+        botaoFechar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 0, 0)));
+        botaoFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotaoFecharbotaoFecharActionPerformed(evt);
+                botaoFecharActionPerformed(evt);
             }
         });
 
@@ -84,7 +85,7 @@ public class Login extends javax.swing.JDialog {
                         .addGap(66, 66, 66)
                         .addComponent(botaoEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
-                        .addComponent(BotaoFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(botaoFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -92,8 +93,8 @@ public class Login extends javax.swing.JDialog {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nomeUsuario)
-                            .addComponent(senhaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(usuario)
+                            .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -108,14 +109,14 @@ public class Login extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(nomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(senhaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BotaoFechar, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(botaoFechar, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                     .addComponent(botaoEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -137,17 +138,17 @@ public class Login extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEntrarActionPerformed
-        if (autenticado = fazLogin(nomeUsuario, senhaUsuario)) {
+        if (autenticado = fazLogin(usuario, senha)) {
             this.dispose();
         } else {
-            nomeUsuario.setText("");
-            senhaUsuario.setText("");
+            usuario.setText("");
+            senha.setText("");
         }
     }//GEN-LAST:event_botaoEntrarActionPerformed
 
-    private void BotaoFecharbotaoFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoFecharbotaoFecharActionPerformed
-        this.setVisible(false);
-    }//GEN-LAST:event_BotaoFecharbotaoFecharActionPerformed
+    private void botaoFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_botaoFecharActionPerformed
 
     public boolean criaLogin() {
         Login login = new Login(null, true);
@@ -163,32 +164,20 @@ public class Login extends javax.swing.JDialog {
                 aux = true;
             } else {
                 JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos", "Erro de Autenticação", JOptionPane.INFORMATION_MESSAGE);
+                usuario.requestFocus();
             }
         }
         return aux;
     }
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> {
-            Login dialog = new Login(new javax.swing.JFrame(), true);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            dialog.setVisible(true);
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotaoFechar;
     private javax.swing.JButton botaoEntrar;
+    private javax.swing.JButton botaoFechar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField nomeUsuario;
-    private javax.swing.JPasswordField senhaUsuario;
+    private javax.swing.JPasswordField senha;
+    private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
 }

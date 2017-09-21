@@ -1,24 +1,48 @@
 package oficina.telas;
 
+import javax.swing.JFrame;
+import oficina.Util.Mensagens;
 import oficina.modelo.MotoDTO;
+import oficina.persistencia.MotoDAO;
 
-public class ListaDeMotos extends javax.swing.JDialog {
-    
-    public ListaDeMotos(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+public class ListaDeMotos extends javax.swing.JFrame {
+
+    private final MotoDAO motoDAO = new MotoDAO();
+    private Moto novaMoto = null;
+    private MotoDTO motoDTO = null;
+    private final int codigo;
+
+    public ListaDeMotos(int codigo) {
+        this.codigo = codigo;
         initComponents();
+        carregaLista();
+        //selecao.getSelectedItem();
         this.setLocationRelativeTo(null);
     }
+
+    public void carregaLista(){
+        selecao.removeAllItems();
+        for (MotoDTO moto : motoDAO.carregaMotos(codigo)) {
+            selecao.addItem("Cód. Dono: "+moto.getCod_dono()+" "+moto.getModelo() + " Placa: " + moto.getPlaca());
+        }
+    }
+    
+    public void telaFechando(JFrame tela) {
+        novaMoto = null;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        selecao = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         botaoNovaMoto = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
-        botaoSalvar = new javax.swing.JButton();
+        botaoContinuar = new javax.swing.JButton();
+        botaoEditar = new javax.swing.JButton();
+        botaoRemover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lista de motos");
@@ -26,8 +50,8 @@ public class ListaDeMotos extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setToolTipText("Selecione uma moto.");
+        selecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        selecao.setToolTipText("Selecione uma moto.");
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(240, 240, 240));
@@ -51,13 +75,31 @@ public class ListaDeMotos extends javax.swing.JDialog {
             }
         });
 
-        botaoSalvar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        botaoSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-checked.png"))); // NOI18N
-        botaoSalvar.setText("Salvar");
-        botaoSalvar.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 204, 51), null));
-        botaoSalvar.addActionListener(new java.awt.event.ActionListener() {
+        botaoContinuar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        botaoContinuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/forward.png"))); // NOI18N
+        botaoContinuar.setText("Continuar");
+        botaoContinuar.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 204, 51), null));
+        botaoContinuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoSalvarActionPerformed(evt);
+                botaoContinuarActionPerformed(evt);
+            }
+        });
+
+        botaoEditar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        botaoEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-edit.png"))); // NOI18N
+        botaoEditar.setText("Editar");
+        botaoEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoEditarActionPerformed(evt);
+            }
+        });
+
+        botaoRemover.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        botaoRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/001-cancel.png"))); // NOI18N
+        botaoRemover.setText("Remover");
+        botaoRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoRemoverActionPerformed(evt);
             }
         });
 
@@ -65,40 +107,48 @@ public class ListaDeMotos extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(botaoNovaMoto)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(82, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(selecao, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(botaoEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(botaoRemover)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botaoNovaMoto)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(botaoNovaMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(botaoNovaMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(botaoEditar)
+                        .addComponent(botaoRemover)))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addComponent(selecao, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -117,25 +167,55 @@ public class ListaDeMotos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoNovaMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaMotoActionPerformed
-        Moto m = new Moto(true, new MotoDTO(), 1, null, null);
-        m.setVisible(true);
+        botaoNovaMoto.setEnabled(false);
+        if (novaMoto == null) {
+            novaMoto = new Moto(true, new MotoDTO(), codigo);
+            novaMoto.setVisible(true);
+        } else {
+            novaMoto.requestFocus();
+            novaMoto.setVisible(true);
+        }
         this.dispose();
     }//GEN-LAST:event_botaoNovaMotoActionPerformed
 
-    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        this.setVisible(false);
-    }//GEN-LAST:event_botaoCancelarActionPerformed
+    private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_botaoContinuarActionPerformed
 
-    private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
-        this.setVisible(false);
-    }//GEN-LAST:event_botaoSalvarActionPerformed
+    private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
+        //String codMoto = (String) selecao.getSelectedItem();
+        botaoNovaMoto.setEnabled(false);
+        if (novaMoto == null) {
+            novaMoto = new Moto(false, null, /*Aqui´tem que ser o código da moto*/codigo);
+            novaMoto.setVisible(true);
+        } else {
+            novaMoto.requestFocus();
+            novaMoto.setVisible(true);
+        }
+        carregaLista();
+        this.dispose();  
+    }//GEN-LAST:event_botaoEditarActionPerformed
+
+    private void botaoRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoverActionPerformed
+        MotoDTO motoSelecionada = (MotoDTO) selecao.getSelectedItem();
+        if (motoDAO.removeMoto(motoSelecionada.getCod_dono())) {
+            Mensagens.msgInfo("Moto removida com sucesso.");
+            carregaLista();
+        }
+    }//GEN-LAST:event_botaoRemoverActionPerformed
+
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_botaoCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
+    private javax.swing.JButton botaoContinuar;
+    private javax.swing.JButton botaoEditar;
     private javax.swing.JButton botaoNovaMoto;
-    private javax.swing.JButton botaoSalvar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton botaoRemover;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> selecao;
     // End of variables declaration//GEN-END:variables
 }

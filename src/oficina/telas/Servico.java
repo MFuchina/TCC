@@ -75,7 +75,7 @@ public class Servico extends javax.swing.JFrame {
         descricao = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Novo Serviço");
+        setTitle("Serviço - SIGOMM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));

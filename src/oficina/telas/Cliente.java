@@ -1,9 +1,9 @@
 package oficina.telas;
 
-import oficina.Util.Estados;
 import oficina.Util.Mensagens;
 import oficina.Util.Validacao;
 import oficina.modelo.ClienteDTO;
+import oficina.modelo.MotoDTO;
 import oficina.persistencia.ClienteDAO;
 
 public class Cliente extends javax.swing.JFrame {
@@ -12,8 +12,9 @@ public class Cliente extends javax.swing.JFrame {
     private final ClienteDTO cliente;
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private Principal formularioPrincipal = null;
-    private Consulta consMoto = null;
+    private ListaDeMotos listaMotos = null;
     private Consulta c = null;
+    private Moto moto = null;
 
     public Cliente(boolean modoInclusao, ClienteDTO cliente, Principal formPrincipal, Consulta c) {
         this.c = c;
@@ -42,6 +43,7 @@ public class Cliente extends javax.swing.JFrame {
             email.setText(cliente.getEmail());
             telefone.setText(String.valueOf(cliente.getTelefone()));
         } else {
+            btnListaMotos.setEnabled(false);
             codigo.setText(clienteDAO.retornaUltimoCodigo());
         }
     }
@@ -68,6 +70,10 @@ public class Cliente extends javax.swing.JFrame {
                         cliente.setSexo("O");
                     }
                     aux = clienteDAO.cadastraCliente(cliente);
+                    if (aux) {
+                        moto = new Moto(true, new MotoDTO(), Integer.valueOf(codigo.getText()));
+                        moto.setVisible(true);
+                    }
                 }
             } else {
                 cliente.setCodigo(Integer.valueOf(codigo.getText()));
@@ -85,10 +91,9 @@ public class Cliente extends javax.swing.JFrame {
                 aux = clienteDAO.alteraCliente(cliente);
             }
         }
-        if (modoInclusao && aux) {
-            Mensagens.msgInfo("Cliente adicionado com sucesso.");
-        } else if (!modoInclusao && aux) {
+        if (!modoInclusao && aux) {
             Mensagens.msgInfo("Cliente alterado com sucesso.");
+            c.montaTabela();
         }
         return aux;
     }
@@ -98,7 +103,7 @@ public class Cliente extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        botaoSalvar = new javax.swing.JButton();
+        botaoContinuar = new javax.swing.JButton();
         telefone = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -118,18 +123,18 @@ public class Cliente extends javax.swing.JFrame {
         btnListaMotos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro");
+        setTitle("Cliente - SIGOMM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
 
-        botaoSalvar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        botaoSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-checked.png"))); // NOI18N
-        botaoSalvar.setText("Salvar");
-        botaoSalvar.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 204, 0), null));
-        botaoSalvar.addActionListener(new java.awt.event.ActionListener() {
+        botaoContinuar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        botaoContinuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-checked.png"))); // NOI18N
+        botaoContinuar.setText("Continuar");
+        botaoContinuar.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 204, 0), null));
+        botaoContinuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoSalvarActionPerformed(evt);
+                botaoContinuarActionPerformed(evt);
             }
         });
 
@@ -272,7 +277,7 @@ public class Cliente extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30))
@@ -320,7 +325,7 @@ public class Cliente extends javax.swing.JFrame {
                     .addComponent(telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
@@ -339,7 +344,7 @@ public class Cliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
+    private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
         if (cadastraOuAlteraCliente()) {
             if (c == null) {
                 formularioPrincipal.telaFechando(this, "");
@@ -347,9 +352,9 @@ public class Cliente extends javax.swing.JFrame {
                 c.telaFechando(this);
             }
             this.dispose();
-            c.montaTabela();
+
         }
-    }//GEN-LAST:event_botaoSalvarActionPerformed
+    }//GEN-LAST:event_botaoContinuarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if (c == null) {
@@ -382,13 +387,13 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        consMoto = new Consulta(Estados.modoConsMoto, null, consMoto);
-        consMoto.setVisible(true);
+        listaMotos = new ListaDeMotos(Integer.valueOf(codigo.getText()));
+        listaMotos.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
-    private javax.swing.JButton botaoSalvar;
+    private javax.swing.JButton botaoContinuar;
     private javax.swing.JButton btnListaMotos;
     private javax.swing.JTextField codigo;
     private javax.swing.JTextField cpf;

@@ -11,12 +11,8 @@ public class Moto extends javax.swing.JFrame {
     private final MotoDAO m = new MotoDAO();
     private final boolean modoInclusao;
     private final int codDono;
-    private Principal formPrincipal;
-    private Consulta c = null;
 
-    public Moto(boolean modoInclusao, MotoDTO moto, int codDono, Principal formPrincipal, Consulta c) {
-        this.c = c;
-        this.formPrincipal = formPrincipal;
+    public Moto(boolean modoInclusao, MotoDTO moto, int codDono) {
         this.codDono = codDono;
         this.moto = moto;
         this.modoInclusao = modoInclusao;
@@ -31,7 +27,7 @@ public class Moto extends javax.swing.JFrame {
 
     public boolean CadastraAlteraMoto() {
         boolean aux = false;
-        if (Validacao.validaInteiro(cod) && Validacao.validaCampo(placa, "placa da moto")
+        if (Validacao.validaCampo(placa, "placa da moto")
                 && Validacao.validaCampo(marca, "marca da moto") && Validacao.validaCampo(chassi, "chassi da moto")
                 && Validacao.validaCampo(modelo, "modelo da moto") && Validacao.validaCampo(cor, "cor da moto")
                 && Validacao.validaInteiro(anoFabr) && Validacao.validaInteiro(anoModelo)) {
@@ -64,7 +60,7 @@ public class Moto extends javax.swing.JFrame {
             }
         }
         if (modoInclusao && aux) {
-            Mensagens.msgInfo("Moto adicionada com sucesso.");
+            Mensagens.msgInfo("Cliente adicionado com sucesso.");
         } else if (!modoInclusao && aux) {
             Mensagens.msgInfo("Moto alterada com sucesso.");
         }
@@ -96,7 +92,7 @@ public class Moto extends javax.swing.JFrame {
         botaoCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de moto");
+        setTitle("Moto  - SIGOMM");
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
 
@@ -273,24 +269,18 @@ public class Moto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        if (c == null) {
-            formPrincipal.telaFechando(this, "");
-        } else {
-            c.telaFechando(this);
+        if(Mensagens.msgConf("Deseja sair sem cadastrar uma moto?")){
+            this.dispose();
+        }else{
+            
         }
-        this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoSalvarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarMotoActionPerformed
         if (CadastraAlteraMoto()) {
-            if (c == null) {
-                formPrincipal.telaFechando(this, "");
-            } else {
-                c.telaFechando(this);
-            }
             this.dispose();
-            c.montaTabela();
         }
+
     }//GEN-LAST:event_botaoSalvarMotoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
