@@ -146,7 +146,7 @@
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="anoModelo" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="39" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="botaoSalvarMoto" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
                       <Component id="botaoCancelar" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>

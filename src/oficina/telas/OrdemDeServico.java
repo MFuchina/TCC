@@ -62,6 +62,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
         jLabel1.setText("Código da Ordem de Serviço:");
 
         cod.setEditable(false);
+        cod.setToolTipText("O código é gerado automaticamente.");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel3.setText("Data:");
@@ -69,11 +70,20 @@ public class OrdemDeServico extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel4.setText("Cliente:");
 
+        cliente.setEditable(false);
+        cliente.setToolTipText("Informe o nome do cliente.");
+
+        moto.setEditable(false);
+        moto.setToolTipText("Moto do cliente");
+
         jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel5.setText("Moto:");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel6.setText("Placa:");
+
+        placa.setEditable(false);
+        placa.setToolTipText("Placa da moto.");
 
         botaoConsultarOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/003-profile-1.png"))); // NOI18N
         botaoConsultarOS.addActionListener(new java.awt.event.ActionListener() {
@@ -85,6 +95,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Semilight", 3, 18)); // NOI18N
         jLabel7.setText("VALOR TOTAL:");
 
+        total.setToolTipText("Valor total da Ordem de Serviço");
         total.setEnabled(false);
 
         botaoSalvar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
@@ -163,7 +174,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
             tabela.getColumnModel().getColumn(3).setMaxWidth(80);
         }
 
-        data.setText("dd/mm/aaaa");
+        data.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -211,7 +222,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(34, 34, 34)
                         .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -256,7 +267,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
                     .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))

@@ -62,7 +62,7 @@ public class Consulta extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         montaTabela();
-        if(botaoOrcamento){
+        if (botaoOrcamento) {
             btnEditar.setEnabled(false);
             btnNovo.setEnabled(false);
             btnRemover.setEnabled(false);
@@ -228,6 +228,9 @@ public class Consulta extends javax.swing.JFrame {
             novoCliente.requestFocus();
             novoCliente.setVisible(true);
         }
+        if(!novoCliente.isActive()){
+                carrega();
+            }
     }
 
     public void novoProduto() {
@@ -647,7 +650,7 @@ public class Consulta extends javax.swing.JFrame {
                 this.dispose();
             } else {
                 Mensagens.msgAviso("Selecione um cliente antes de continuar!");
-            } 
+            }
         } else {
             if (c == null) {
                 telaPrincipal.telaFechando(this, "");
@@ -659,7 +662,9 @@ public class Consulta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        remove();
+        if (Mensagens.msgConf("Deseja mesmo excluir este cliente?")) {
+            remove();
+        }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -692,10 +697,10 @@ public class Consulta extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        if (c == null) {
-            telaPrincipal.telaFechando(this, "");
-        } else {
+        if (c != null) {
             c.telaFechando(this);
+        } else {
+            telaPrincipal.telaFechando(this, "");
         }
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed

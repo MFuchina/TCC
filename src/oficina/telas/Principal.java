@@ -389,7 +389,8 @@ public class Principal extends javax.swing.JFrame {
 
         jSeparator1.setBackground(new java.awt.Color(240, 240, 240));
 
-        btnEditar.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnEditar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-edit.png"))); // NOI18N
         btnEditar.setText("Editar");
 
         jPanel2.setBackground(new java.awt.Color(255, 51, 51));
@@ -480,18 +481,12 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(102, 102, 102)
-                        .addComponent(labelTitulo)
-                        .addGap(38, 96, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(64, 64, 64)))
+                .addGap(102, 102, 102)
+                .addComponent(labelTitulo)
+                .addContainerGap(106, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -504,6 +499,10 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

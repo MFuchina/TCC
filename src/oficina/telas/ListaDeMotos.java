@@ -169,7 +169,7 @@ public class ListaDeMotos extends javax.swing.JFrame {
     private void botaoNovaMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaMotoActionPerformed
         botaoNovaMoto.setEnabled(false);
         if (novaMoto == null) {
-            novaMoto = new Moto(true, new MotoDTO(), codigo);
+            novaMoto = new Moto(true, new MotoDTO(), codigo, null);
             novaMoto.setVisible(true);
         } else {
             novaMoto.requestFocus();
@@ -186,7 +186,7 @@ public class ListaDeMotos extends javax.swing.JFrame {
         //String codMoto = (String) selecao.getSelectedItem();
         botaoNovaMoto.setEnabled(false);
         if (novaMoto == null) {
-            novaMoto = new Moto(false, null, /*Aqui´tem que ser o código da moto*/codigo);
+            novaMoto = new Moto(false, null, codigo, null);
             novaMoto.setVisible(true);
         } else {
             novaMoto.requestFocus();

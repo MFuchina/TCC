@@ -67,7 +67,7 @@ public class Login extends javax.swing.JDialog {
 
         botaoFechar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         botaoFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/001-cancel.png"))); // NOI18N
-        botaoFechar.setText("Fechar");
+        botaoFechar.setText("Cancelar");
         botaoFechar.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 0, 0)));
         botaoFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

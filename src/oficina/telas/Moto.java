@@ -11,11 +11,13 @@ public class Moto extends javax.swing.JFrame {
     private final MotoDAO m = new MotoDAO();
     private final boolean modoInclusao;
     private final int codDono;
+    private final Cliente cliente;
 
-    public Moto(boolean modoInclusao, MotoDTO moto, int codDono) {
+    public Moto(boolean modoInclusao, MotoDTO moto, int codDono, Cliente cliente) {
         this.codDono = codDono;
         this.moto = moto;
         this.modoInclusao = modoInclusao;
+        this.cliente = cliente;
         initComponents();
         this.setLocationRelativeTo(null);
         if (modoInclusao == false) {
@@ -247,7 +249,7 @@ public class Moto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(anoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoSalvarMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -270,17 +272,21 @@ public class Moto extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if(Mensagens.msgConf("Deseja sair sem cadastrar uma moto?")){
+            Mensagens.msgInfo("Cliente cadastrado com sucesso.");
             this.dispose();
-        }else{
-            
+            if(cliente != null){
+                cliente.dispose();
+            }
         }
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoSalvarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarMotoActionPerformed
         if (CadastraAlteraMoto()) {
             this.dispose();
+            if(cliente != null){
+                cliente.dispose();
+            }
         }
-
     }//GEN-LAST:event_botaoSalvarMotoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
