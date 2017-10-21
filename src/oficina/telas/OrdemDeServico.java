@@ -307,7 +307,7 @@ public class OrdemDeServico extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void botaoConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOSActionPerformed
-        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente, false);
+        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente, false, null);
         consultaCliente.setVisible(true);
     }//GEN-LAST:event_botaoConsultarOSActionPerformed
 

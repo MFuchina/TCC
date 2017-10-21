@@ -10,23 +10,23 @@ public class ListaDeMotos extends javax.swing.JFrame {
     private final MotoDAO motoDAO = new MotoDAO();
     private Moto novaMoto = null;
     private MotoDTO motoDTO = null;
-    private final int codigo;
+    private final int codigoDono;
 
     public ListaDeMotos(int codigo) {
-        this.codigo = codigo;
+        this.codigoDono = codigo;
         initComponents();
         carregaLista();
         //selecao.getSelectedItem();
         this.setLocationRelativeTo(null);
     }
 
-    public void carregaLista(){
+    public void carregaLista() {
         selecao.removeAllItems();
-        for (MotoDTO moto : motoDAO.carregaMotos(codigo)) {
-            selecao.addItem("Cód. Dono: "+moto.getCod_dono()+" "+moto.getModelo() + " Placa: " + moto.getPlaca());
+        for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
+            selecao.addItem("Cód.Moto: "+moto.getCod_moto()+" "+"Modelo: " + moto.getModelo() + " Placa: " + moto.getPlaca());
         }
     }
-    
+
     public void telaFechando(JFrame tela) {
         novaMoto = null;
     }
@@ -107,17 +107,6 @@ public class ListaDeMotos extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(selecao, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(74, 74, 74))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,12 +114,23 @@ public class ListaDeMotos extends javax.swing.JFrame {
                         .addComponent(botaoEditar)
                         .addGap(18, 18, 18)
                         .addComponent(botaoRemover)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                         .addComponent(botaoNovaMoto)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(selecao, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +169,7 @@ public class ListaDeMotos extends javax.swing.JFrame {
     private void botaoNovaMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaMotoActionPerformed
         botaoNovaMoto.setEnabled(false);
         if (novaMoto == null) {
-            novaMoto = new Moto(true, new MotoDTO(), codigo, null);
+            novaMoto = new Moto(true, new MotoDTO(), codigoDono, null);
             novaMoto.setVisible(true);
         } else {
             novaMoto.requestFocus();
@@ -186,19 +186,25 @@ public class ListaDeMotos extends javax.swing.JFrame {
         //String codMoto = (String) selecao.getSelectedItem();
         botaoNovaMoto.setEnabled(false);
         if (novaMoto == null) {
-            novaMoto = new Moto(false, null, codigo, null);
+            String [] codMoto = selecao.getSelectedItem().toString().split(" ");
+            for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
+                if(moto.getCod_moto()== Integer.valueOf(codMoto[1])){
+                    motoDTO = moto;
+                }
+            }
+            novaMoto = new Moto(false, motoDTO, codigoDono, null);
             novaMoto.setVisible(true);
         } else {
             novaMoto.requestFocus();
             novaMoto.setVisible(true);
         }
         carregaLista();
-        this.dispose();  
+        this.dispose();
     }//GEN-LAST:event_botaoEditarActionPerformed
 
     private void botaoRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoverActionPerformed
-        MotoDTO motoSelecionada = (MotoDTO) selecao.getSelectedItem();
-        if (motoDAO.removeMoto(motoSelecionada.getCod_dono())) {
+        String [] codMoto = selecao.getSelectedItem().toString().split(" ");
+        if (motoDAO.removeMoto(Integer.valueOf(codMoto[1]))) {
             Mensagens.msgInfo("Moto removida com sucesso.");
             carregaLista();
         }

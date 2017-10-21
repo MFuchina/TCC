@@ -14,7 +14,7 @@ public class ProdutoDAO {
     public boolean cadastraProduto(ProdutoDTO produto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into produto (NOME_PDTO, MARCA_PDTO, PRECO_PDTO) values"
@@ -36,7 +36,7 @@ public class ProdutoDAO {
     public boolean alteraProduto(ProdutoDTO produto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update produto set NOME_PDTO = ?, MARCA_PDTO = ?, PRECO_PDTO = ?"
@@ -59,7 +59,7 @@ public class ProdutoDAO {
     public boolean removeProduto(int codigo) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "delete from produto where COD_PDTO = ?";
@@ -77,7 +77,7 @@ public class ProdutoDAO {
 
     public ProdutoDTO puxaProduto(int codigo) {
         ProdutoDTO produto = null;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -100,7 +100,7 @@ public class ProdutoDAO {
 
     public boolean verificaNome(String nome, int codigo) {
         boolean aux = false;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -125,7 +125,7 @@ public class ProdutoDAO {
 
     public ArrayList<ProdutoDTO> carregaProdutos() {
         ArrayList<ProdutoDTO> listaPDTO = new ArrayList();
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -149,7 +149,7 @@ public class ProdutoDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {

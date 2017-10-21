@@ -14,7 +14,7 @@ public class MotoDAO {
     public boolean cadastraMoto(MotoDTO moto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into moto (cod_dono, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr) values"
@@ -41,7 +41,7 @@ public class MotoDAO {
     public boolean alteraMoto(MotoDTO moto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update moto set cod_dono = ?, marca = ?, modelo = ?, chassi = ?, placa = ?, cor = ?, ano_mod = ?, ano_fabr = ?"
@@ -68,17 +68,17 @@ public class MotoDAO {
 
     public ArrayList<MotoDTO> carregaMotos(int codigo_dono) {
         ArrayList<MotoDTO> listaMotos = new ArrayList();
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
             conn = DriverManager.getConnection(str);
-            String sql = "select modelo, placa from moto where cod_dono = ?";
+            String sql = "select cod_moto, placa, modelo, cor, marca, chassi, ano_mod, ano_fabr from moto where cod_dono = ?";
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, codigo_dono);
             ResultSet rs = p.executeQuery();
             while (rs.next()) {
-                MotoDTO moto = new MotoDTO(rs.getString(1), rs.getString(2));
+                MotoDTO moto = new MotoDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
                 listaMotos.add(moto);
             }
             rs.close();
@@ -90,19 +90,42 @@ public class MotoDAO {
         return listaMotos;
     }
 
-    public MotoDTO puxaMoto(int codigo) {
+    public MotoDTO puxaMoto(int codigo_dono) {
         MotoDTO moto = null;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
             conexao = DriverManager.getConnection(str);
-            String sql = "select cod_dono, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto where cod_moto = ?";
+            String sql = "select cod_moto, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto where cod_dono = ?";
             PreparedStatement p = conexao.prepareStatement(sql);
-            p.setInt(1, codigo);
+            p.setInt(1, codigo_dono);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                moto = new MotoDTO(codigo, rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
+                moto = new MotoDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
+            }
+            rs.close();
+            p.close();
+            conexao.close();
+        } catch (Exception ex) {
+            Mensagens.msgErro("Ocorreu um erro ao puxar a moto do banco de dados.");
+        }
+        return moto;
+    }
+    
+    public MotoDTO puxaMotoCodMoto(int codigo_moto) {
+        MotoDTO moto = null;
+        String str = "jdbc:mysql://localhost:3306/oficina?"
+                + "user=root&password=root";
+        Connection conexao;
+        try {
+            conexao = DriverManager.getConnection(str);
+            String sql = "select marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto where cod_moto = ?";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setInt(1, codigo_moto);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                moto = new MotoDTO(codigo_moto, rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8));
             }
             rs.close();
             p.close();
@@ -115,7 +138,7 @@ public class MotoDAO {
     
     public boolean verificaDispon(String placa, int cod) {
         boolean aux = false;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -139,15 +162,15 @@ public class MotoDAO {
         return aux;
     }
 
-    public boolean removeMoto(int codigo_dono) {
+    public boolean removeMoto(int codigo_moto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
-            String sql = "delete from moto where cod_dono = ?";
+            String sql = "delete from moto where cod_moto = ?";
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, codigo_dono);
+            p.setInt(1, codigo_moto);
             p.execute();
             p.close();
             conn.close();
@@ -162,7 +185,7 @@ public class MotoDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {

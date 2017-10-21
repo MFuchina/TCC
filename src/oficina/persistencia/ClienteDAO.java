@@ -16,7 +16,7 @@ public class ClienteDAO {
     public boolean cadastraCliente(ClienteDTO c) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             String sql = "insert into cliente (nome, CPF_CNPJ, email, telefone, sexo) values"
@@ -40,7 +40,7 @@ public class ClienteDAO {
     public boolean alteraCliente(ClienteDTO c) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             String sql = "update cliente set nome = ?, CPF_CNPJ = ?, email = ?,"
@@ -66,7 +66,7 @@ public class ClienteDAO {
     public boolean removeCliente(int codigo) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             if(verificaMoto(codigo)){
@@ -91,7 +91,7 @@ public class ClienteDAO {
     public boolean verificaMoto(int cod){
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             String sql = "select cod_moto from moto where cod_dono = ?";
@@ -114,7 +114,7 @@ public class ClienteDAO {
     
     public boolean verificaDispon(String cpf_cnpj, int cod) {
         boolean aux = false;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -133,14 +133,14 @@ public class ClienteDAO {
             p.close();
             conn.close();
         } catch (SQLException ex) {
-            Mensagens.msgErro("Ocorreu um erro ao verificar a duplicidade de nomes do produto no banco de dados.");
+            Mensagens.msgErro("Ocorreu um erro ao verificar a disponibilidade no banco de dados.");
         }
         return aux;
     }
 
     public ArrayList<ClienteDTO> carregaClientes() {
         ArrayList<ClienteDTO> listaClientes = new ArrayList();
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -165,7 +165,7 @@ public class ClienteDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -192,7 +192,7 @@ public class ClienteDAO {
 
     public ClienteDTO puxaCliente(int codigo) {
         ClienteDTO cliente = null;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {

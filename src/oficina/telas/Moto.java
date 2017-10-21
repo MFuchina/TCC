@@ -22,6 +22,13 @@ public class Moto extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         if (modoInclusao == false) {
             cod.setText(String.valueOf(moto.getCod_moto()));
+            placa.setText(moto.getPlaca());
+            chassi.setText(moto.getChassi());
+            cor.setText(moto.getCor());
+            anoFabr.setText(String.valueOf(moto.getAno_Fabr()));
+            anoModelo.setText(String.valueOf(moto.getAno_modelo()));
+            modelo.setText(moto.getModelo());
+            marca.setText(moto.getMarca());
         } else {
             cod.setText(m.retornaUltimoCodigo());
         }

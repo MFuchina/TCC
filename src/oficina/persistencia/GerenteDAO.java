@@ -6,42 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import oficina.Util.Mensagens;
-import oficina.modelo.GerenteDTO;
 
 public class GerenteDAO {
-
-    public boolean autenticaFuncionario(String user, String senha) {
-        boolean aux = false;
-        try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
-                    + "user=root&password=root";
-            Connection conexao;
-            conexao = DriverManager.getConnection(str);
-            String sql = "select user_gerente, senha_gerente from gerente"
-                    + " where user_gerente = ? "
-                    + "   and senha_gerente = ? ";
-            PreparedStatement p = conexao.prepareStatement(sql);
-            p.setString(1, user);
-            p.setString(2, senha);
-            ResultSet rs = p.executeQuery();
-            GerenteDTO func = null;
-            if (rs.next()) {
-                func.setUser(rs.getString(1));
-                func.setSenha(rs.getString(2));
-            }
-            rs.close();
-            p.close();
-            conexao.close();
-        } catch (SQLException ex) {
-            Mensagens.msgErro("Ocorreu um erro ao autenticar o login.");
-        }
-        return aux;
-    }
 
     public boolean validaUsuario(String user, String senha) {
         boolean verifica = false;
         try {
-            String aux = "jdbc:mysql://localhost:3307/oficina?"
+            String aux = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
@@ -66,7 +37,7 @@ public class GerenteDAO {
 
     public void verificaExecucao() {
         try {
-            String aux = "jdbc:mysql://localhost:3307/oficina?"
+            String aux = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
@@ -88,7 +59,7 @@ public class GerenteDAO {
 
     public void alteraInt() {
         try {
-            String aux = "jdbc:mysql://localhost:3307/oficina?"
+            String aux = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
@@ -100,5 +71,24 @@ public class GerenteDAO {
         } catch (SQLException ex) {
             Mensagens.msgErro("Ocorreu um erro na alteração do banco de dados.");
         }
+    }
+
+    public boolean alteraLogin(String senha) {
+        boolean verifica = false;
+        try {
+            String aux = "jdbc:mysql://localhost:3306/oficina?"
+                    + "user=root&password=root";
+            Connection conexao;
+            conexao = DriverManager.getConnection(aux);
+            String sql = "update gerente set senha= ? where user = 'admin'";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setString(1, senha);
+            p.close();
+            conexao.close();
+            verifica = true;
+        } catch (SQLException ex) {
+            Mensagens.msgErro("Não foi possível realizar a alteração do login.");
+        }
+        return verifica;
     }
 }

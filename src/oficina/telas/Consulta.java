@@ -14,7 +14,6 @@ import oficina.modelo.OsDTO;
 import oficina.modelo.ProdutoDTO;
 import oficina.modelo.ServicoDTO;
 import oficina.persistencia.ClienteDAO;
-import oficina.persistencia.MotoDAO;
 import oficina.persistencia.OrcamentoDAO;
 import oficina.persistencia.OsDAO;
 import oficina.persistencia.ProdutoDAO;
@@ -27,7 +26,6 @@ public class Consulta extends javax.swing.JFrame {
 
     //DAO's
     private final ClienteDAO clienteDAO = new ClienteDAO();
-    private final MotoDAO motoDAO = new MotoDAO();
     private final OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
     private final OsDAO osDAO = new OsDAO();
     private final ProdutoDAO produtoDAO = new ProdutoDAO();
@@ -47,18 +45,22 @@ public class Consulta extends javax.swing.JFrame {
     private Consulta c;
     private Cliente novoCliente = null;
     private Orcamento novoOrcamento = null;
+    private Orcamento orc = null;
     private OrdemDeServico novaOrdemServico = null;
     private Produto novoProduto = null;
     private Servico novoServico = null;
-    private Moto novaMoto = null;
     private ListaDeMotos listaDeMotos = null;
-    private boolean botaoOrcamento;
+    private final boolean botaoOrcamento;
 
-    public Consulta(Estados modo, Principal formPrincipal, Consulta c, boolean botaoOrcamento) {
+    private ProdutoDTO pdto = new ProdutoDTO();
+    private ServicoDTO sdto = new ServicoDTO();
+
+    public Consulta(Estados modo, Principal formPrincipal, Consulta c, boolean botaoOrcamento, Orcamento orc) {
         this.botaoOrcamento = botaoOrcamento;
         this.c = c;
         this.telaPrincipal = formPrincipal;
         this.tipo = modo.name();
+        this.orc = orc;
         initComponents();
         this.setLocationRelativeTo(null);
         montaTabela();
@@ -228,9 +230,9 @@ public class Consulta extends javax.swing.JFrame {
             novoCliente.requestFocus();
             novoCliente.setVisible(true);
         }
-        if(!novoCliente.isActive()){
-                carrega();
-            }
+        if (!novoCliente.isActive()) {
+            carrega();
+        }
     }
 
     public void novoProduto() {
@@ -459,6 +461,14 @@ public class Consulta extends javax.swing.JFrame {
         }
     }
 
+    public ProdutoDTO retornaPdto() {
+        return pdto;
+    }
+
+    public ServicoDTO retornaServico() {
+        return sdto;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -642,7 +652,7 @@ public class Consulta extends javax.swing.JFrame {
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
         if (botaoOrcamento && tipo.equals("modoConsCliente")) {
             int linhaSelecionada = tabela.getSelectedRow();
-            int codigo = 0;
+            int codigo;
             if (linhaSelecionada > -1) {
                 codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                 listaDeMotos = new ListaDeMotos(codigo);
@@ -651,18 +661,38 @@ public class Consulta extends javax.swing.JFrame {
             } else {
                 Mensagens.msgAviso("Selecione um cliente antes de continuar!");
             }
-        } else {
-            if (c == null) {
-                telaPrincipal.telaFechando(this, "");
+        } else if (botaoOrcamento && tipo.equals("modoConsPdto")) {
+            int linhaSelecionada = tabela.getSelectedRow();
+            int codigo;
+            if (linhaSelecionada > -1) {
+                codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
+                pdto = produtoDAO.puxaProduto(codigo);
+                orc.setVisible(true);
+                this.dispose();
             } else {
-                c.telaFechando(this);
+                Mensagens.msgAviso("Selecione um produto antes de continuar!");
             }
-            this.dispose();
+        } else if (botaoOrcamento && tipo.equals("modoConsServico")) {
+            int linhaSelecionada = tabela.getSelectedRow();
+            int codigo;
+            if (linhaSelecionada > -1) {
+                codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
+                sdto = servicoDAO.puxaServico(codigo);
+                orc.setVisible(true);
+                this.dispose();
+            } else {
+                Mensagens.msgAviso("Selecione um serviço antes de continuar!");
+            }
+        } else if (c == null && telaPrincipal != null) {
+            telaPrincipal.telaFechando(this, "");
+        } else if (telaPrincipal == null && c != null) {
+            c.telaFechando(this);
         }
+        this.dispose();
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        if (Mensagens.msgConf("Deseja mesmo excluir este cliente?")) {
+        if (Mensagens.msgConf("Deseja mesmo excluir?")) {
             remove();
         }
     }//GEN-LAST:event_btnRemoverActionPerformed
@@ -715,4 +745,5 @@ public class Consulta extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -1,5 +1,6 @@
 package oficina.telas;
 
+import javax.swing.table.DefaultTableModel;
 import oficina.Util.Estados;
 import oficina.Util.Mensagens;
 import oficina.modelo.OrcamentoDTO;
@@ -52,7 +53,7 @@ public class Orcamento extends javax.swing.JFrame {
         botaoSalvar = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaNovoOrçamento = new javax.swing.JTable();
+        tabela = new javax.swing.JTable();
         novo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -128,7 +129,7 @@ public class Orcamento extends javax.swing.JFrame {
             }
         });
 
-        tabelaNovoOrçamento.setModel(new javax.swing.table.DefaultTableModel(
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -164,14 +165,14 @@ public class Orcamento extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabelaNovoOrçamento.setFocusable(false);
-        tabelaNovoOrçamento.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelaNovoOrçamento);
-        if (tabelaNovoOrçamento.getColumnModel().getColumnCount() > 0) {
-            tabelaNovoOrçamento.getColumnModel().getColumn(0).setResizable(false);
-            tabelaNovoOrçamento.getColumnModel().getColumn(1).setResizable(false);
-            tabelaNovoOrçamento.getColumnModel().getColumn(2).setResizable(false);
-            tabelaNovoOrçamento.getColumnModel().getColumn(3).setResizable(false);
+        tabela.setFocusable(false);
+        tabela.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabela);
+        if (tabela.getColumnModel().getColumnCount() > 0) {
+            tabela.getColumnModel().getColumn(0).setResizable(false);
+            tabela.getColumnModel().getColumn(1).setResizable(false);
+            tabela.getColumnModel().getColumn(2).setResizable(false);
+            tabela.getColumnModel().getColumn(3).setResizable(false);
         }
 
         novo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/001-plus.png"))); // NOI18N
@@ -292,17 +293,17 @@ public class Orcamento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoConsultarOrcamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarOrcamentoActionPerformed
-        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente, true);
+        consultaCliente = new Consulta(Estados.modoConsCliente, null, consultaCliente, true, this);
         consultaCliente.setVisible(true);
     }//GEN-LAST:event_botaoConsultarOrcamentoActionPerformed
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
         if (c == null) {
-                formularioPrincipal.telaFechando(this, "");
-            } else {
-                c.telaFechando(this);
-            }
-            this.dispose();
+            formularioPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+        this.dispose();
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
@@ -315,14 +316,38 @@ public class Orcamento extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoActionPerformed
-        if (Mensagens.msgConf("Novo produto?")) {
-            consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto, true);
-            consultaProduto.setVisible(true);
-        } else {
-            consultaServico = new Consulta(Estados.modoConsServico, null, consultaServico, true);
-            consultaServico.setVisible(true);
+        switch (Mensagens.msgPedeOpcao("Novo produto?")) {
+            case 'P':
+                consultaProduto = new Consulta(Estados.modoConsPdto, null, consultaProduto, true, this);
+                consultaProduto.setVisible(true);
+                carrega(true);
+                break;
+            case 'S':
+                consultaServico = new Consulta(Estados.modoConsServico, null, consultaServico, true, this);
+                consultaServico.setVisible(true);
+                carrega(false);
+                break;
         }
     }//GEN-LAST:event_novoActionPerformed
+
+    public void carrega(boolean pdto) {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+        modelo.addColumn("Quantidade");
+        modelo.addColumn("Descrição");
+        modelo.addColumn("Preço Unit.");
+        modelo.addColumn("Preço Total");
+        if (pdto) {
+            modelo.addRow(consultaProduto.retornaPdto().getLinhaTabela());
+        }else{
+            modelo.addRow(consultaServico.retornaServico().getLinhaTabela());
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
@@ -343,7 +368,7 @@ public class Orcamento extends javax.swing.JFrame {
     private javax.swing.JTextField moto;
     private javax.swing.JButton novo;
     private javax.swing.JTextField placa;
-    private javax.swing.JTable tabelaNovoOrçamento;
+    private javax.swing.JTable tabela;
     private javax.swing.JTextField textValorTotal;
     // End of variables declaration//GEN-END:variables
 }

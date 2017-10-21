@@ -15,7 +15,7 @@ public class OrcamentoDAO {
     public boolean cadastraOrcamento(OrcamentoDTO orcamento) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into orcamento (cod_cliente, cod_moto, data_orcamento, valorTotal_orcamento) values"
@@ -38,7 +38,7 @@ public class OrcamentoDAO {
     public boolean alteraOrcamento(OrcamentoDTO orcamento) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update orcamento set cod_cliente = ?, cod_moto = ?, valorTotal_orcamento = ?"
@@ -61,7 +61,7 @@ public class OrcamentoDAO {
     public boolean removeOrcamento(int codigo) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3307/oficina?"
+            String str = "jdbc:mysql://localhost:3306/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "delete from orcamento where COD_ORCAMENTO = ?";
@@ -79,7 +79,7 @@ public class OrcamentoDAO {
 
     public ArrayList<OrcamentoDTO> carregaOrcamento() {
         ArrayList<OrcamentoDTO> listaOrcamentos = new ArrayList();
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -102,7 +102,7 @@ public class OrcamentoDAO {
 
     public OrcamentoDTO puxaOrcamento(int codigo) {
         OrcamentoDTO orcamento = null;
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -126,7 +126,7 @@ public class OrcamentoDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3307/oficina?"
+        String str = "jdbc:mysql://localhost:3306/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {

@@ -22,6 +22,9 @@ public class Servico extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         if (modoInclusao == false) {
             cod.setText(String.valueOf(servico.getCod()));
+            nome.setText(servico.getNome());
+            preco.setText(String.valueOf(servico.getPreco()));
+            descricao.setText(servico.getDesc());
         } else {
             cod.setText(s.retornaUltimoCodigo());
         }
@@ -213,7 +216,9 @@ public class Servico extends javax.swing.JFrame {
                 c.telaFechando(this);
             }
             this.dispose();
-            c.montaTabela();
+            if (c != null) {
+                c.montaTabela();
+            }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

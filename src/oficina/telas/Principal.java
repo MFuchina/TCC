@@ -25,8 +25,7 @@ create table gerente(
 create table cliente(
 	cod_cliente int auto_increment primary key,
     nome varchar(60) not null,
-    -- PRECISA DE CPF NO NOSSO PROGRAMA?????
-    CPF_CNPJ varchar (11) not null,
+    CPF_CNPJ varchar (14) not null,
     email varchar(60),
     telefone varchar (12),
     sexo enum ('M', 'F', 'O') not null
@@ -87,7 +86,14 @@ INSERT INTO GERENTE VALUES ('admin', 'admin', 0);
 
 insert into cliente (nome, CPF_CNPJ, email, telefone, sexo) values ('Yuri', 1, 'email', 11, 'M');
 
+update  gerente set senha= '123' where user = 'admin';
+update gerente set senha= 'admin' where user = 'admin';
+
 -- SELECT MAX(cod_cliente) FROM cliente;
+
+select modelo, placa from moto where cod_dono = 11;
+
+select * from gerente;
 
 select * from cliente;
 
@@ -96,8 +102,7 @@ select * from produto;
 select * from servico;
 
 select * from moto;
-*/
-
+ */
 public class Principal extends javax.swing.JFrame {
 
     public Principal() {
@@ -169,7 +174,7 @@ public class Principal extends javax.swing.JFrame {
     //Métodos de consultas:
     public void consultarCliente() {
         if (consultaCliente == null) {
-            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente, false);
+            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente, false, null);
             consultaCliente.setVisible(true);
         } else {
             consultaCliente.requestFocus();
@@ -179,7 +184,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarProduto() {
         if (consultaProduto == null) {
-            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto, false);
+            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto, false, null);
             //Puxar a tabela de produtos do BD
             consultaProduto.setVisible(true);
         } else {
@@ -190,7 +195,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarOrcamento() {
         if (consultaOrcamento == null) {
-            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento, false);
+            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento, false, null);
             consultaOrcamento.setVisible(true);
         } else {
             consultaOrcamento.requestFocus();
@@ -200,7 +205,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarOs() {
         if (consultaOs == null) {
-            consultaOs = new Consulta(Estados.modoConsOS, this, consultaOs, false);
+            consultaOs = new Consulta(Estados.modoConsOS, this, consultaOs, false, null);
             consultaOs.setVisible(true);
         } else {
             consultaOs.requestFocus();
@@ -210,7 +215,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarServico() {
         if (consultaServico == null) {
-            consultaServico = new Consulta(Estados.modoConsServico, this, consultaServico, false);
+            consultaServico = new Consulta(Estados.modoConsServico, this, consultaServico, false, null);
             consultaServico.setVisible(true);
         } else {
             consultaServico.requestFocus();
@@ -311,6 +316,8 @@ public class Principal extends javax.swing.JFrame {
         menuConsultarEstoque = new javax.swing.JMenu();
         menuConsultarProduto = new javax.swing.JMenuItem();
         menuConsultarServico = new javax.swing.JMenuItem();
+        menuConfiguracao = new javax.swing.JMenu();
+        menuAlteraLogin = new javax.swing.JMenuItem();
         menuSobre = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -481,28 +488,30 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(102, 102, 102)
-                .addComponent(labelTitulo)
-                .addContainerGap(106, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
-                .addContainerGap())
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 18, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jSeparator1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(792, 792, 792)
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(labelTitulo)
+                .addGap(83, 83, 83))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,9 +522,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -637,6 +646,18 @@ public class Principal extends javax.swing.JFrame {
 
         barraMenu.add(menuEstoque);
 
+        menuConfiguracao.setText("Configuração");
+
+        menuAlteraLogin.setText("Alterar Login...");
+        menuAlteraLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAlteraLoginActionPerformed(evt);
+            }
+        });
+        menuConfiguracao.add(menuAlteraLogin);
+
+        barraMenu.add(menuConfiguracao);
+
         menuSobre.setText("Sobre");
         menuSobre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -732,6 +753,17 @@ public class Principal extends javax.swing.JFrame {
                 + "Médio do Instituto Federal Catarinense - Campus Blumenau.", "Sobre - SIGOMM", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_menuSobreMouseClicked
 
+    AlteraLogin altLogin;
+
+    private void menuAlteraLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAlteraLoginActionPerformed
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            altLogin = new AlteraLogin(this, true);
+            altLogin.criaAlteraLogin();
+        }
+
+    }//GEN-LAST:event_menuAlteraLoginActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JButton botaoConsultarCliente;
@@ -747,7 +779,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JMenuItem menuAlteraLogin;
     private javax.swing.JMenu menuCliente;
+    private javax.swing.JMenu menuConfiguracao;
     private javax.swing.JMenuItem menuConsultarCliente;
     private javax.swing.JMenu menuConsultarEstoque;
     private javax.swing.JMenuItem menuConsultarOS;

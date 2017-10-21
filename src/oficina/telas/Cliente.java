@@ -52,69 +52,44 @@ public class Cliente extends javax.swing.JFrame {
         boolean aux = false, valido = false;
         String mensagem;
         if ((radioFem.isSelected() || radioMasc.isSelected()) || radioOutro.isSelected()) {
-            if(radioOutro.isSelected()){
-                valido = Validacao.validaCNPJ(cpf.getText());
-            }else{
-                valido = Validacao.validaCPF(cpf.getText());
+            if (radioOutro.isSelected()) {
+                //valido = Validacao.validaCNPJ(cpf.getText());
+                mensagem = "Esse CNPJ já está cadastrado.";
+                valido = true;
+            } else {
+                //valido = Validacao.validaCPF(cpf.getText());
+                mensagem = "Esse CPF já está cadastrado.";
+                valido = true;
             }
-            //continuar validação que está em comantarios ali em baixo.
-        }else{
-            Mensagens.msgAviso("Selecione um sexo ou Outro para empresas.");
-        }
-            /*
-            if (Validacao.validaCampo(nome, "nome do cliente") 
-             && Validacao.validaCampo(email, "email do cliente")
-             && Validacao.validaCampo(telefone, "telefone do cliente")
-             && (radioFem.isSelected() || radioMasc.isSelected() || radioOutro.isSelected())) {
-                if(radioOutro.isSelected()){
-                    mensagem = "Esse CNPJ já está cadastrado.";
-                    if(){
-                        
-                        
-                    }
-                }else{
-                    mensagem = "Esse CPF já está cadastrado.";
-                    if(Validacao.validaCPF(cpf.getText())){
-                        
-                    }
-                }
-                
-                if (modoInclusao) {
-                    if (clienteDAO.verificaDispon(cpf.getText(), Integer.valueOf(codigo.getText()))) {
-                        Mensagens.msgAviso("Esse CNPJ já está cadastrado.");
-                    } else {
-                        cliente.setCodigo(Integer.valueOf(codigo.getText()));
-                        cliente.setNome(nome.getText());
-                        cliente.setCPF_CNPJ(cpf.getText());
-                        cliente.setEmail(email.getText());
-                        cliente.setTelefone(telefone.getText());
-                        cliente.setSexo("O");
-                        if (clienteDAO.cadastraCliente(cliente)) {
-                            moto = new Moto(true, new MotoDTO(), Integer.valueOf(codigo.getText()), this);
-                            moto.setVisible(true);
+            if (valido) {
+                if (Validacao.validaCampo(nome, "nome do cliente")
+                        && Validacao.validaCampo(email, "email do cliente")
+                        && Validacao.validaCampo(telefone, "telefone do cliente")) {
+                    if (modoInclusao) {
+                        if (clienteDAO.verificaDispon(cpf.getText(), Integer.valueOf(codigo.getText()))) {
+                            Mensagens.msgAviso(mensagem);
+                        } else {
+                            cliente.setCodigo(Integer.valueOf(codigo.getText()));
+                            cliente.setNome(nome.getText());
+                            cliente.setCPF_CNPJ(cpf.getText());
+                            cliente.setEmail(email.getText());
+                            cliente.setTelefone(telefone.getText());
+                            if (radioFem.isSelected()) {
+                                cliente.setSexo("F");
+                            } else if (radioMasc.isSelected()) {
+                                cliente.setSexo("M");
+                            } else if (radioOutro.isSelected()) {
+                                cliente.setSexo("O");
+                            }
+                            if (clienteDAO.cadastraCliente(cliente)) {
+                                aux = true;
+                                moto = new Moto(true, new MotoDTO(), Integer.valueOf(codigo.getText()), this);
+                                moto.setVisible(true);
+                                if (c != null) {
+                                    c.montaTabela();
+                                }
+                            }
                         }
-                    }
-                } else {
-                    cliente.setCodigo(Integer.valueOf(codigo.getText()));
-                    cliente.setNome(nome.getText());
-                    cliente.setCPF_CNPJ(cpf.getText());
-                    cliente.setEmail(email.getText());
-                    cliente.setTelefone(telefone.getText());
-                    cliente.setSexo("O");
-                    aux = clienteDAO.alteraCliente(cliente);
-                    if (aux) {
-                        Mensagens.msgInfo("Cliente alterado com sucesso.");
-                        c.montaTabela();
-                    }
-                }
-            }
-        } else {
-            if (Validacao.validaCampo(nome, "nome do cliente") //&& Validacao.validaCPF(cpf.getText())
-                    && Validacao.validaCampo(email, "email do cliente") && Validacao.validaCampo(telefone, "telefone do cliente")
-                    && (radioFem.isSelected() || radioMasc.isSelected() || radioOutro.isSelected())) {
-                if (modoInclusao) {
-                    if (clienteDAO.verificaDispon(cpf.getText(), Integer.valueOf(codigo.getText()))) {
-                        Mensagens.msgAviso("Esse CPF já está cadastrado.");
                     } else {
                         cliente.setCodigo(Integer.valueOf(codigo.getText()));
                         cliente.setNome(nome.getText());
@@ -125,31 +100,22 @@ public class Cliente extends javax.swing.JFrame {
                             cliente.setSexo("F");
                         } else if (radioMasc.isSelected()) {
                             cliente.setSexo("M");
+                        } else if (radioOutro.isSelected()) {
+                            cliente.setSexo("O");
                         }
-                        if (clienteDAO.cadastraCliente(cliente)) {
-                            moto = new Moto(true, new MotoDTO(), Integer.valueOf(codigo.getText()), this);
-                            moto.setVisible(true);
+                        aux = clienteDAO.alteraCliente(cliente);
+                        if (aux) {
+                            Mensagens.msgInfo("Cliente alterado com sucesso.");
+                            if (c != null) {
+                                c.montaTabela();
+                            }
                         }
-                    }
-                } else {
-                    cliente.setCodigo(Integer.valueOf(codigo.getText()));
-                    cliente.setNome(nome.getText());
-                    cliente.setCPF_CNPJ(cpf.getText());
-                    cliente.setEmail(email.getText());
-                    cliente.setTelefone(telefone.getText());
-                    if (radioFem.isSelected()) {
-                        cliente.setSexo("F");
-                    } else if (radioMasc.isSelected()) {
-                        cliente.setSexo("M");
-                    }
-                    if (clienteDAO.alteraCliente(cliente)) {
-                        Mensagens.msgInfo("Cliente alterado com sucesso.");
-                        c.montaTabela();
                     }
                 }
             }
-
-        }*/
+        } else {
+            Mensagens.msgAviso("Preencha corretamente todos os campos.");
+        }
         return aux;
     }
 
@@ -180,6 +146,11 @@ public class Cliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cliente - SIGOMM");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
 
@@ -407,7 +378,6 @@ public class Cliente extends javax.swing.JFrame {
                 c.telaFechando(this);
             }
             this.dispose();
-
         }
     }//GEN-LAST:event_botaoContinuarActionPerformed
 
@@ -438,14 +408,21 @@ public class Cliente extends javax.swing.JFrame {
         if (radioFem.isSelected() || radioMasc.isSelected()) {
             radioMasc.setSelected(false);
             radioFem.setSelected(false);
-            //Se foi selecionado "outro", deve-se aceitar apenas CNPJ
         }
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        listaMotos = new ListaDeMotos(Integer.valueOf(codigo.getText()));
+        listaMotos = new ListaDeMotos(cliente.getCodigo());
         listaMotos.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        if (c == null) {
+            formularioPrincipal.telaFechando(this, "");
+        } else {
+            c.telaFechando(this);
+        }
+    }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;

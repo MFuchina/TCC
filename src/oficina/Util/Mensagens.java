@@ -23,5 +23,17 @@ public class Mensagens {
         return JOptionPane.showConfirmDialog(null, mensagem,
                 "Confirmação", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
+    
+    public static char msgPedeOpcao(String mensagem){
+        switch (JOptionPane.showConfirmDialog(null, mensagem,
+                "Confirmação", JOptionPane.YES_NO_OPTION)) {
+            case JOptionPane.YES_OPTION:
+                return 'P';
+            case JOptionPane.NO_OPTION:
+                return 'S';
+            default:
+                return 'C';
+        }
+    }
 
 }
