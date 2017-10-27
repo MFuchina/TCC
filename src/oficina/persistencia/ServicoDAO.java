@@ -14,7 +14,7 @@ public class ServicoDAO {
     public boolean cadastraServico(ServicoDTO servico) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into servico (NOME_SERVICO, PRECO_SERVICO, DESCRICAO_SERVICO) values"
@@ -36,7 +36,7 @@ public class ServicoDAO {
     public boolean alteraProduto(ServicoDTO servico) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update servico set NOME_SERVICO = ?, PRECO_SERVICO = ?, DESCRICAO_SERVICO = ?"
@@ -59,7 +59,7 @@ public class ServicoDAO {
     public boolean removeServico(int codigo) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "delete from servico where COD_SERVICO = ?";
@@ -77,7 +77,7 @@ public class ServicoDAO {
 
     public ServicoDTO puxaServico(int codigo) {
         ServicoDTO servico = null;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -100,7 +100,7 @@ public class ServicoDAO {
     
     public boolean verificaNome(String nome, int cod) {
         boolean aux = false;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -125,7 +125,7 @@ public class ServicoDAO {
 
     public ArrayList<ServicoDTO> carregaServicos() {
         ArrayList<ServicoDTO> listaServicos = new ArrayList();
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -149,7 +149,7 @@ public class ServicoDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {

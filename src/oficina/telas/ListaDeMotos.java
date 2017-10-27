@@ -11,9 +11,13 @@ public class ListaDeMotos extends javax.swing.JFrame {
     private Moto novaMoto = null;
     private MotoDTO motoDTO = null;
     private final int codigoDono;
+    private Orcamento orcamento;
+    private final OrdemDeServico os;
 
-    public ListaDeMotos(int codigo) {
+    public ListaDeMotos(int codigo, Orcamento orcamento, OrdemDeServico os) {
         this.codigoDono = codigo;
+        this.orcamento = orcamento;
+        this.os = os;
         initComponents();
         carregaLista();
         //selecao.getSelectedItem();
@@ -23,7 +27,7 @@ public class ListaDeMotos extends javax.swing.JFrame {
     public void carregaLista() {
         selecao.removeAllItems();
         for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
-            selecao.addItem("Cód.Moto: "+moto.getCod_moto()+" "+"Modelo: " + moto.getModelo() + " Placa: " + moto.getPlaca());
+            selecao.addItem("Cód.Moto: " + moto.getCod_moto() + " " + "Modelo: " + moto.getModelo() + " Placa: " + moto.getPlaca());
         }
     }
 
@@ -50,7 +54,6 @@ public class ListaDeMotos extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
 
-        selecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         selecao.setToolTipText("Selecione uma moto.");
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 24)); // NOI18N
@@ -178,18 +181,43 @@ public class ListaDeMotos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botaoNovaMotoActionPerformed
 
+    private MotoDTO moto;
+
+    public MotoDTO getMoto() {
+        return moto;
+    }
+
     private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
-        this.dispose();
+        if (selecao.getItemCount() != 0) {
+            String[] codMoto = selecao.getSelectedItem().toString().split(" ");
+            
+            for (MotoDTO motoO : motoDAO.carregaMotos(codigoDono)) {
+                if (motoO.getCod_moto() == Integer.valueOf(codMoto[1])) {
+                    if (orcamento != null) {
+                        orcamento.mostraMoto(motoO);
+                    } else if (os != null) {
+                        os.setMoto(motoO);
+                    } else {
+                        moto = motoO;
+                    }
+                    break;
+                }
+            }
+            this.dispose();
+        } else {
+            Mensagens.msgAviso("Selecione uma moto antes de continuar.");
+        }  
     }//GEN-LAST:event_botaoContinuarActionPerformed
 
     private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
         //String codMoto = (String) selecao.getSelectedItem();
         botaoNovaMoto.setEnabled(false);
         if (novaMoto == null) {
-            String [] codMoto = selecao.getSelectedItem().toString().split(" ");
+            String[] codMoto = selecao.getSelectedItem().toString().split(" ");
             for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
-                if(moto.getCod_moto()== Integer.valueOf(codMoto[1])){
+                if (moto.getCod_moto() == Integer.valueOf(codMoto[1])) {
                     motoDTO = moto;
+                    break;
                 }
             }
             novaMoto = new Moto(false, motoDTO, codigoDono, null);
@@ -203,7 +231,7 @@ public class ListaDeMotos extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoEditarActionPerformed
 
     private void botaoRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoverActionPerformed
-        String [] codMoto = selecao.getSelectedItem().toString().split(" ");
+        String[] codMoto = selecao.getSelectedItem().toString().split(" ");
         if (motoDAO.removeMoto(Integer.valueOf(codMoto[1]))) {
             Mensagens.msgInfo("Moto removida com sucesso.");
             carregaLista();

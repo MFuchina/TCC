@@ -14,7 +14,7 @@ public class MotoDAO {
     public boolean cadastraMoto(MotoDTO moto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into moto (cod_dono, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr) values"
@@ -41,7 +41,7 @@ public class MotoDAO {
     public boolean alteraMoto(MotoDTO moto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update moto set cod_dono = ?, marca = ?, modelo = ?, chassi = ?, placa = ?, cor = ?, ano_mod = ?, ano_fabr = ?"
@@ -68,7 +68,7 @@ public class MotoDAO {
 
     public ArrayList<MotoDTO> carregaMotos(int codigo_dono) {
         ArrayList<MotoDTO> listaMotos = new ArrayList();
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -92,7 +92,7 @@ public class MotoDAO {
 
     public MotoDTO puxaMoto(int codigo_dono) {
         MotoDTO moto = null;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -115,7 +115,7 @@ public class MotoDAO {
     
     public MotoDTO puxaMotoCodMoto(int codigo_moto) {
         MotoDTO moto = null;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -138,7 +138,7 @@ public class MotoDAO {
     
     public boolean verificaDispon(String placa, int cod) {
         boolean aux = false;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -165,7 +165,7 @@ public class MotoDAO {
     public boolean removeMoto(int codigo_moto) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "delete from moto where cod_moto = ?";
@@ -185,7 +185,7 @@ public class MotoDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {

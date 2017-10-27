@@ -16,11 +16,11 @@ public class ClienteDAO {
     public boolean cadastraCliente(ClienteDTO c) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             String sql = "insert into cliente (nome, CPF_CNPJ, email, telefone, sexo) values"
-                    + " (?, ?, ?, ?, ?)";
+                    + " (?, ?, ?, ?, ?);";
             PreparedStatement p = conexao.prepareStatement(sql);
             p.setString(1, c.getNome());
             p.setString(2, c.getCPF_CNPJ());
@@ -40,7 +40,7 @@ public class ClienteDAO {
     public boolean alteraCliente(ClienteDTO c) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             String sql = "update cliente set nome = ?, CPF_CNPJ = ?, email = ?,"
@@ -66,7 +66,7 @@ public class ClienteDAO {
     public boolean removeCliente(int codigo) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             if(verificaMoto(codigo)){
@@ -91,7 +91,7 @@ public class ClienteDAO {
     public boolean verificaMoto(int cod){
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
             String sql = "select cod_moto from moto where cod_dono = ?";
@@ -114,7 +114,7 @@ public class ClienteDAO {
     
     public boolean verificaDispon(String cpf_cnpj, int cod) {
         boolean aux = false;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -140,7 +140,7 @@ public class ClienteDAO {
 
     public ArrayList<ClienteDTO> carregaClientes() {
         ArrayList<ClienteDTO> listaClientes = new ArrayList();
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -165,7 +165,7 @@ public class ClienteDAO {
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -192,7 +192,7 @@ public class ClienteDAO {
 
     public ClienteDTO puxaCliente(int codigo) {
         ClienteDTO cliente = null;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -211,5 +211,28 @@ public class ClienteDAO {
             Mensagens.msgErro("Ocorreu um erro ao puxar os dados do cliente do banco de dados.");
         }
         return cliente;
+    }
+    
+    public String puxaNomeCliente(int codigo) {
+        String nomCliente = "";
+        String str = "jdbc:mysql://localhost:3307/oficina?"
+                + "user=root&password=root";
+        Connection conexao;
+        try {
+            conexao = DriverManager.getConnection(str);
+            String sql = "select nome from cliente where cod_cliente = ?";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setInt(1, codigo);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                nomCliente = rs.getString(1);
+            }
+            rs.close();
+            p.close();
+            conexao.close();
+        } catch (Exception ex) {
+            Mensagens.msgErro("Ocorreu um erro ao puxar os dados do cliente do banco de dados.");
+        }
+        return nomCliente;
     }
 }

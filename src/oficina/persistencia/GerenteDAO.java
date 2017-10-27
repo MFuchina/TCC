@@ -12,7 +12,7 @@ public class GerenteDAO {
     public boolean validaUsuario(String user, String senha) {
         boolean verifica = false;
         try {
-            String aux = "jdbc:mysql://localhost:3306/oficina?"
+            String aux = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
@@ -37,7 +37,7 @@ public class GerenteDAO {
 
     public void verificaExecucao() {
         try {
-            String aux = "jdbc:mysql://localhost:3306/oficina?"
+            String aux = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
@@ -59,7 +59,7 @@ public class GerenteDAO {
 
     public void alteraInt() {
         try {
-            String aux = "jdbc:mysql://localhost:3306/oficina?"
+            String aux = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
@@ -76,7 +76,7 @@ public class GerenteDAO {
     public boolean alteraLogin(String senha) {
         boolean verifica = false;
         try {
-            String aux = "jdbc:mysql://localhost:3306/oficina?"
+            String aux = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);

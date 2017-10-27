@@ -222,9 +222,9 @@ public class Produto extends javax.swing.JFrame {
                 formularioPrincipal.telaFechando(this, "");
             } else {
                 c.telaFechando(this);
+                c.montaTabela();
             }
             this.dispose();
-            c.montaTabela();
         }
 
     }//GEN-LAST:event_botaoSalvarActionPerformed

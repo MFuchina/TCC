@@ -23,6 +23,11 @@ public class Consulta extends javax.swing.JFrame {
 
     //Tipo de consulta a ser realizada
     private final String tipo;
+    private int cod;
+
+    public int getCod() {
+        return cod;
+    }
 
     //DAO's
     private final ClienteDAO clienteDAO = new ClienteDAO();
@@ -45,22 +50,21 @@ public class Consulta extends javax.swing.JFrame {
     private Consulta c;
     private Cliente novoCliente = null;
     private Orcamento novoOrcamento = null;
-    private Orcamento orc = null;
+    private Orcamento orcamento = null;
     private OrdemDeServico novaOrdemServico = null;
     private Produto novoProduto = null;
     private Servico novoServico = null;
-    private ListaDeMotos listaDeMotos = null;
     private final boolean botaoOrcamento;
 
-    private ProdutoDTO pdto = new ProdutoDTO();
-    private ServicoDTO sdto = new ServicoDTO();
+    private final ProdutoDTO pdto = new ProdutoDTO();
+    private final ServicoDTO sdto = new ServicoDTO();
 
     public Consulta(Estados modo, Principal formPrincipal, Consulta c, boolean botaoOrcamento, Orcamento orc) {
         this.botaoOrcamento = botaoOrcamento;
         this.c = c;
         this.telaPrincipal = formPrincipal;
         this.tipo = modo.name();
-        this.orc = orc;
+        this.orcamento = orc;
         initComponents();
         this.setLocationRelativeTo(null);
         montaTabela();
@@ -461,14 +465,6 @@ public class Consulta extends javax.swing.JFrame {
         }
     }
 
-    public ProdutoDTO retornaPdto() {
-        return pdto;
-    }
-
-    public ServicoDTO retornaServico() {
-        return sdto;
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -650,45 +646,22 @@ public class Consulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        if (botaoOrcamento && tipo.equals("modoConsCliente")) {
+        if (botaoOrcamento) {
             int linhaSelecionada = tabela.getSelectedRow();
             int codigo;
             if (linhaSelecionada > -1) {
                 codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                listaDeMotos = new ListaDeMotos(codigo);
-                listaDeMotos.setVisible(true);
+                orcamento.mostraCliente(codigo);
                 this.dispose();
             } else {
                 Mensagens.msgAviso("Selecione um cliente antes de continuar!");
-            }
-        } else if (botaoOrcamento && tipo.equals("modoConsPdto")) {
-            int linhaSelecionada = tabela.getSelectedRow();
-            int codigo;
-            if (linhaSelecionada > -1) {
-                codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                pdto = produtoDAO.puxaProduto(codigo);
-                orc.setVisible(true);
-                this.dispose();
-            } else {
-                Mensagens.msgAviso("Selecione um produto antes de continuar!");
-            }
-        } else if (botaoOrcamento && tipo.equals("modoConsServico")) {
-            int linhaSelecionada = tabela.getSelectedRow();
-            int codigo;
-            if (linhaSelecionada > -1) {
-                codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                sdto = servicoDAO.puxaServico(codigo);
-                orc.setVisible(true);
-                this.dispose();
-            } else {
-                Mensagens.msgAviso("Selecione um serviço antes de continuar!");
             }
         } else if (c == null && telaPrincipal != null) {
             telaPrincipal.telaFechando(this, "");
         } else if (telaPrincipal == null && c != null) {
             c.telaFechando(this);
         }
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed

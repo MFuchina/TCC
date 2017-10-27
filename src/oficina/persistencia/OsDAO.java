@@ -15,7 +15,7 @@ public class OsDAO {
     public boolean cadastraOS(OsDTO os) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "insert into ordem_servico (cod_cliente, cod_moto, data_os, status_os, valorTotal_os) values"
@@ -39,7 +39,7 @@ public class OsDAO {
     public boolean alteraOS(OsDTO os) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "update ordem_servico set cod_cliente = ?, cod_moto = ?, status_os = ?"
@@ -62,7 +62,7 @@ public class OsDAO {
     public boolean removeOS(int codigo) {
         boolean aux = false;
         try {
-            String str = "jdbc:mysql://localhost:3306/oficina?"
+            String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
             String sql = "delete from ordem_servico where COD_OS = ?";
@@ -80,7 +80,7 @@ public class OsDAO {
 
     public ArrayList<OsDTO> carregaOs() {
         ArrayList<OsDTO> listaOs = new ArrayList();
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {
@@ -103,7 +103,7 @@ public class OsDAO {
 
     public OsDTO puxaOs(int codigo) {
         OsDTO os = null;
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conexao;
         try {
@@ -126,7 +126,7 @@ public class OsDAO {
 
     public String retornaUltimoCodigo() {
         String aux = "";
-        String str = "jdbc:mysql://localhost:3306/oficina?"
+        String str = "jdbc:mysql://localhost:3307/oficina?"
                 + "user=root&password=root";
         Connection conn;
         try {

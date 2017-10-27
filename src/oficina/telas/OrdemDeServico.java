@@ -1,6 +1,7 @@
 package oficina.telas;
 
 import oficina.Util.Estados;
+import oficina.modelo.MotoDTO;
 import oficina.modelo.OsDTO;
 import oficina.persistencia.OsDAO;
 
@@ -333,4 +334,8 @@ public class OrdemDeServico extends javax.swing.JFrame {
     private javax.swing.JTable tabela;
     private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
+
+    void setMoto(MotoDTO motoO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

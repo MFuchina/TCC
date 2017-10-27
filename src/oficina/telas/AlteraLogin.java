@@ -49,6 +49,7 @@ public class AlteraLogin extends javax.swing.JDialog {
         confSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Alteração de login - SIGOMM");
 
         jPanel1.setBackground(new java.awt.Color(255, 51, 51));
 
