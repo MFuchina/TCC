@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import oficina.Util.Mensagens;
+import oficina.util.Mensagens;
 
 public class GerenteDAO {
 
@@ -41,13 +41,14 @@ public class GerenteDAO {
                     + "user=root&password=root";
             Connection conexao;
             conexao = DriverManager.getConnection(aux);
-            String sql = "select primeira_ex from gerente where primeira_ex = ?";
+            String sql = "select primeira_ex from gerente where user = 'admin'";
             PreparedStatement p = conexao.prepareStatement(sql);
-            p.setInt(1, 0);
             ResultSet rs = p.executeQuery();
             if (rs.next()) {
-                Mensagens.msgInfo("O usuário padrão é 'admin' e a senha padrão é 'admin'.");
-                alteraInt();
+                if (rs.getInt(1) == 0) {
+                    Mensagens.msgInfo("O usuário padrão é 'admin' e a senha padrão é 'admin'.");
+                    alteraInt();
+                }
             }
             rs.close();
             p.close();

@@ -2,8 +2,8 @@ package oficina.telas;
 
 import java.util.Arrays;
 import javax.swing.JPasswordField;
-import oficina.Util.Mensagens;
-import oficina.Util.Validacao;
+import oficina.util.Mensagens;
+import oficina.util.Validacao;
 import oficina.persistencia.GerenteDAO;
 
 public class AlteraLogin extends javax.swing.JDialog {

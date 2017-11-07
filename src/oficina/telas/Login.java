@@ -3,7 +3,7 @@ package oficina.telas;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import oficina.Util.Validacao;
+import oficina.util.Validacao;
 import oficina.persistencia.GerenteDAO;
 
 public class Login extends javax.swing.JDialog {

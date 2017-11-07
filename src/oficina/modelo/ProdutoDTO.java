@@ -3,11 +3,16 @@ package oficina.modelo;
 public class ProdutoDTO {
 
     private String nome, marca;
-    private float preco;
-    private int cod;
+    private float precoUnit, preco;
+    private int cod, qnt;
 
-    public Object[] getLinhaTabela() {
-        Object[] retorno = {this.cod, this.nome, this.marca, this.preco};
+    public Object[] getLinhaTabelaConsulta() {
+        Object[] retorno = {this.cod, this.nome, this.marca, this.precoUnit};
+        return retorno;
+    }
+    
+    public Object[] getLinha() {
+        Object[] retorno = {this.qnt, this.nome, this.precoUnit, this.preco};
         return retorno;
     }
     
@@ -15,16 +20,39 @@ public class ProdutoDTO {
         this.cod = cod;
         this.nome = nome;
         this.marca = marca;
-        this.preco = preco;
+        this.precoUnit = preco;
+    }
+    
+    public ProdutoDTO(int qnt, String nome, float preco) {
+        this.qnt = qnt;
+        this.nome = nome;
+        this.precoUnit = preco;
     }
 
     public ProdutoDTO() {
         this.cod = 0;
+        this.qnt = 0;
         this.nome = "";
         this.marca = "";
-        this.preco = (float) 0.0;
+        this.precoUnit = (float) 0.0;
     }
 
+    public float getPrecoUnit() {
+        return precoUnit;
+    }
+
+    public void setPrecoUnit(float precoUnit) {
+        this.precoUnit = precoUnit;
+    }
+    
+    public int getQnt() {
+        return qnt;
+    }
+
+    public void setQnt(int qnt) {
+        this.qnt = qnt;
+    }
+    
     public String getNome() {
         return nome;
     }

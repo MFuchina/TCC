@@ -1,7 +1,7 @@
 package oficina.telas;
 
-import oficina.Util.Mensagens;
-import oficina.Util.Validacao;
+import oficina.util.Mensagens;
+import oficina.util.Validacao;
 import oficina.modelo.ClienteDTO;
 import oficina.modelo.MotoDTO;
 import oficina.persistencia.ClienteDAO;
@@ -83,7 +83,7 @@ public class Cliente extends javax.swing.JFrame {
                             }
                             if (clienteDAO.cadastraCliente(cliente)) {
                                 aux = true;
-                                moto = new Moto(true, new MotoDTO(), Integer.valueOf(codigo.getText()), this);
+                                moto = new Moto(true, new MotoDTO(), Integer.valueOf(codigo.getText()), this, null);
                                 moto.setVisible(true);
                                 if (c != null) {
                                     c.montaTabela();
@@ -412,7 +412,7 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        listaMotos = new ListaDeMotos(cliente.getCodigo(), null, null);
+        listaMotos = new ListaDeMotos(null, true, cliente.getCodigo(), null, null);
         listaMotos.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
 

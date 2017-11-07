@@ -1,4 +1,4 @@
-package oficina.Util;
+package oficina.util;
 
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
@@ -77,7 +77,6 @@ public class Validacao {
     }
 
     public static boolean validaCPF(String cpf) {
-        //cpf = (cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9, 11));
         //Se um CPF conter todos os dígitos iguais, ele é inválido.
         if (cpf.equals("00000000000") || cpf.equals("11111111111")
                 || cpf.equals("22222222222") || cpf.equals("33333333333")
@@ -100,15 +99,6 @@ public class Validacao {
                 return false;
             }
         }
-        /*for (int i = 0; i < cpf.length(); i++) {
-                if (cpf.charAt(i) == '0' || cpf.charAt(i) == '1' || cpf.charAt(i) == '2' || cpf.charAt(i) == '3'
-                        || cpf.charAt(i) == '4' || cpf.charAt(i) == '5' || cpf.charAt(i) == '6' || cpf.charAt(i) == '7'
-                        || cpf.charAt(i) == '8' || cpf.charAt(i) == '9') {
-                } else {
-                    Mensagens.msgErro("ERRO: CPF inválido (apenas números).");
-                    return false;
-                }
-            }*/
     }
 
 //Calcula os dígitos verificadores do CPF informado.

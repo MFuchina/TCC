@@ -1,7 +1,7 @@
 package oficina.telas;
 
-import oficina.Util.Mensagens;
-import oficina.Util.Validacao;
+import oficina.util.Mensagens;
+import oficina.util.Validacao;
 import oficina.modelo.MotoDTO;
 import oficina.persistencia.MotoDAO;
 
@@ -12,12 +12,14 @@ public class Moto extends javax.swing.JFrame {
     private final boolean modoInclusao;
     private final int codDono;
     private final Cliente cliente;
+    private final ListaDeMotos listaMotos;
 
-    public Moto(boolean modoInclusao, MotoDTO moto, int codDono, Cliente cliente) {
+    public Moto(boolean modoInclusao, MotoDTO moto, int codDono, Cliente cliente, ListaDeMotos listaMotos) {
         this.codDono = codDono;
         this.moto = moto;
         this.modoInclusao = modoInclusao;
         this.cliente = cliente;
+        this.listaMotos = listaMotos;
         initComponents();
         this.setLocationRelativeTo(null);
         if (modoInclusao == false) {
@@ -68,10 +70,12 @@ public class Moto extends javax.swing.JFrame {
                 aux = m.alteraMoto(moto);
             }
         }
-        if (modoInclusao && aux) {
+        if (modoInclusao && aux && (cliente != null)) {
             Mensagens.msgInfo("Cliente adicionado com sucesso.");
         } else if (!modoInclusao && aux) {
             Mensagens.msgInfo("Moto alterada com sucesso.");
+        } else if (modoInclusao && aux) {
+            Mensagens.msgInfo("Moto adicionada com sucesso.");
         }
         return aux;
     }
@@ -278,10 +282,9 @@ public class Moto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        if(Mensagens.msgConf("Deseja sair sem cadastrar uma moto?")){
-            Mensagens.msgInfo("Cliente cadastrado com sucesso.");
+        if (Mensagens.msgConf("Deseja mesmo sair? Os dados da moto serão perdidos.")) {
             this.dispose();
-            if(cliente != null){
+            if (cliente != null) {
                 cliente.dispose();
             }
         }
@@ -289,9 +292,12 @@ public class Moto extends javax.swing.JFrame {
 
     private void botaoSalvarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarMotoActionPerformed
         if (CadastraAlteraMoto()) {
-            this.dispose();
-            if(cliente != null){
+            if (cliente != null) {
                 cliente.dispose();
+            } else if(listaMotos != null){
+                listaMotos.carregaLista();
+                listaMotos.telaFechando(this);
+                this.dispose();
             }
         }
     }//GEN-LAST:event_botaoSalvarMotoActionPerformed

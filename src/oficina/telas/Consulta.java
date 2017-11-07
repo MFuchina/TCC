@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import oficina.Util.Estados;
-import oficina.Util.Mensagens;
+import oficina.util.Estados;
+import oficina.util.Mensagens;
 import oficina.modelo.ClienteDTO;
 import oficina.modelo.MotoDTO;
 import oficina.modelo.OrcamentoDTO;
@@ -168,9 +168,9 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Código");
                 modelo.addColumn("Nome");
                 modelo.addColumn("Marca");
-                modelo.addColumn("Preço");
+                modelo.addColumn("Preço Unitário");
                 for (ProdutoDTO produtos : listaProdutos) {
-                    modelo.addRow(produtos.getLinhaTabela());
+                    modelo.addRow(produtos.getLinhaTabelaConsulta());
                 }
                 break;
             case "modoConsServico":

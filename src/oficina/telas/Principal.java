@@ -2,12 +2,13 @@ package oficina.telas;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import oficina.Util.Estados;
+import oficina.util.Estados;
 import oficina.modelo.ClienteDTO;
 import oficina.modelo.OrcamentoDTO;
 import oficina.modelo.OsDTO;
 import oficina.modelo.ProdutoDTO;
 import oficina.modelo.ServicoDTO;
+import oficina.persistencia.GerenteDAO;
 
 /*
 DROP DATABASE if EXISTS Oficina;
@@ -107,24 +108,24 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
+        gerenteDAO.verificaExecucao();
         this.setLocationRelativeTo(null);
     }
 
     private Login login;
-
-    private Consulta c;
+    
     private Consulta consultaProduto = null;
     private Consulta consultaOrcamento = null;
     private Consulta consultaOs = null;
     private Consulta consultaServico = null;
     private Consulta consultaCliente = null;
-    private Consulta consultaMoto = null;
-
     private Orcamento orcamento = null;
     private OrdemDeServico ordemServico = null;
     private Cliente cadastro = null;
     private Produto novoPdto = null;
     private Servico novoServ = null;
+    
+    private final GerenteDAO gerenteDAO = new GerenteDAO();
 
     public void telaFechando(JFrame tela, String tipo) {
         switch (String.valueOf(tela.getClass())) {
@@ -150,9 +151,6 @@ public class Principal extends javax.swing.JFrame {
                 switch (tipo) {
                     case "modoConsPdto":
                         consultaProduto = null;
-                        break;
-                    case "modoConsMoto":
-                        consultaMoto = null;
                         break;
                     case "modoConsCliente":
                         consultaCliente = null;

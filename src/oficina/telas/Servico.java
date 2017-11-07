@@ -1,7 +1,7 @@
 package oficina.telas;
 
-import oficina.Util.Mensagens;
-import oficina.Util.Validacao;
+import oficina.util.Mensagens;
+import oficina.util.Validacao;
 import oficina.modelo.ServicoDTO;
 import oficina.persistencia.ServicoDAO;
 

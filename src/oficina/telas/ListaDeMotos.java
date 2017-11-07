@@ -1,25 +1,35 @@
 package oficina.telas;
 
 import javax.swing.JFrame;
-import oficina.Util.Mensagens;
+import oficina.util.Mensagens;
 import oficina.modelo.MotoDTO;
 import oficina.persistencia.MotoDAO;
 
-public class ListaDeMotos extends javax.swing.JFrame {
+public class ListaDeMotos extends javax.swing.JDialog {
 
     private final MotoDAO motoDAO = new MotoDAO();
     private Moto novaMoto = null;
     private MotoDTO motoDTO = null;
     private final int codigoDono;
-    private Orcamento orcamento;
+    private final Orcamento orcamento;
     private final OrdemDeServico os;
 
-    public ListaDeMotos(int codigo, Orcamento orcamento, OrdemDeServico os) {
+    public ListaDeMotos(java.awt.Frame parent, boolean modal, int codigo, Orcamento orcamento, OrdemDeServico os) {
+        super(parent, modal);
         this.codigoDono = codigo;
         this.orcamento = orcamento;
         this.os = os;
         initComponents();
         carregaLista();
+        if (selecao.getItemCount() == 0) {
+            botaoEditar.setEnabled(false);
+            botaoRemover.setEnabled(false);
+            botaoNovaMoto.setEnabled(true);
+        } else {
+            botaoEditar.setEnabled(true);
+            botaoRemover.setEnabled(true);
+            botaoNovaMoto.setEnabled(true);
+        }
         //selecao.getSelectedItem();
         this.setLocationRelativeTo(null);
     }
@@ -170,15 +180,15 @@ public class ListaDeMotos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoNovaMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaMotoActionPerformed
-        botaoNovaMoto.setEnabled(false);
+        //botaoNovaMoto.setEnabled(false);
         if (novaMoto == null) {
-            novaMoto = new Moto(true, new MotoDTO(), codigoDono, null);
+            novaMoto = new Moto(true, new MotoDTO(), codigoDono, null, this);
             novaMoto.setVisible(true);
         } else {
             novaMoto.requestFocus();
             novaMoto.setVisible(true);
         }
-        this.dispose();
+        carregaLista();
     }//GEN-LAST:event_botaoNovaMotoActionPerformed
 
     private MotoDTO moto;
@@ -190,7 +200,7 @@ public class ListaDeMotos extends javax.swing.JFrame {
     private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
         if (selecao.getItemCount() != 0) {
             String[] codMoto = selecao.getSelectedItem().toString().split(" ");
-            
+
             for (MotoDTO motoO : motoDAO.carregaMotos(codigoDono)) {
                 if (motoO.getCod_moto() == Integer.valueOf(codMoto[1])) {
                     if (orcamento != null) {
@@ -206,35 +216,43 @@ public class ListaDeMotos extends javax.swing.JFrame {
             this.dispose();
         } else {
             Mensagens.msgAviso("Selecione uma moto antes de continuar.");
-        }  
+        }
     }//GEN-LAST:event_botaoContinuarActionPerformed
 
     private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
         //String codMoto = (String) selecao.getSelectedItem();
-        botaoNovaMoto.setEnabled(false);
-        if (novaMoto == null) {
-            String[] codMoto = selecao.getSelectedItem().toString().split(" ");
-            for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
-                if (moto.getCod_moto() == Integer.valueOf(codMoto[1])) {
-                    motoDTO = moto;
-                    break;
+        //botaoNovaMoto.setEnabled(false);
+        if (!selecao.getSelectedItem().toString().equals("")) {
+            if (novaMoto == null) {
+                String[] codMoto = selecao.getSelectedItem().toString().split(" ");
+                for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
+                    if (moto.getCod_moto() == Integer.valueOf(codMoto[1])) {
+                        motoDTO = moto;
+                        break;
+                    }
                 }
+                novaMoto = new Moto(false, motoDTO, codigoDono, null, this);
+                novaMoto.setVisible(true);
+            } else {
+                novaMoto.requestFocus();
+                novaMoto.setVisible(true);
             }
-            novaMoto = new Moto(false, motoDTO, codigoDono, null);
-            novaMoto.setVisible(true);
         } else {
-            novaMoto.requestFocus();
-            novaMoto.setVisible(true);
+            Mensagens.msgAviso("Selecione a moto a ser alterada.");
         }
+
         carregaLista();
-        this.dispose();
     }//GEN-LAST:event_botaoEditarActionPerformed
 
     private void botaoRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoverActionPerformed
-        String[] codMoto = selecao.getSelectedItem().toString().split(" ");
-        if (motoDAO.removeMoto(Integer.valueOf(codMoto[1]))) {
-            Mensagens.msgInfo("Moto removida com sucesso.");
-            carregaLista();
+        if (!selecao.getSelectedItem().toString().equals("")) {
+            String[] codMoto = selecao.getSelectedItem().toString().split(" ");
+            if (motoDAO.removeMoto(Integer.valueOf(codMoto[1]))) {
+                Mensagens.msgInfo("Moto removida com sucesso.");
+                carregaLista();
+            }
+        } else {
+            Mensagens.msgAviso("Selecione a moto a ser removida");
         }
     }//GEN-LAST:event_botaoRemoverActionPerformed
 

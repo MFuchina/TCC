@@ -1,4 +1,4 @@
-package oficina.Util;
+package oficina.util;
 
 import javax.swing.JOptionPane;
 

@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import oficina.Util.Mensagens;
+import oficina.util.Mensagens;
 import oficina.modelo.MotoDTO;
 
 public class MotoDAO {
