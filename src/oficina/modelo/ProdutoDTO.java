@@ -12,7 +12,7 @@ public class ProdutoDTO {
     }
     
     public Object[] getLinha() {
-        Object[] retorno = {this.qnt, this.nome, this.precoUnit, this.preco};
+        Object[] retorno = {this.qnt, this.nome, this.preco, this.precoUnit};
         return retorno;
     }
     

@@ -6,6 +6,7 @@ import oficina.modelo.ProdutoDTO;
 import oficina.modelo.ServicoDTO;
 import oficina.persistencia.ProdutoDAO;
 import oficina.persistencia.ServicoDAO;
+import oficina.util.Validacao;
 
 public class SelecaoItem extends javax.swing.JDialog {
 
@@ -13,25 +14,37 @@ public class SelecaoItem extends javax.swing.JDialog {
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final Orcamento orcamento;
 
+    private boolean ePdto;
+
+    public boolean ePdto() {
+        return ePdto;
+    }
+
     public SelecaoItem(java.awt.Frame parent, boolean modal, Orcamento orcamento) {
         super(parent, modal);
         this.orcamento = orcamento;
         initComponents();
         this.setLocationRelativeTo(null);
         btnContinuar.setEnabled(false);
+        caixaPreco.setEnabled(false);
         caixaQnt.setModel(new SpinnerNumberModel(1, 1, 100, 1));
     }
+
+    ProdutoDTO p;
+    ServicoDTO s;
 
     public void carregaLista(boolean eProduto) {
         if (eProduto) {
             selecao.removeAllItems();
             for (ProdutoDTO pdto : produtoDAO.carregaProdutos()) {
-                selecao.addItem("Cód.Produto: " + pdto.getCod() + " " + "Nome: " + pdto.getNome());
+                selecao.addItem("Cód: " + pdto.getCod() + "  " + "Nome: " + pdto.getNome() + "  Preço: " + pdto.getPrecoUnit());
+                p = pdto;
             }
         } else {
             selecao.removeAllItems();
             for (ServicoDTO serv : servicoDAO.carregaServicos()) {
-                selecao.addItem("Cód.Serviço: " + serv.getCod() + " " + "Nome: " + serv.getNome());
+                selecao.addItem("Cód: " + serv.getCod() + "  " + "Nome: " + serv.getNome());
+                s = serv;
             }
         }
     }
@@ -45,11 +58,12 @@ public class SelecaoItem extends javax.swing.JDialog {
         rServico = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         selecao = new javax.swing.JComboBox<>();
-        botaoCarregar = new javax.swing.JButton();
         btnContinuar = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
         labelQnt = new javax.swing.JLabel();
         caixaQnt = new javax.swing.JSpinner();
+        labelPreco = new javax.swing.JLabel();
+        caixaPreco = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Seleção de Produto/Serviço");
@@ -61,6 +75,11 @@ public class SelecaoItem extends javax.swing.JDialog {
         rProduto.setBackground(new java.awt.Color(11, 134, 195));
         rProduto.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         rProduto.setText("Produto");
+        rProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rProdutoMouseClicked(evt);
+            }
+        });
         rProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rProdutoActionPerformed(evt);
@@ -79,15 +98,6 @@ public class SelecaoItem extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(240, 240, 240));
         jLabel1.setText("Selecione");
-
-        botaoCarregar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        botaoCarregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/update.png"))); // NOI18N
-        botaoCarregar.setText("Carregar");
-        botaoCarregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoCarregarActionPerformed(evt);
-            }
-        });
 
         btnContinuar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         btnContinuar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/forward.png"))); // NOI18N
@@ -117,6 +127,14 @@ public class SelecaoItem extends javax.swing.JDialog {
 
         caixaQnt.setEnabled(false);
 
+        labelPreco.setBackground(new java.awt.Color(11, 134, 195));
+        labelPreco.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
+        labelPreco.setForeground(new java.awt.Color(240, 240, 240));
+        labelPreco.setText("Preço:");
+        labelPreco.setEnabled(false);
+
+        caixaPreco.setToolTipText("Digite o preço do serviço.");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -125,27 +143,31 @@ public class SelecaoItem extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(55, 55, 55)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(rProduto)
+                                .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(rServico)
-                                .addGap(18, 18, 18)
-                                .addComponent(botaoCarregar))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(selecao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(selecao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(labelQnt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(caixaQnt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelQnt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(caixaQnt, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelPreco)
+                                .addGap(18, 18, 18)
+                                .addComponent(caixaPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(131, 131, 131)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(rProduto)
+                        .addGap(71, 71, 71)
+                        .addComponent(rServico)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -153,18 +175,21 @@ public class SelecaoItem extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rProduto)
                     .addComponent(rServico)
-                    .addComponent(botaoCarregar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                    .addComponent(rProduto))
+                .addGap(33, 33, 33)
                 .addComponent(selecao, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(caixaQnt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelQnt))
-                .addGap(61, 61, 61)
+                    .addComponent(labelQnt)
+                    .addComponent(caixaQnt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(caixaPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelPreco))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -187,51 +212,58 @@ public class SelecaoItem extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCarregarActionPerformed
-        btnContinuar.setEnabled(true);
-        labelQnt.setEnabled(false);
-        caixaQnt.setEnabled(false);
-        if (rProduto.isSelected() || rServico.isSelected()) {
-            if (rProduto.isSelected()) {
-                carregaLista(true);
-                labelQnt.setEnabled(true);
-                caixaQnt.setEnabled(true);
-            } else {
-                carregaLista(false);
-            }
-        } else {
-            Mensagens.msgAviso("Selecione produto ou serviço.");
-            btnContinuar.setEnabled(false);
-        }
-    }//GEN-LAST:event_botaoCarregarActionPerformed
-
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        if (selecao.getSelectedIndex() == -1) {
-            Mensagens.msgAviso("Selecione um item antes de continuar");
-        } else {
-            String[] cod = selecao.getSelectedItem().toString().split(" ");
-            if (rProduto.isSelected()) {
-                for (ProdutoDTO pdto : produtoDAO.carregaProdutos()) {
-                    if (pdto.getCod() == Integer.valueOf(cod[1])) {
-                        int qnt = Integer.valueOf(caixaQnt.getValue().toString());
-                        pdto.setQnt(qnt);
-                        pdto.setPreco(qnt*(pdto.getPrecoUnit()));
-                        orcamento.setProdutoDTO(pdto);
-                        orcamento.setServicoDTO(null);
-                        break;
-                    }
-                }
+        if (rProduto.isSelected() || rServico.isSelected()) {
+            if (selecao.getSelectedIndex() == -1) {
+                Mensagens.msgAviso("Selecione um item antes de continuar");
             } else {
-                for (ServicoDTO servico : servicoDAO.carregaServicos()) {
-                    if (servico.getCod() == Integer.valueOf(cod[1])) {
-                        orcamento.setProdutoDTO(null);
-                        orcamento.setServicoDTO(servico);
-                        break;
+                String[] cod = selecao.getSelectedItem().toString().split(" ");
+                if (rProduto.isSelected()) {
+                    ePdto = true;
+                    for (ProdutoDTO pdto : produtoDAO.carregaProdutos()) {
+                        if (pdto.getCod() == Integer.valueOf(cod[1])) {
+                            int qnt = Integer.valueOf(caixaQnt.getValue().toString());
+                            pdto.setQnt(qnt);
+                            pdto.setPreco(qnt * (pdto.getPrecoUnit()));
+                            orcamento.setProdutoDTO(pdto);
+                            //orcamento.setServicoDTO(null);
+                            break;
+                        }
+                    }
+                    this.dispose();
+                } else {
+                    String[] item;
+                    if (caixaPreco.getText().isEmpty()) {
+                        Mensagens.msgAviso(caixaPreco.getToolTipText());
+                    } else {
+                        if (Validacao.validaFloat(caixaPreco, 1, 9999)) {
+                            ePdto = false;
+                            for (ServicoDTO servico : servicoDAO.carregaServicos()) {
+                                if (servico.getCod() == Integer.valueOf(cod[1])) {
+                                    if (orcamento.getLista().isEmpty()) {
+                                        servico.setPreco(Float.valueOf(caixaPreco.getText()));
+                                        orcamento.setServicoDTO(servico);
+                                        this.dispose();
+                                        break;
+                                    } else {
+                                        servico.setPreco(Float.valueOf(caixaPreco.getText()));
+                                        orcamento.setServicoDTO(servico);
+                                        this.dispose();
+                                        break;
+                                    }
+                                }
+                            }
+                            item = null;
+                        } else {
+                            Mensagens.msgAviso("Preço inválido.");
+                        }
                     }
                 }
             }
+        } else {
+            Mensagens.msgAviso("Selecione um produto ou serviço antes de continuar.");
         }
-        this.dispose();
+
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
@@ -240,23 +272,40 @@ public class SelecaoItem extends javax.swing.JDialog {
 
     private void rProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rProdutoActionPerformed
         if (rProduto.isSelected()) {
+            btnContinuar.setEnabled(true);
+            labelPreco.setEnabled(true);
+            carregaLista(true);
+            caixaPreco.setEnabled(false);
             rServico.setSelected(false);
+            labelQnt.setEnabled(true);
+            caixaQnt.setEnabled(true);
         }
     }//GEN-LAST:event_rProdutoActionPerformed
 
     private void rServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rServicoActionPerformed
         if (rServico.isSelected()) {
+            btnContinuar.setEnabled(true);
+            labelQnt.setEnabled(false);
+            carregaLista(false);
+            caixaQnt.setEnabled(false);
             rProduto.setSelected(false);
+            labelPreco.setEnabled(true);
+            caixaPreco.setEnabled(true);
         }
     }//GEN-LAST:event_rServicoActionPerformed
 
+    private void rProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rProdutoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rProdutoMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
-    private javax.swing.JButton botaoCarregar;
     private javax.swing.JButton btnContinuar;
+    private javax.swing.JTextField caixaPreco;
     private javax.swing.JSpinner caixaQnt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelPreco;
     private javax.swing.JLabel labelQnt;
     private javax.swing.JRadioButton rProduto;
     private javax.swing.JRadioButton rServico;

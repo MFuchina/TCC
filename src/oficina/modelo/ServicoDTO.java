@@ -18,6 +18,11 @@ public class ServicoDTO {
         Object[] retorno = {this.cod, this.nome, this.preco, this.desc};
         return retorno;
     }
+    
+    public Object[] getLinha() {
+        Object[] retorno = {"", this.nome, "", this.preco};
+        return retorno;
+    }
 
     public ServicoDTO(int cod, String nome, float preco, String desc) {
         this.cod = cod;

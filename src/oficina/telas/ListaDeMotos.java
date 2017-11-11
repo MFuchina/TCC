@@ -5,7 +5,7 @@ import oficina.util.Mensagens;
 import oficina.modelo.MotoDTO;
 import oficina.persistencia.MotoDAO;
 
-public class ListaDeMotos extends javax.swing.JDialog {
+public class ListaDeMotos extends javax.swing.JFrame{
 
     private final MotoDAO motoDAO = new MotoDAO();
     private Moto novaMoto = null;
@@ -14,8 +14,8 @@ public class ListaDeMotos extends javax.swing.JDialog {
     private final Orcamento orcamento;
     private final OrdemDeServico os;
 
-    public ListaDeMotos(java.awt.Frame parent, boolean modal, int codigo, Orcamento orcamento, OrdemDeServico os) {
-        super(parent, modal);
+    public ListaDeMotos(/*java.awt.Frame parent, boolean modal,*/ int codigo, Orcamento orcamento, OrdemDeServico os) {
+        //super(parent, modal);
         this.codigoDono = codigo;
         this.orcamento = orcamento;
         this.os = os;
@@ -184,9 +184,14 @@ public class ListaDeMotos extends javax.swing.JDialog {
         if (novaMoto == null) {
             novaMoto = new Moto(true, new MotoDTO(), codigoDono, null, this);
             novaMoto.setVisible(true);
+            this.setVisible(false);
         } else {
             novaMoto.requestFocus();
             novaMoto.setVisible(true);
+            this.setVisible(false);
+        }
+        if(novaMoto == null){
+          this.setVisible(true);  
         }
         carregaLista();
     }//GEN-LAST:event_botaoNovaMotoActionPerformed

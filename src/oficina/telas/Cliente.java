@@ -412,7 +412,7 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        listaMotos = new ListaDeMotos(null, true, cliente.getCodigo(), null, null);
+        listaMotos = new ListaDeMotos(/*null, true,*/ cliente.getCodigo(), null, null);
         listaMotos.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
 

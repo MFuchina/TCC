@@ -287,6 +287,8 @@ public class Moto extends javax.swing.JFrame {
             if (cliente != null) {
                 cliente.dispose();
             }
+            listaMotos.telaFechando(this);
+            this.dispose();
         }
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
