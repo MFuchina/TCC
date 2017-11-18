@@ -50,7 +50,7 @@ public class Orcamento extends javax.swing.JFrame {
         btnProcurarMoto.setEnabled(false);
         if (modoInclusao == false) {
             cod.setText(String.valueOf(orcamento.getCod_Orcamento()));
-        }else{
+        } else {
             cod.setText(o.retornaUltimoCodigo());
         }
         criaTabela();
@@ -77,7 +77,7 @@ public class Orcamento extends javax.swing.JFrame {
     }
 
     public void mostraMoto(MotoDTO moto) {
-        textMoto.setText(moto.getModelo() + " " + moto.getAno_Fabr() + " - " + moto.getCor() + " Placa: " + moto.getPlaca());
+        textMoto.setText(moto.getModelo() + " " + moto.getAno_Fabr() + " - " + moto.getCor() + " - " + " Placa: " + moto.getPlaca());
         codMoto = moto.getCod_moto();
     }
 
@@ -469,6 +469,7 @@ public class Orcamento extends javax.swing.JFrame {
     private void btnProcurarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarClienteActionPerformed
         consulta = new Consulta(Estados.modoConsCliente, null, consulta, true, this);
         consulta.setVisible(true);
+        consulta = null;
         textMoto.setText("");
     }//GEN-LAST:event_btnProcurarClienteActionPerformed
 
@@ -478,29 +479,33 @@ public class Orcamento extends javax.swing.JFrame {
         } else if (textMoto.getText().isEmpty()) {
             Mensagens.msgAviso(textMoto.getToolTipText());
         } else {
-            boolean tem = true;
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                if (modelo.getValueAt(i, 1).equals("")) {
-                    Mensagens.msgErro("Não existem itens listados no orçamento.");
-                    modelo.removeRow(i);
-                    tem = false;
-                    break;
-                }
-            }
-            if (tem) {
+            boolean naoTemItens = false;
+            if (modelo.getRowCount() == 0) {
+                Mensagens.msgErro("Não existem itens listados no orçamento.");
+            } else {
                 for (int i = 0; i < modelo.getRowCount(); i++) {
-                    lista.add(String.valueOf(modelo.getValueAt(i, 0)) + ";" + String.valueOf(modelo.getValueAt(i, 1))
-                            + ";" + String.valueOf(modelo.getValueAt(i, 2)) + ";" + String.valueOf(modelo.getValueAt(i, 3)));
+                    if (modelo.getValueAt(i, 1).equals("")) {
+                        Mensagens.msgErro("Não existem itens listados no orçamento.");
+                        modelo.removeRow(i);
+                        naoTemItens = true;
+                        break;
+                    }
                 }
-                orcamento = new OrcamentoDTO(Integer.valueOf(cod.getText()), codCliente, codMoto, dataSQL, Float.valueOf(textTotal.getText()), lista);
+                if (!naoTemItens) {
+                    for (int i = 0; i < modelo.getRowCount(); i++) {
+                        lista.add(String.valueOf(modelo.getValueAt(i, 0)) + ";" + String.valueOf(modelo.getValueAt(i, 1))
+                                + ";" + String.valueOf(modelo.getValueAt(i, 2)) + ";" + String.valueOf(modelo.getValueAt(i, 3)));
+                    }
+                    orcamento = new OrcamentoDTO(Integer.valueOf(cod.getText()), codCliente, codMoto, dataSQL, Float.valueOf(textTotal.getText()), lista);
 
-                //Salvar no BD
-                if (consulta == null) {
-                    formularioPrincipal.telaFechando("Orcamento", "");
-                } else {
-                    consulta.telaFechando(this);
+                    //Salvar no BD
+                    if (consulta == null) {
+                        formularioPrincipal.telaFechando("Orcamento", "");
+                    } else {
+                        consulta.telaFechando(this);
+                    }
+                    this.dispose();
                 }
-                this.dispose();
             }
         }
     }//GEN-LAST:event_botaoSalvarActionPerformed

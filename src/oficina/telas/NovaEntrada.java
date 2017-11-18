@@ -36,6 +36,7 @@ public class NovaEntrada extends javax.swing.JDialog {
         botaoCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nova entrada - SIGOMM");
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 24)); // NOI18N
         jLabel1.setText("Nova Entrada");

@@ -273,12 +273,12 @@ public class Principal extends javax.swing.JFrame {
         menuConsultarEstoque = new javax.swing.JMenu();
         menuConsultarProduto = new javax.swing.JMenuItem();
         menuConsultarServico = new javax.swing.JMenuItem();
-        menuConfiguracao = new javax.swing.JMenu();
-        menuAlteraLogin = new javax.swing.JMenuItem();
-        menuSobre = new javax.swing.JMenu();
         menuEntradas = new javax.swing.JMenu();
         menuNovaEntrada = new javax.swing.JMenuItem();
         menuVisualizarEntradas = new javax.swing.JMenuItem();
+        menuConfiguracao = new javax.swing.JMenu();
+        menuAlteraLogin = new javax.swing.JMenuItem();
+        menuSobre = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fuchina Moto Peças - SIGOMM");
@@ -428,18 +428,17 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(labelTitulo)))
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelTitulo)
+                .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -547,26 +546,6 @@ public class Principal extends javax.swing.JFrame {
 
         barraMenu.add(menuEstoque);
 
-        menuConfiguracao.setText("Configuração");
-
-        menuAlteraLogin.setText("Alterar Login...");
-        menuAlteraLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAlteraLoginActionPerformed(evt);
-            }
-        });
-        menuConfiguracao.add(menuAlteraLogin);
-
-        barraMenu.add(menuConfiguracao);
-
-        menuSobre.setText("Sobre");
-        menuSobre.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuSobreMouseClicked(evt);
-            }
-        });
-        barraMenu.add(menuSobre);
-
         menuEntradas.setText("Entradas");
 
         menuNovaEntrada.setText("Nova Entrada...");
@@ -586,6 +565,26 @@ public class Principal extends javax.swing.JFrame {
         menuEntradas.add(menuVisualizarEntradas);
 
         barraMenu.add(menuEntradas);
+
+        menuConfiguracao.setText("Configuração");
+
+        menuAlteraLogin.setText("Alterar Login...");
+        menuAlteraLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAlteraLoginActionPerformed(evt);
+            }
+        });
+        menuConfiguracao.add(menuAlteraLogin);
+
+        barraMenu.add(menuConfiguracao);
+
+        menuSobre.setText("Sobre");
+        menuSobre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuSobreMouseClicked(evt);
+            }
+        });
+        barraMenu.add(menuSobre);
 
         setJMenuBar(barraMenu);
 

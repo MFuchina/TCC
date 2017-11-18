@@ -98,6 +98,7 @@ public class ConsultaEntrada extends javax.swing.JDialog {
         btnRemover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Consultar Entradas - SiGOMM");
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 24)); // NOI18N
         jLabel1.setText("Entradas do dia");
@@ -247,8 +248,6 @@ public class ConsultaEntrada extends javax.swing.JDialog {
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoContinuar;
-    private javax.swing.JButton botaoContinuar1;
     private javax.swing.JButton botaoVoltar;
     private javax.swing.JButton btnRemover;
     private javax.swing.JLabel jLabel1;

@@ -603,7 +603,6 @@ public class Consulta extends javax.swing.JFrame {
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         int linhaSelecionada;
-
         linhaSelecionada = tabela.getSelectedRow();
         if (linhaSelecionada < 0) {
             Mensagens.msgAviso("Selecione um item a ser removido!");
