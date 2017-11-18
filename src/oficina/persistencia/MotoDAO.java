@@ -208,5 +208,5 @@ public class MotoDAO {
             Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
         }
         return aux;
-    }
+}
 }

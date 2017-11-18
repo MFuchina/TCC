@@ -5,20 +5,17 @@ import oficina.util.Mensagens;
 import oficina.modelo.MotoDTO;
 import oficina.persistencia.MotoDAO;
 
-public class ListaDeMotos extends javax.swing.JFrame{
+public class ListaDeMotos extends javax.swing.JFrame {
 
     private final MotoDAO motoDAO = new MotoDAO();
     private Moto novaMoto = null;
     private MotoDTO motoDTO = null;
     private final int codigoDono;
     private final Orcamento orcamento;
-    private final OrdemDeServico os;
 
-    public ListaDeMotos(/*java.awt.Frame parent, boolean modal,*/ int codigo, Orcamento orcamento, OrdemDeServico os) {
-        //super(parent, modal);
+    public ListaDeMotos(int codigo, Orcamento orcamento) {
         this.codigoDono = codigo;
         this.orcamento = orcamento;
-        this.os = os;
         initComponents();
         carregaLista();
         if (selecao.getItemCount() == 0) {
@@ -36,8 +33,8 @@ public class ListaDeMotos extends javax.swing.JFrame{
 
     public void carregaLista() {
         selecao.removeAllItems();
-        for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
-            selecao.addItem("Cód.Moto: " + moto.getCod_moto() + " " + "Modelo: " + moto.getModelo() + " Placa: " + moto.getPlaca());
+        for (MotoDTO motoo : motoDAO.carregaMotos(codigoDono)) {
+            selecao.addItem("Cód.Moto: " + motoo.getCod_moto() + " " + "Modelo: " + motoo.getModelo() + " Placa: " + motoo.getPlaca());
         }
     }
 
@@ -60,6 +57,8 @@ public class ListaDeMotos extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lista de motos");
+        setMaximumSize(new java.awt.Dimension(428, 263));
+        setMinimumSize(new java.awt.Dimension(428, 263));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
@@ -190,8 +189,8 @@ public class ListaDeMotos extends javax.swing.JFrame{
             novaMoto.setVisible(true);
             this.setVisible(false);
         }
-        if(novaMoto == null){
-          this.setVisible(true);  
+        if (novaMoto == null) {
+            this.setVisible(true);
         }
         carregaLista();
     }//GEN-LAST:event_botaoNovaMotoActionPerformed
@@ -210,8 +209,6 @@ public class ListaDeMotos extends javax.swing.JFrame{
                 if (motoO.getCod_moto() == Integer.valueOf(codMoto[1])) {
                     if (orcamento != null) {
                         orcamento.mostraMoto(motoO);
-                    } else if (os != null) {
-                        os.setMoto(motoO);
                     } else {
                         moto = motoO;
                     }
@@ -230,9 +227,9 @@ public class ListaDeMotos extends javax.swing.JFrame{
         if (!selecao.getSelectedItem().toString().equals("")) {
             if (novaMoto == null) {
                 String[] codMoto = selecao.getSelectedItem().toString().split(" ");
-                for (MotoDTO moto : motoDAO.carregaMotos(codigoDono)) {
-                    if (moto.getCod_moto() == Integer.valueOf(codMoto[1])) {
-                        motoDTO = moto;
+                for (MotoDTO motoo : motoDAO.carregaMotos(codigoDono)) {
+                    if (motoo.getCod_moto() == Integer.valueOf(codMoto[1])) {
+                        motoDTO = motoo;
                         break;
                     }
                 }

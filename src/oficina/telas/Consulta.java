@@ -10,18 +10,15 @@ import oficina.util.Mensagens;
 import oficina.modelo.ClienteDTO;
 import oficina.modelo.MotoDTO;
 import oficina.modelo.OrcamentoDTO;
-import oficina.modelo.OsDTO;
 import oficina.modelo.ProdutoDTO;
 import oficina.modelo.ServicoDTO;
 import oficina.persistencia.ClienteDAO;
 import oficina.persistencia.OrcamentoDAO;
-import oficina.persistencia.OsDAO;
 import oficina.persistencia.ProdutoDAO;
 import oficina.persistencia.ServicoDAO;
 
 public class Consulta extends javax.swing.JFrame {
 
-    //Tipo de consulta a ser realizada
     private final String tipo;
     private int cod;
 
@@ -32,7 +29,6 @@ public class Consulta extends javax.swing.JFrame {
     //DAO's
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
-    private final OsDAO osDAO = new OsDAO();
     private final ProdutoDAO produtoDAO = new ProdutoDAO();
     private final ServicoDAO servicoDAO = new ServicoDAO();
 
@@ -41,7 +37,6 @@ public class Consulta extends javax.swing.JFrame {
     private ArrayList<MotoDTO> listaMotos;
     private ArrayList<ProdutoDTO> listaProdutos;
     private ArrayList<ServicoDTO> listaServicos;
-    private ArrayList<OsDTO> listaOs;
     private ArrayList<OrcamentoDTO> listaOrcamentos;
 
     private final Principal telaPrincipal;
@@ -51,7 +46,6 @@ public class Consulta extends javax.swing.JFrame {
     private Cliente novoCliente = null;
     private Orcamento novoOrcamento = null;
     private Orcamento orcamento = null;
-    private OrdemDeServico novaOrdemServico = null;
     private Produto novoProduto = null;
     private Servico novoServico = null;
     private final boolean botaoOrcamento;
@@ -89,9 +83,6 @@ public class Consulta extends javax.swing.JFrame {
             case "class oficina.telas.Servico":
                 novoServico = null;
                 break;
-            case "class oficina.telas.OrdemDeServico":
-                novaOrdemServico = null;
-                break;
         }
     }
 
@@ -116,13 +107,6 @@ public class Consulta extends javax.swing.JFrame {
             case "modoConsServico":
                 this.listaServicos = servicoDAO.carregaServicos();
                 if (listaServicos != null) {
-                    carrega();
-                }
-                break;
-            case "modoConsOS":
-                btnNovo.setText("Nova");
-                this.listaOs = osDAO.carregaOs();
-                if (listaOs != null) {
                     carrega();
                 }
                 break;
@@ -181,16 +165,6 @@ public class Consulta extends javax.swing.JFrame {
                 modelo.addColumn("Descrição");
                 for (ServicoDTO servicos : listaServicos) {
                     modelo.addRow(servicos.getLinhaTabela());
-                }
-                break;
-            case "modoConsOS":
-                this.setTitle("Consulta de Ordens de serviços - SIGOMM");
-                modelo.addColumn("Código");
-                modelo.addColumn("Data");
-                modelo.addColumn("Status");
-                modelo.addColumn("Valor Total");
-                for (OsDTO os : listaOs) {
-                    modelo.addRow(os.getLinhaTabela());
                 }
                 break;
             case "modoConsOrcamento":
@@ -275,16 +249,6 @@ public class Consulta extends javax.swing.JFrame {
         }
     }
 
-    public void novaOs() {
-        if (novaOrdemServico == null) {
-            novaOrdemServico = new OrdemDeServico(true, new OsDTO(), null, this);
-            novaOrdemServico.setVisible(true);
-        } else {
-            novaOrdemServico.requestFocus();
-            novaOrdemServico.setVisible(true);
-        }
-    }
-
     //Método de exclusão:
     public void remove() {
         int linhaSelecionada;
@@ -332,19 +296,6 @@ public class Consulta extends javax.swing.JFrame {
                     } else {
                         Mensagens.msgAviso("Selecione um serviço a ser removido!");
                     }
-                }
-                break;
-            case "modoConsOS":
-                linhaSelecionada = tabela.getSelectedRow();
-                if (linhaSelecionada > -1) {
-                    Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                    if (osDAO.removeOS(codigo)) {
-                        Mensagens.msgInfo("A ordem de serviço foi removida com sucesso!");
-                        montaTabela();
-                        //this.setVisible(false);
-                    }
-                } else {
-                    Mensagens.msgAviso("Selecione uma ordem de serviço a ser removida!");
                 }
                 break;
             case "modoConsOrcamento":
@@ -426,31 +377,13 @@ public class Consulta extends javax.swing.JFrame {
                     Mensagens.msgAviso("Selecione um serviço a ser alterado!");
                 }
                 break;
-            case "modoConsOS":
-                linhaSelecionada = tabela.getSelectedRow();
-                if (linhaSelecionada > -1) {
-                    Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                    OsDTO OrdemServico = osDAO.puxaOs(codigo);
-                    if (novaOrdemServico == null) {
-                        novaOrdemServico = new OrdemDeServico(false, OrdemServico, null, this);
-                        novaOrdemServico.setVisible(true);
-                        //this.setVisible(false);
-                        montaTabela();
-                    } else {
-                        novaOrdemServico.requestFocus();
-                        novaOrdemServico.setVisible(true);
-                    }
-                } else {
-                    Mensagens.msgAviso("Selecione uma ordem de serviço a ser alterada!");
-                }
-                break;
             case "modoConsOrcamento":
                 linhaSelecionada = tabela.getSelectedRow();
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                    OrcamentoDTO orcamento = orcamentoDAO.puxaOrcamento(codigo);
+                    OrcamentoDTO orcamentoo = orcamentoDAO.puxaOrcamento(codigo);
                     if (novoOrcamento == null) {
-                        novoOrcamento = new Orcamento(false, orcamento, null, this);
+                        novoOrcamento = new Orcamento(false, orcamentoo, null, this);
                         novoOrcamento.setVisible(true);
                         //this.setVisible(false);
                         montaTabela();
@@ -480,6 +413,8 @@ public class Consulta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta - SIGOMM");
+        setMaximumSize(new java.awt.Dimension(674, 519));
+        setMinimumSize(new java.awt.Dimension(674, 519));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -651,13 +586,15 @@ public class Consulta extends javax.swing.JFrame {
             int codigo;
             if (linhaSelecionada > -1) {
                 codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
-                orcamento.mostraCliente(codigo);
+                if (orcamento != null) {
+                    orcamento.mostraCliente(codigo);
+                }
                 this.dispose();
             } else {
                 Mensagens.msgAviso("Selecione um cliente antes de continuar!");
             }
         } else if (c == null && telaPrincipal != null) {
-            telaPrincipal.telaFechando(this, "");
+            telaPrincipal.telaFechando("Consulta", "");
         } else if (telaPrincipal == null && c != null) {
             c.telaFechando(this);
         }
@@ -665,8 +602,15 @@ public class Consulta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        if (Mensagens.msgConf("Deseja mesmo excluir?")) {
-            remove();
+        int linhaSelecionada;
+
+        linhaSelecionada = tabela.getSelectedRow();
+        if (linhaSelecionada < 0) {
+            Mensagens.msgAviso("Selecione um item a ser removido!");
+        } else {
+            if (Mensagens.msgConf("Deseja mesmo excluir?")) {
+                remove();
+            }
         }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
@@ -680,9 +624,6 @@ public class Consulta extends javax.swing.JFrame {
                 break;
             case "modoConsServico":
                 novoServico();
-                break;
-            case "modoConsOS":
-                novaOs();
                 break;
             case "modoConsOrcamento":
                 novoOrcamento();
@@ -703,7 +644,7 @@ public class Consulta extends javax.swing.JFrame {
         if (c != null) {
             c.telaFechando(this);
         } else {
-            telaPrincipal.telaFechando(this, "");
+            telaPrincipal.telaFechando("Consulta", "");
         }
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed

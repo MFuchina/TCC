@@ -17,10 +17,12 @@ import oficina.persistencia.OrcamentoDAO;
 
 public class Orcamento extends javax.swing.JFrame {
 
-    private final boolean modoInclusao;
+    private boolean modoInclusao;
     private int codCliente;
+    private int codMoto;
+    String dataSQL;
 
-    private final OrcamentoDTO orcamento;
+    private OrcamentoDTO orcamento;
 
     private final OrcamentoDAO o = new OrcamentoDAO();
     private final ClienteDAO clienteDAO = new ClienteDAO();
@@ -32,6 +34,27 @@ public class Orcamento extends javax.swing.JFrame {
     private ProdutoDTO produtoDTO = new ProdutoDTO();
     private ServicoDTO servicoDTO = new ServicoDTO();
     private final ArrayList<String> lista = new ArrayList<>();
+
+    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento, Principal formPrincipal, Consulta c) {
+        this.consulta = c;
+        this.formularioPrincipal = formPrincipal;
+        this.orcamento = orcamento;
+        this.modoInclusao = modoInclusao;
+        initComponents();
+        this.setLocationRelativeTo(null);
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat formatarDate = new SimpleDateFormat("yyyy-MM-dd");
+        dataSQL = formatarDate.format(date);
+        formatarDate = new SimpleDateFormat("dd/MM/yyyy");
+        data.setText(formatarDate.format(date));
+        btnProcurarMoto.setEnabled(false);
+        if (modoInclusao == false) {
+            cod.setText(String.valueOf(orcamento.getCod_Orcamento()));
+        }else{
+            cod.setText(o.retornaUltimoCodigo());
+        }
+        criaTabela();
+    }
 
     public ArrayList<String> getLista() {
         return lista;
@@ -55,25 +78,7 @@ public class Orcamento extends javax.swing.JFrame {
 
     public void mostraMoto(MotoDTO moto) {
         textMoto.setText(moto.getModelo() + " " + moto.getAno_Fabr() + " - " + moto.getCor() + " Placa: " + moto.getPlaca());
-    }
-
-    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento, Principal formPrincipal, Consulta c) {
-        this.consulta = c;
-        this.formularioPrincipal = formPrincipal;
-        this.orcamento = orcamento;
-        this.modoInclusao = modoInclusao;
-        initComponents();
-        this.setLocationRelativeTo(null);
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat formatarDate = new SimpleDateFormat("dd/MM/yyyy");
-        data.setText(formatarDate.format(date));
-        btnProcurarMoto.setEnabled(false);
-        if (modoInclusao == false) {
-            cod.setText(String.valueOf(orcamento.getCod_Orcamento()));
-        } else {
-            cod.setText(o.retornaUltimoCodigo());
-        }
-        criaTabela();
+        codMoto = moto.getCod_moto();
     }
 
     DefaultTableModel modelo;
@@ -114,7 +119,7 @@ public class Orcamento extends javax.swing.JFrame {
     }
 
     public boolean removeItem(int i) {
-        if (modelo.getValueAt(i, 1).equals("Mão de obra") || modelo.getValueAt(i,1).equals("Revisão")) {
+        if (modelo.getValueAt(i, 1).equals("Mão de obra") || modelo.getValueAt(i, 1).equals("Revisão")) {
             total = total - Float.valueOf(String.valueOf(modelo.getValueAt(i, 3)));
             textTotal.setText(String.valueOf(total));
             modelo.removeRow(i);
@@ -218,7 +223,6 @@ public class Orcamento extends javax.swing.JFrame {
         tabela = new javax.swing.JTable();
         novo = new javax.swing.JButton();
         btnProcurarMoto = new javax.swing.JButton();
-        btnGerarOS = new javax.swing.JButton();
         remove = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -230,6 +234,7 @@ public class Orcamento extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setMaximumSize(new java.awt.Dimension(630, 630));
         jPanel1.setMinimumSize(new java.awt.Dimension(630, 630));
+        jPanel1.setPreferredSize(new java.awt.Dimension(630, 630));
 
         cod.setEditable(false);
         cod.setToolTipText("O código é gerado automaticamente.");
@@ -350,16 +355,6 @@ public class Orcamento extends javax.swing.JFrame {
             }
         });
 
-        btnGerarOS.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
-        btnGerarOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/011-note.png"))); // NOI18N
-        btnGerarOS.setText("Gerar O.S.");
-        btnGerarOS.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 111, 153)));
-        btnGerarOS.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGerarOSActionPerformed(evt);
-            }
-        });
-
         remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/004-error.png"))); // NOI18N
         remove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -371,56 +366,53 @@ public class Orcamento extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cod, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(textMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnProcurarMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(textCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnProcurarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(52, 52, 52))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(textTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(14, 14, 14))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(264, 264, 264)
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(textTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(remove, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(novo)))
-                        .addGap(41, 41, 41))))
+                                .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(remove, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(novo))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(33, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(btnGerarOS, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(cod, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(textMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnProcurarMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(textCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnProcurarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(43, 43, 43))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,25 +435,21 @@ public class Orcamento extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(textMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(novo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remove, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(remove, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(novo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGerarOS, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(55, Short.MAX_VALUE))
+                    .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -472,7 +460,7 @@ public class Orcamento extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -500,9 +488,15 @@ public class Orcamento extends javax.swing.JFrame {
                 }
             }
             if (tem) {
-                //Salva no BD
+                for (int i = 0; i < modelo.getRowCount(); i++) {
+                    lista.add(String.valueOf(modelo.getValueAt(i, 0)) + ";" + String.valueOf(modelo.getValueAt(i, 1))
+                            + ";" + String.valueOf(modelo.getValueAt(i, 2)) + ";" + String.valueOf(modelo.getValueAt(i, 3)));
+                }
+                orcamento = new OrcamentoDTO(Integer.valueOf(cod.getText()), codCliente, codMoto, dataSQL, Float.valueOf(textTotal.getText()), lista);
+
+                //Salvar no BD
                 if (consulta == null) {
-                    formularioPrincipal.telaFechando(this, "");
+                    formularioPrincipal.telaFechando("Orcamento", "");
                 } else {
                     consulta.telaFechando(this);
                 }
@@ -513,12 +507,40 @@ public class Orcamento extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if (consulta == null) {
-            formularioPrincipal.telaFechando(this, "");
+            formularioPrincipal.telaFechando("Orcamento", "");
         } else {
             consulta.telaFechando(this);
         }
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
+
+    private void btnProcurarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarMotoActionPerformed
+        listaMotos = new ListaDeMotos(codCliente, this);
+        listaMotos.setVisible(true);
+    }//GEN-LAST:event_btnProcurarMotoActionPerformed
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        int linhaSelecionada;
+        linhaSelecionada = tabela.getSelectedRow();
+        if (linhaSelecionada > -1) {
+            if (modelo.getRowCount() != 0) {
+                if (modelo.getValueAt(linhaSelecionada, 0).toString().equals("1")) {
+                    total = total - Float.valueOf(String.valueOf(modelo.getValueAt(linhaSelecionada, 3)));
+                    textTotal.setText(String.valueOf(total));
+                    modelo.removeRow(linhaSelecionada);
+                    carrega();
+                } else {
+                    if (removeItem(linhaSelecionada)) {
+                        carrega();
+                    }
+                }
+            } else {
+                Mensagens.msgAviso("A tabela está vazia.");
+            }
+        } else {
+            Mensagens.msgAviso("Selecione um item a ser removido!");
+        }
+    }//GEN-LAST:event_removeActionPerformed
 
     private void novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoActionPerformed
         SelecaoItem s = new SelecaoItem(this, true, this);
@@ -530,42 +552,9 @@ public class Orcamento extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_novoActionPerformed
 
-    private void btnGerarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarOSActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGerarOSActionPerformed
-
-    private void btnProcurarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarMotoActionPerformed
-        listaMotos = new ListaDeMotos(/*null, true,*/codCliente, this, null);
-        listaMotos.setVisible(true);
-    }//GEN-LAST:event_btnProcurarMotoActionPerformed
-
-    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
-        int linhaSelecionada;
-        linhaSelecionada = tabela.getSelectedRow();
-        if (linhaSelecionada > -1) {
-            if (modelo.getRowCount() != 0) { 
-                if (modelo.getValueAt(linhaSelecionada, 0).toString().equals("1")) {
-                        total = total - Float.valueOf(String.valueOf(modelo.getValueAt(linhaSelecionada, 3)));
-                        textTotal.setText(String.valueOf(total));
-                        modelo.removeRow(linhaSelecionada);
-                        carrega();
-                    } else {
-                        if (removeItem(linhaSelecionada)) {
-                            carrega();
-                        }
-                    }
-            } else {
-                Mensagens.msgAviso("A tabela está vazia.");
-            }
-        } else {
-            Mensagens.msgAviso("Selecione um item a ser removido!");
-        }
-    }//GEN-LAST:event_removeActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
     private javax.swing.JButton botaoSalvar;
-    private javax.swing.JButton btnGerarOS;
     private javax.swing.JButton btnProcurarCliente;
     private javax.swing.JButton btnProcurarMoto;
     private javax.swing.JTextField cod;

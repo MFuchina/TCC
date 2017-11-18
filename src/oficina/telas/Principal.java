@@ -1,14 +1,13 @@
 package oficina.telas;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import oficina.util.Estados;
 import oficina.modelo.ClienteDTO;
 import oficina.modelo.OrcamentoDTO;
-import oficina.modelo.OsDTO;
 import oficina.modelo.ProdutoDTO;
 import oficina.modelo.ServicoDTO;
 import oficina.persistencia.GerenteDAO;
+import oficina.util.Mensagens;
 
 /*
 DROP DATABASE if EXISTS Oficina;
@@ -59,50 +58,37 @@ create table servico(
     descricao_servico varchar(80)
 );
 
-create table ordem_servico(
-	cod_os int auto_increment primary key,
-    data_os date,
-    cod_cliente int not null,
-    cod_moto int not null,
-    status_os enum ('NI', 'I', 'C') not null,
-    valorTotal_os float,
-    -- qnt_pdto int not null,
-    foreign key (cod_cliente) references cliente (cod_cliente),
-    foreign key (cod_moto) references moto (cod_moto)
-);
-
 create table orcamento(
 	cod_orcamento int auto_increment primary key,
     data_orcamento date,
     cod_cliente int not null,
     cod_moto int not null,
-	-- qnt_pdto int not null,
+    cod_lista int not null,
     valorTotal_orcamento float,
     foreign key (cod_cliente) references cliente (cod_cliente),
-    foreign key (cod_moto) references moto (cod_moto)
-	
+    foreign key (cod_moto) references moto (cod_moto),
+	foreign key (cod_lista) references lista (cod_lista)
+);
+
+create table lista(
+	cod_lista int auto_increment primary key,
+    item varchar(500) not null,
+    qnt varchar(100),
+    preco varchar(5000),
+    preco_total varchar(9000) not null
+);
+
+create table entrada(
+	cod_entrada int auto_increment primary key,
+	data_entrada date,
+    valor float not null,
+    tipo enum ('D', 'C', 'CQ') not null
 );
 
 INSERT INTO GERENTE VALUES ('admin', 'admin', 0);
 
 insert into cliente (nome, CPF_CNPJ, email, telefone, sexo) values ('Yuri', 1, 'email', 11, 'M');
-
-update  gerente set senha= '123' where user = 'admin';
-update gerente set senha= 'admin' where user = 'admin';
-
--- SELECT MAX(cod_cliente) FROM cliente;
-
-select modelo, placa from moto where cod_dono = 11;
-
-select * from gerente;
-
-select * from cliente;
-
-select * from produto;
-
-select * from servico;
-
-select * from moto;
+insert into cliente (nome, CPF_CNPJ, email, telefone, sexo) values ('Fulano', 2, '', 22, 'M');
  */
 public class Principal extends javax.swing.JFrame {
 
@@ -113,41 +99,37 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private Login login;
-    
+
     private Consulta consultaProduto = null;
     private Consulta consultaOrcamento = null;
     private Consulta consultaOs = null;
     private Consulta consultaServico = null;
     private Consulta consultaCliente = null;
     private Orcamento orcamento = null;
-    private OrdemDeServico ordemServico = null;
     private Cliente cadastro = null;
     private Produto novoPdto = null;
     private Servico novoServ = null;
-    
+
     private final GerenteDAO gerenteDAO = new GerenteDAO();
 
-    public void telaFechando(JFrame tela, String tipo) {
-        switch (String.valueOf(tela.getClass())) {
-            case "class oficina.telas.Orcamento":
+    public void telaFechando(String tela, String tipo) {
+        switch (tela) {
+            case "Orcamento":
                 orcamento = null;
                 break;
-            case "class oficina.telas.Cliente":
+            case "Cliente":
                 cadastro = null;
                 break;
-            case "class oficina.telas.Produto":
+            case "Produto":
                 novoPdto = null;
                 break;
-            case "class oficina.telas.Servico":
+            case "Servico":
                 novoServ = null;
                 break;
-            case "class oficina.telas.OrdemDeServico":
-                ordemServico = null;
-                break;
-            case "class oficina.telas.Moto":
+            case "Moto":
                 System.out.println("Moto");
                 break;
-            case "class oficina.telas.Consulta":
+            case "Consulta":
                 switch (tipo) {
                     case "modoConsPdto":
                         consultaProduto = null;
@@ -198,16 +180,6 @@ public class Principal extends javax.swing.JFrame {
         } else {
             consultaOrcamento.requestFocus();
             consultaOrcamento.setVisible(true);
-        }
-    }
-
-    public void consultarOs() {
-        if (consultaOs == null) {
-            consultaOs = new Consulta(Estados.modoConsOS, this, consultaOs, false, null);
-            consultaOs.setVisible(true);
-        } else {
-            consultaOs.requestFocus();
-            consultaOs.setVisible(true);
         }
     }
 
@@ -268,42 +240,29 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    public void novaOs() {
-        if (ordemServico == null) {
-            ordemServico = new OrdemDeServico(true, new OsDTO(), this, null);
-            ordemServico.setVisible(true);
-        } else {
-            ordemServico.requestFocus();
-            ordemServico.setVisible(true);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaOrdemServico = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        btnEditar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         botaoNovoOrcamento = new javax.swing.JButton();
-        botaoNovaOS = new javax.swing.JButton();
         botaoNovoCliente = new javax.swing.JButton();
         botaoConsultarProdutos = new javax.swing.JButton();
         botaoConsultarCliente = new javax.swing.JButton();
+        btnConsultarServicos = new javax.swing.JButton();
+        btnNovoProduto = new javax.swing.JButton();
+        btnVisualizarEntradas = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
+        btnNovaEntrada = new javax.swing.JButton();
         barraMenu = new javax.swing.JMenuBar();
         menuOrcamento = new javax.swing.JMenu();
         menuNovoOrcamento = new javax.swing.JMenuItem();
         menuConsultarOrcamento = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuSair = new javax.swing.JMenuItem();
-        menuOrdemServico = new javax.swing.JMenu();
-        menuNovaOS = new javax.swing.JMenuItem();
-        menuConsultarOS = new javax.swing.JMenuItem();
         menuCliente = new javax.swing.JMenu();
         menuNovoCliente = new javax.swing.JMenuItem();
         menuConsultarCliente = new javax.swing.JMenuItem();
@@ -317,86 +276,22 @@ public class Principal extends javax.swing.JFrame {
         menuConfiguracao = new javax.swing.JMenu();
         menuAlteraLogin = new javax.swing.JMenuItem();
         menuSobre = new javax.swing.JMenu();
+        menuEntradas = new javax.swing.JMenu();
+        menuNovaEntrada = new javax.swing.JMenuItem();
+        menuVisualizarEntradas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fuchina Moto Peças - SIGOMM");
-        setMaximumSize(new java.awt.Dimension(977, 616));
-        setMinimumSize(new java.awt.Dimension(977, 616));
+        setMaximumSize(new java.awt.Dimension(731, 489));
+        setMinimumSize(new java.awt.Dimension(731, 489));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
 
-        labelTitulo.setFont(new java.awt.Font("Copperplate Gothic Bold", 1, 36)); // NOI18N
+        labelTitulo.setFont(new java.awt.Font("Copperplate Gothic Bold", 1, 30)); // NOI18N
         labelTitulo.setText("FUCHINA MOTO PEÇAS EIRELI M.E.");
 
-        tabelaOrdemServico.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Status", "Data", "Placa", "Moto", "Cliente", "Valor Total"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tabelaOrdemServico.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tabelaOrdemServico);
-        if (tabelaOrdemServico.getColumnModel().getColumnCount() > 0) {
-            tabelaOrdemServico.getColumnModel().getColumn(0).setResizable(false);
-            tabelaOrdemServico.getColumnModel().getColumn(1).setResizable(false);
-            tabelaOrdemServico.getColumnModel().getColumn(2).setResizable(false);
-            tabelaOrdemServico.getColumnModel().getColumn(3).setResizable(false);
-            tabelaOrdemServico.getColumnModel().getColumn(4).setResizable(false);
-            tabelaOrdemServico.getColumnModel().getColumn(5).setResizable(false);
-        }
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
-        jLabel1.setText("Ordens de Serviço ativas:");
-
         jSeparator1.setBackground(new java.awt.Color(240, 240, 240));
-
-        btnEditar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
 
         jPanel2.setBackground(new java.awt.Color(255, 51, 51));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.red, null, null));
@@ -407,15 +302,6 @@ public class Principal extends javax.swing.JFrame {
         botaoNovoOrcamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoNovoOrcamentoActionPerformed(evt);
-            }
-        });
-
-        botaoNovaOS.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
-        botaoNovaOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/011-note.png"))); // NOI18N
-        botaoNovaOS.setText("Nova Ordem de Serviço");
-        botaoNovaOS.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoNovaOSActionPerformed(evt);
             }
         });
 
@@ -447,38 +333,94 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnConsultarServicos.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnConsultarServicos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/003-search.png"))); // NOI18N
+        btnConsultarServicos.setText("Consultar Serviços");
+        btnConsultarServicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarServicosActionPerformed(evt);
+            }
+        });
+
+        btnNovoProduto.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnNovoProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/009-shopping.png"))); // NOI18N
+        btnNovoProduto.setText("Novo Produto");
+        btnNovoProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoProdutoActionPerformed(evt);
+            }
+        });
+
+        btnVisualizarEntradas.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnVisualizarEntradas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/003-get-money.png"))); // NOI18N
+        btnVisualizarEntradas.setText("Visualizar Entradas");
+        btnVisualizarEntradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVisualizarEntradasActionPerformed(evt);
+            }
+        });
+
+        btnSair.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/forward.png"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.setToolTipText("");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
+        btnNovaEntrada.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
+        btnNovaEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-notes.png"))); // NOI18N
+        btnNovaEntrada.setText("Nova Entrada");
+        btnNovaEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovaEntradaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(botaoNovoOrcamento)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botaoNovaOS)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botaoNovoCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botaoConsultarCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botaoConsultarProdutos)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnNovoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botaoNovoCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botaoNovoOrcamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botaoConsultarProdutos)
+                    .addComponent(btnConsultarServicos, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoConsultarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnVisualizarEntradas, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNovaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(botaoNovoOrcamento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(botaoConsultarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(botaoConsultarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(botaoNovaOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botaoNovoCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 1, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botaoNovoOrcamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnConsultarServicos, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNovaEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoNovoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoConsultarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVisualizarEntradas, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoConsultarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -486,47 +428,29 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 18, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(792, 792, 792)
-                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(labelTitulo)
-                .addGap(83, 83, 83))
+                                .addGap(10, 10, 10)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(labelTitulo)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(13, 13, 13)
                 .addComponent(labelTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         menuOrcamento.setText("Orçamento");
@@ -548,7 +472,6 @@ public class Principal extends javax.swing.JFrame {
         menuOrcamento.add(menuConsultarOrcamento);
         menuOrcamento.add(jSeparator2);
 
-        menuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         menuSair.setText("Sair");
         menuSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -558,26 +481,6 @@ public class Principal extends javax.swing.JFrame {
         menuOrcamento.add(menuSair);
 
         barraMenu.add(menuOrcamento);
-
-        menuOrdemServico.setText("Ordem de Serviço");
-
-        menuNovaOS.setText("Nova OS...");
-        menuNovaOS.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuNovaOSActionPerformed(evt);
-            }
-        });
-        menuOrdemServico.add(menuNovaOS);
-
-        menuConsultarOS.setText("Consultar OS...");
-        menuConsultarOS.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuConsultarOSActionPerformed(evt);
-            }
-        });
-        menuOrdemServico.add(menuConsultarOS);
-
-        barraMenu.add(menuOrdemServico);
 
         menuCliente.setText("Cliente");
 
@@ -664,6 +567,26 @@ public class Principal extends javax.swing.JFrame {
         });
         barraMenu.add(menuSobre);
 
+        menuEntradas.setText("Entradas");
+
+        menuNovaEntrada.setText("Nova Entrada...");
+        menuNovaEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuNovaEntradaActionPerformed(evt);
+            }
+        });
+        menuEntradas.add(menuNovaEntrada);
+
+        menuVisualizarEntradas.setText("Visualizar Entradas...");
+        menuVisualizarEntradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuVisualizarEntradasActionPerformed(evt);
+            }
+        });
+        menuEntradas.add(menuVisualizarEntradas);
+
+        barraMenu.add(menuEntradas);
+
         setJMenuBar(barraMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -674,7 +597,7 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -691,10 +614,6 @@ public class Principal extends javax.swing.JFrame {
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
         System.exit(0);
     }//GEN-LAST:event_menuSairActionPerformed
-
-    private void menuNovaOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovaOSActionPerformed
-        novaOs();
-    }//GEN-LAST:event_menuNovaOSActionPerformed
 
     private void menuNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoProdutoActionPerformed
         novoProduto();
@@ -716,10 +635,6 @@ public class Principal extends javax.swing.JFrame {
         novoOrcamento();
     }//GEN-LAST:event_botaoNovoOrcamentoActionPerformed
 
-    private void botaoNovaOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovaOSActionPerformed
-        novaOs();
-    }//GEN-LAST:event_botaoNovaOSActionPerformed
-
     private void botaoNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoNovoClienteActionPerformed
         novoCliente();
     }//GEN-LAST:event_botaoNovoClienteActionPerformed
@@ -731,10 +646,6 @@ public class Principal extends javax.swing.JFrame {
     private void botaoConsultarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConsultarProdutosActionPerformed
         consultarProduto();
     }//GEN-LAST:event_botaoConsultarProdutosActionPerformed
-
-    private void menuConsultarOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConsultarOSActionPerformed
-        consultarOs();
-    }//GEN-LAST:event_menuConsultarOSActionPerformed
 
     private void menuNovoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovoClienteActionPerformed
         novoCliente();
@@ -762,18 +673,59 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menuAlteraLoginActionPerformed
 
+    private void btnVisualizarEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarEntradasActionPerformed
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            ConsultaEntrada ce = new ConsultaEntrada(this, true);
+            ce.setVisible(true);
+        }
+    }//GEN-LAST:event_btnVisualizarEntradasActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        if (Mensagens.msgConf("Deseja mesmo sair?")) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnConsultarServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarServicosActionPerformed
+        consultarServico();
+    }//GEN-LAST:event_btnConsultarServicosActionPerformed
+
+    private void btnNovoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoProdutoActionPerformed
+        novoProduto();
+    }//GEN-LAST:event_btnNovoProdutoActionPerformed
+
+    private void menuNovaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNovaEntradaActionPerformed
+        NovaEntrada nova = new NovaEntrada(this, true);
+        nova.setVisible(true);
+    }//GEN-LAST:event_menuNovaEntradaActionPerformed
+
+    private void btnNovaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaEntradaActionPerformed
+        NovaEntrada nova = new NovaEntrada(this, true);
+        nova.setVisible(true);
+    }//GEN-LAST:event_btnNovaEntradaActionPerformed
+
+    private void menuVisualizarEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuVisualizarEntradasActionPerformed
+        login = new Login(this, true);
+        if (login.criaLogin()) {
+            ConsultaEntrada ce = new ConsultaEntrada(this, true);
+            ce.setVisible(true);
+        }
+    }//GEN-LAST:event_menuVisualizarEntradasActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JButton botaoConsultarCliente;
     private javax.swing.JButton botaoConsultarProdutos;
-    private javax.swing.JButton botaoNovaOS;
     private javax.swing.JButton botaoNovoCliente;
     private javax.swing.JButton botaoNovoOrcamento;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnConsultarServicos;
+    private javax.swing.JButton btnNovaEntrada;
+    private javax.swing.JButton btnNovoProduto;
+    private javax.swing.JButton btnSair;
+    private javax.swing.JButton btnVisualizarEntradas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel labelTitulo;
@@ -782,21 +734,20 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu menuConfiguracao;
     private javax.swing.JMenuItem menuConsultarCliente;
     private javax.swing.JMenu menuConsultarEstoque;
-    private javax.swing.JMenuItem menuConsultarOS;
     private javax.swing.JMenuItem menuConsultarOrcamento;
     private javax.swing.JMenuItem menuConsultarProduto;
     private javax.swing.JMenuItem menuConsultarServico;
+    private javax.swing.JMenu menuEntradas;
     private javax.swing.JMenu menuEstoque;
-    private javax.swing.JMenuItem menuNovaOS;
+    private javax.swing.JMenuItem menuNovaEntrada;
     private javax.swing.JMenuItem menuNovoCliente;
     private javax.swing.JMenu menuNovoEstoque;
     private javax.swing.JMenuItem menuNovoOrcamento;
     private javax.swing.JMenuItem menuNovoProduto;
     private javax.swing.JMenuItem menuNovoServico;
     private javax.swing.JMenu menuOrcamento;
-    private javax.swing.JMenu menuOrdemServico;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenu menuSobre;
-    private javax.swing.JTable tabelaOrdemServico;
+    private javax.swing.JMenuItem menuVisualizarEntradas;
     // End of variables declaration//GEN-END:variables
 }

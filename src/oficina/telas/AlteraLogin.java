@@ -50,8 +50,12 @@ public class AlteraLogin extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Alteração de login - SIGOMM");
+        setMaximumSize(new java.awt.Dimension(442, 255));
+        setMinimumSize(new java.awt.Dimension(442, 255));
 
         jPanel1.setBackground(new java.awt.Color(255, 51, 51));
+        jPanel1.setMaximumSize(new java.awt.Dimension(442, 255));
+        jPanel1.setMinimumSize(new java.awt.Dimension(442, 255));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Historic", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(240, 240, 240));

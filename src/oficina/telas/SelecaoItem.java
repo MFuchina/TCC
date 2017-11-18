@@ -13,7 +13,6 @@ public class SelecaoItem extends javax.swing.JDialog {
     private final ProdutoDAO produtoDAO = new ProdutoDAO();
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final Orcamento orcamento;
-
     private boolean ePdto;
 
     public boolean ePdto() {
@@ -67,6 +66,8 @@ public class SelecaoItem extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Seleção de Produto/Serviço");
+        setMaximumSize(new java.awt.Dimension(395, 383));
+        setMinimumSize(new java.awt.Dimension(395, 383));
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
         jPanel1.setMaximumSize(new java.awt.Dimension(471, 383));
@@ -75,11 +76,6 @@ public class SelecaoItem extends javax.swing.JDialog {
         rProduto.setBackground(new java.awt.Color(11, 134, 195));
         rProduto.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         rProduto.setText("Produto");
-        rProduto.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rProdutoMouseClicked(evt);
-            }
-        });
         rProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rProdutoActionPerformed(evt);
@@ -226,13 +222,11 @@ public class SelecaoItem extends javax.swing.JDialog {
                             pdto.setQnt(qnt);
                             pdto.setPreco(qnt * (pdto.getPrecoUnit()));
                             orcamento.setProdutoDTO(pdto);
-                            //orcamento.setServicoDTO(null);
                             break;
                         }
                     }
                     this.dispose();
                 } else {
-                    String[] item;
                     if (caixaPreco.getText().isEmpty()) {
                         Mensagens.msgAviso(caixaPreco.getToolTipText());
                     } else {
@@ -240,20 +234,12 @@ public class SelecaoItem extends javax.swing.JDialog {
                             ePdto = false;
                             for (ServicoDTO servico : servicoDAO.carregaServicos()) {
                                 if (servico.getCod() == Integer.valueOf(cod[1])) {
-                                    if (orcamento.getLista().isEmpty()) {
-                                        servico.setPreco(Float.valueOf(caixaPreco.getText()));
-                                        orcamento.setServicoDTO(servico);
-                                        this.dispose();
-                                        break;
-                                    } else {
-                                        servico.setPreco(Float.valueOf(caixaPreco.getText()));
-                                        orcamento.setServicoDTO(servico);
-                                        this.dispose();
-                                        break;
-                                    }
+                                    servico.setPreco(Float.valueOf(caixaPreco.getText()));
+                                    orcamento.setServicoDTO(servico);
+                                    this.dispose();
+                                    break;
                                 }
                             }
-                            item = null;
                         } else {
                             Mensagens.msgAviso("Preço inválido.");
                         }
@@ -263,7 +249,6 @@ public class SelecaoItem extends javax.swing.JDialog {
         } else {
             Mensagens.msgAviso("Selecione um produto ou serviço antes de continuar.");
         }
-
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
@@ -293,10 +278,6 @@ public class SelecaoItem extends javax.swing.JDialog {
             caixaPreco.setEnabled(true);
         }
     }//GEN-LAST:event_rServicoActionPerformed
-
-    private void rProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rProdutoMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rProdutoMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;

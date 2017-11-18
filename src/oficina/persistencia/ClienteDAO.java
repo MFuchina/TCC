@@ -162,34 +162,6 @@ public class ClienteDAO {
         return listaClientes;
     }
 
-    public String retornaUltimoCodigo() {
-        int cod = 0;
-        String aux = "";
-        String str = "jdbc:mysql://localhost:3307/oficina?"
-                + "user=root&password=root";
-        Connection conn;
-        try {
-            conn = DriverManager.getConnection(str);
-            String sql = "SELECT MAX(cod_cliente) FROM cliente";
-            PreparedStatement p = conn.prepareStatement(sql);
-            ResultSet rs = p.executeQuery();
-            if (rs.next()) {
-                if (String.valueOf(rs.getInt(1)) == null) {
-                    cod = 0;
-                } else {
-                    cod = (rs.getInt(1) + 1);
-                }
-            }
-            aux = String.valueOf(cod);
-            rs.close();
-            p.close();
-            conn.close();
-        } catch (Exception ex) {
-            Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
-        }
-        return aux;
-    }
-
     public ClienteDTO puxaCliente(int codigo) {
         ClienteDTO cliente = null;
         String str = "jdbc:mysql://localhost:3307/oficina?"
@@ -235,4 +207,32 @@ public class ClienteDAO {
         }
         return nomCliente;
     }
+    
+    public String retornaUltimoCodigo() {
+        int cod = 0;
+        String aux = "";
+        String str = "jdbc:mysql://localhost:3307/oficina?"
+                + "user=root&password=root";
+        Connection conn;
+        try {
+            conn = DriverManager.getConnection(str);
+            String sql = "SELECT MAX(cod_cliente) FROM cliente";
+            PreparedStatement p = conn.prepareStatement(sql);
+            ResultSet rs = p.executeQuery();
+            if (rs.next()) {
+                if (String.valueOf(rs.getInt(1)) == null) {
+                    cod = 0;
+                } else {
+                    cod = (rs.getInt(1) + 1);
+                }
+            }
+            aux = String.valueOf(cod);
+            rs.close();
+            p.close();
+            conn.close();
+        } catch (Exception ex) {
+            Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
+        }
+        return aux;
+}
 }

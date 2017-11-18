@@ -24,10 +24,9 @@ public class Produto extends javax.swing.JFrame {
             nome.setText(produto.getNome());
             marca.setText(produto.getMarca());
             preco.setText(String.valueOf(produto.getPreco()));
-        } else {
-            cod.setText(String.valueOf(p.retornaUltimoCodigo()));
+        }else{
+            cod.setText(p.retornaUltimoCodigo());
         }
-
         this.setLocationRelativeTo(null);
     }
 
@@ -82,6 +81,8 @@ public class Produto extends javax.swing.JFrame {
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(11, 134, 195));
+        jPanel1.setMaximumSize(new java.awt.Dimension(461, 296));
+        jPanel1.setMinimumSize(new java.awt.Dimension(461, 296));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(240, 240, 240));
@@ -144,7 +145,8 @@ public class Produto extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cod)))
+                                .addComponent(cod, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(42, 42, 42))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,10 +188,10 @@ public class Produto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(preco, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botaoCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(botaoSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -209,7 +211,7 @@ public class Produto extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if (c == null) {
-            formularioPrincipal.telaFechando(this, "");
+            formularioPrincipal.telaFechando("Produto", "");
         } else {
             c.telaFechando(this);
         }
@@ -219,7 +221,7 @@ public class Produto extends javax.swing.JFrame {
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
         if (CadastraAlteraProduto()) {
             if (c == null) {
-                formularioPrincipal.telaFechando(this, "");
+                formularioPrincipal.telaFechando("Produto", "");
             } else {
                 c.telaFechando(this);
                 c.montaTabela();

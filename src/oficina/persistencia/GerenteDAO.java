@@ -5,10 +5,79 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import oficina.modelo.EntradaDTO;
 import oficina.util.Mensagens;
 
 public class GerenteDAO {
+    
+    public boolean salvaEntrada(EntradaDTO e){
+        boolean aux = false;
+        try {
+            String a = "jdbc:mysql://localhost:3307/oficina?"
+                    + "user=root&password=root";
+            Connection conexao;
+            conexao = DriverManager.getConnection(a);
+            String sql = "insert into entrada (data_entrada, valor, tipo) values"
+                    + " (?, ?, ?)";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setString(1, e.getData());
+            p.setFloat(2, e.getValor());
+            p.setString(3, e.getTipo());
+            p.execute();
+            p.close();
+            aux = true;
+            conexao.close();
+        } catch (SQLException ex) {
+            Mensagens.msgErro("Não foi possível salvar a entrada.");
+        }
+        return aux;
+    }
 
+    public ArrayList<EntradaDTO> puxaEntradasDia(String data){
+        ArrayList<EntradaDTO> lista = new ArrayList<>();
+        try {
+            String a = "jdbc:mysql://localhost:3307/oficina?"
+                    + "user=root&password=root";
+            Connection conexao;
+            conexao = DriverManager.getConnection(a);
+            String sql = "select cod_entrada, valor, tipo from entrada where data_entrada = ?";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setString(1, data);
+            ResultSet rs = p.executeQuery();
+            while (rs.next()) {
+                EntradaDTO e = new EntradaDTO(rs.getInt(1), rs.getFloat(2), rs.getString(3), data);
+                lista.add(e);
+            }
+            rs.close();
+            p.close();
+            conexao.close();
+        } catch (SQLException ex) {
+            Mensagens.msgErro("Não foi possível puxar as entradas.");
+        }
+        return lista;
+    }
+    
+    public boolean removeEntrada(int cod){
+        boolean aux = false;
+        try {
+            String a = "jdbc:mysql://localhost:3307/oficina?"
+                    + "user=root&password=root";
+            Connection conexao;
+            conexao = DriverManager.getConnection(a);
+            String sql = "delete from entrada where cod_entrada = ?";
+            PreparedStatement p = conexao.prepareStatement(sql);
+            p.setInt(1, cod);
+            p.execute();
+            p.close();
+            aux = true;
+            conexao.close();
+        } catch (SQLException ex) {
+            Mensagens.msgErro("Não foi possível salvar a entrada.");
+        }
+        return aux;
+    }
+    
     public boolean validaUsuario(String user, String senha) {
         boolean verifica = false;
         try {

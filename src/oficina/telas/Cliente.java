@@ -49,15 +49,15 @@ public class Cliente extends javax.swing.JFrame {
     }
 
     public boolean cadastraOuAlteraCliente() {
-        boolean aux = false, valido = false;
+        boolean aux = false, valido;
         String mensagem;
         if ((radioFem.isSelected() || radioMasc.isSelected()) || radioOutro.isSelected()) {
             if (radioOutro.isSelected()) {
-                //valido = Validacao.validaCNPJ(cpf.getText());
+                valido = Validacao.validaCNPJ(cpf.getText());
                 mensagem = "Esse CNPJ já está cadastrado.";
                 valido = true;
             } else {
-                //valido = Validacao.validaCPF(cpf.getText());
+                valido = Validacao.validaCPF(cpf.getText());
                 mensagem = "Esse CPF já está cadastrado.";
                 valido = true;
             }
@@ -145,6 +145,8 @@ public class Cliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cliente - SIGOMM");
+        setMaximumSize(new java.awt.Dimension(501, 458));
+        setMinimumSize(new java.awt.Dimension(501, 458));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -373,7 +375,7 @@ public class Cliente extends javax.swing.JFrame {
     private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
         if (cadastraOuAlteraCliente()) {
             if (c == null) {
-                formularioPrincipal.telaFechando(this, "");
+                formularioPrincipal.telaFechando("Cliente", "");
             } else {
                 c.telaFechando(this);
             }
@@ -383,7 +385,7 @@ public class Cliente extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if (c == null) {
-            formularioPrincipal.telaFechando(this, "");
+            formularioPrincipal.telaFechando("Cliente", "");
         } else {
             c.telaFechando(this);
         }
@@ -412,13 +414,13 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        listaMotos = new ListaDeMotos(/*null, true,*/ cliente.getCodigo(), null, null);
+        listaMotos = new ListaDeMotos(/*null, true,*/ cliente.getCodigo(), null);
         listaMotos.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         if (c == null) {
-            formularioPrincipal.telaFechando(this, "");
+            formularioPrincipal.telaFechando("Cliente", "");
         } else {
             c.telaFechando(this);
         }

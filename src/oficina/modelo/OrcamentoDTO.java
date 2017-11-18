@@ -1,20 +1,30 @@
 package oficina.modelo;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 public class OrcamentoDTO {
 
     private int cod_Orcamento;
-    private Date data;
+    private String data;
     private float total;
     private int cod_cliente, cod_moto;
+    private ArrayList<String> lista;
     
     public Object[] getLinhaTabela() {
         Object[] retorno = {this.cod_Orcamento, this.data, this.cod_cliente, this.total};
         return retorno;
     }
 
-    public OrcamentoDTO(int cod_Orcamento, int cod_cliente, int cod_moto, Date data, float total) {
+    public OrcamentoDTO(int cod_Orcamento, int cod_cliente, int cod_moto, String data, float total, ArrayList<String> lista) {
+        this.cod_Orcamento = cod_Orcamento;
+        this.cod_cliente = cod_cliente;
+        this.cod_moto = cod_moto;
+        this.data = data;
+        this.total = total;
+        this.lista = lista;
+    }
+    
+    public OrcamentoDTO(int cod_Orcamento, int cod_cliente, int cod_moto, String data, float total) {
         this.cod_Orcamento = cod_Orcamento;
         this.cod_cliente = cod_cliente;
         this.cod_moto = cod_moto;
@@ -28,6 +38,15 @@ public class OrcamentoDTO {
         this.cod_moto = 0;
         this.data = null;
         this.total = (float) 0.0;
+        this.lista = null;
+    }
+
+    public ArrayList<String> getLista() {
+        return lista;
+    }
+
+    public void setLista(ArrayList<String> lista) {
+        this.lista = lista;
     }
 
     public int getCod_cliente() {
@@ -62,11 +81,11 @@ public class OrcamentoDTO {
         this.cod_Orcamento = cod_Orcamento;
     }
 
-    public Date getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(String data) {
         this.data = data;
     }
 }

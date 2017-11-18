@@ -145,7 +145,7 @@ public class ServicoDAO {
         }
         return listaServicos;
     }
-
+    
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
@@ -172,5 +172,5 @@ public class ServicoDAO {
             Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
         }
         return aux;
-    }
+}
 }
