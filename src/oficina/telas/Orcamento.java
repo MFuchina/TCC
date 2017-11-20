@@ -17,7 +17,6 @@ import oficina.persistencia.OrcamentoDAO;
 
 public class Orcamento extends javax.swing.JFrame {
 
-    private boolean modoInclusao;
     private int codCliente;
     private int codMoto;
     String dataSQL;
@@ -33,13 +32,12 @@ public class Orcamento extends javax.swing.JFrame {
 
     private ProdutoDTO produtoDTO = new ProdutoDTO();
     private ServicoDTO servicoDTO = new ServicoDTO();
-    private final ArrayList<String> lista = new ArrayList<>();
+    private ArrayList<String> lista = new ArrayList<>();
 
-    public Orcamento(boolean modoInclusao, OrcamentoDTO orcamento, Principal formPrincipal, Consulta c) {
+    public Orcamento(OrcamentoDTO orcamento, Principal formPrincipal, Consulta c) {
         this.consulta = c;
         this.formularioPrincipal = formPrincipal;
         this.orcamento = orcamento;
-        this.modoInclusao = modoInclusao;
         initComponents();
         this.setLocationRelativeTo(null);
         Date date = new Date(System.currentTimeMillis());
@@ -48,11 +46,7 @@ public class Orcamento extends javax.swing.JFrame {
         formatarDate = new SimpleDateFormat("dd/MM/yyyy");
         data.setText(formatarDate.format(date));
         btnProcurarMoto.setEnabled(false);
-        if (modoInclusao == false) {
-            cod.setText(String.valueOf(orcamento.getCod_Orcamento()));
-        } else {
-            cod.setText(o.retornaUltimoCodigo());
-        }
+        cod.setText(o.retornaUltimoCodigo());
         criaTabela();
     }
 
@@ -467,7 +461,7 @@ public class Orcamento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProcurarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarClienteActionPerformed
-        consulta = new Consulta(Estados.modoConsCliente, null, consulta, true, this);
+        consulta = new Consulta(Estados.modoConsCliente, null, consulta, true, null, this);
         consulta.setVisible(true);
         consulta = null;
         textMoto.setText("");
@@ -482,6 +476,7 @@ public class Orcamento extends javax.swing.JFrame {
             boolean naoTemItens = false;
             if (modelo.getRowCount() == 0) {
                 Mensagens.msgErro("Não existem itens listados no orçamento.");
+                naoTemItens = true;
             } else {
                 for (int i = 0; i < modelo.getRowCount(); i++) {
                     if (modelo.getValueAt(i, 1).equals("")) {
@@ -498,11 +493,20 @@ public class Orcamento extends javax.swing.JFrame {
                     }
                     orcamento = new OrcamentoDTO(Integer.valueOf(cod.getText()), codCliente, codMoto, dataSQL, Float.valueOf(textTotal.getText()), lista);
 
+                    if (o.cadastraOrcamento(orcamento)) {
+                            Mensagens.msgInfo("Orçamento salvo com sucesso.");
+                            if (consulta != null) {
+                                consulta.montaTabela();
+                            }
+                    }
+
                     //Salvar no BD
-                    if (consulta == null) {
+                    if (consulta == null && formularioPrincipal != null) {
                         formularioPrincipal.telaFechando("Orcamento", "");
                     } else {
-                        consulta.telaFechando(this);
+                        if(consulta != null){
+                            consulta.telaFechando("Orcamento");
+                        }
                     }
                     this.dispose();
                 }
@@ -514,13 +518,13 @@ public class Orcamento extends javax.swing.JFrame {
         if (consulta == null) {
             formularioPrincipal.telaFechando("Orcamento", "");
         } else {
-            consulta.telaFechando(this);
+            consulta.telaFechando("Orcamento");
         }
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void btnProcurarMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcurarMotoActionPerformed
-        listaMotos = new ListaDeMotos(codCliente, this);
+        listaMotos = new ListaDeMotos(codCliente, null, this);
         listaMotos.setVisible(true);
     }//GEN-LAST:event_btnProcurarMotoActionPerformed
 
@@ -548,7 +552,7 @@ public class Orcamento extends javax.swing.JFrame {
     }//GEN-LAST:event_removeActionPerformed
 
     private void novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoActionPerformed
-        SelecaoItem s = new SelecaoItem(this, true, this);
+        SelecaoItem s = new SelecaoItem(this, true, null, this);
         s.setVisible(true);
         if (s.ePdto()) {
             colocaNaTabela(true);

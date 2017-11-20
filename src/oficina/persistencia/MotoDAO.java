@@ -97,7 +97,7 @@ public class MotoDAO {
         Connection conexao;
         try {
             conexao = DriverManager.getConnection(str);
-            String sql = "select cod_moto, marca, modelo, chassi, placa, cor, ano_mod, ano_fabr from moto where cod_dono = ?";
+            String sql = "select cod_moto, placa, modelo, cor, marca, chassi, ano_mod, ano_fabr from moto where cod_dono = ?";
             PreparedStatement p = conexao.prepareStatement(sql);
             p.setInt(1, codigo_dono);
             ResultSet rs = p.executeQuery();

@@ -154,7 +154,7 @@ public class Principal extends javax.swing.JFrame {
     //Métodos de consultas:
     public void consultarCliente() {
         if (consultaCliente == null) {
-            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente, false, null);
+            consultaCliente = new Consulta(Estados.modoConsCliente, this, consultaCliente, false, null, null);
             consultaCliente.setVisible(true);
         } else {
             consultaCliente.requestFocus();
@@ -164,7 +164,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarProduto() {
         if (consultaProduto == null) {
-            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto, false, null);
+            consultaProduto = new Consulta(Estados.modoConsPdto, this, consultaProduto, false, null, null);
             //Puxar a tabela de produtos do BD
             consultaProduto.setVisible(true);
         } else {
@@ -175,7 +175,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarOrcamento() {
         if (consultaOrcamento == null) {
-            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento, false, null);
+            consultaOrcamento = new Consulta(Estados.modoConsOrcamento, this, consultaOrcamento, false, null, null);
             consultaOrcamento.setVisible(true);
         } else {
             consultaOrcamento.requestFocus();
@@ -185,7 +185,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void consultarServico() {
         if (consultaServico == null) {
-            consultaServico = new Consulta(Estados.modoConsServico, this, consultaServico, false, null);
+            consultaServico = new Consulta(Estados.modoConsServico, this, consultaServico, false, null, null);
             consultaServico.setVisible(true);
         } else {
             consultaServico.requestFocus();
@@ -232,7 +232,7 @@ public class Principal extends javax.swing.JFrame {
 
     public void novoOrcamento() {
         if (orcamento == null) {
-            orcamento = new Orcamento(true, new OrcamentoDTO(), this, null);
+            orcamento = new Orcamento(new OrcamentoDTO(), this, null);
             orcamento.setVisible(true);
         } else {
             orcamento.requestFocus();

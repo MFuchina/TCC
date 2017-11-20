@@ -1,7 +1,6 @@
 package oficina.telas;
 
 import java.util.ArrayList;
-import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -44,21 +43,19 @@ public class Consulta extends javax.swing.JFrame {
 
     private Consulta c;
     private Cliente novoCliente = null;
-    private Orcamento novoOrcamento = null;
+    private EditaOrcamento editaOrcamento = null;
     private Orcamento orcamento = null;
     private Produto novoProduto = null;
     private Servico novoServico = null;
     private final boolean botaoOrcamento;
 
-    private final ProdutoDTO pdto = new ProdutoDTO();
-    private final ServicoDTO sdto = new ServicoDTO();
-
-    public Consulta(Estados modo, Principal formPrincipal, Consulta c, boolean botaoOrcamento, Orcamento orc) {
+    public Consulta(Estados modo, Principal formPrincipal, Consulta c, boolean botaoOrcamento, EditaOrcamento eo, Orcamento orc) {
         this.botaoOrcamento = botaoOrcamento;
         this.c = c;
         this.telaPrincipal = formPrincipal;
         this.tipo = modo.name();
         this.orcamento = orc;
+        this.editaOrcamento = eo;
         initComponents();
         this.setLocationRelativeTo(null);
         montaTabela();
@@ -69,19 +66,25 @@ public class Consulta extends javax.swing.JFrame {
         }
     }
 
-    public void telaFechando(JFrame tela) {
-        switch (String.valueOf(tela.getClass())) {
-            case "class oficina.telas.Orcamento":
-                novoOrcamento = null;
+    public void telaFechando(String tela) {
+        switch (tela) {
+            case "Orcamento":
+                orcamento = null;
                 break;
-            case "class oficina.telas.Cliente":
+            case "EditaOrcamento":
+                editaOrcamento = null;
+                break;
+            case "Cliente":
                 novoCliente = null;
                 break;
-            case "class oficina.telas.Produto":
+            case "Produto":
                 novoProduto = null;
                 break;
-            case "class oficina.telas.Servico":
+            case "Servico":
                 novoServico = null;
+                break;
+            case "Consulta":
+                c = null;
                 break;
         }
     }
@@ -240,12 +243,13 @@ public class Consulta extends javax.swing.JFrame {
     }
 
     public void novoOrcamento() {
-        if (novoOrcamento == null) {
-            novoOrcamento = new Orcamento(true, new OrcamentoDTO(), null, this);
-            novoOrcamento.setVisible(true);
+        if (orcamento == null) {
+            orcamento = new Orcamento(new OrcamentoDTO(), null, this);
+            orcamento.setVisible(true);
+            orcamento = null;
         } else {
-            novoOrcamento.requestFocus();
-            novoOrcamento.setVisible(true);
+            orcamento.requestFocus();
+            orcamento.setVisible(true);
         }
     }
 
@@ -382,14 +386,14 @@ public class Consulta extends javax.swing.JFrame {
                 if (linhaSelecionada > -1) {
                     Integer codigo = (Integer) tabela.getValueAt(linhaSelecionada, 0);
                     OrcamentoDTO orcamentoo = orcamentoDAO.puxaOrcamento(codigo);
-                    if (novoOrcamento == null) {
-                        novoOrcamento = new Orcamento(false, orcamentoo, null, this);
-                        novoOrcamento.setVisible(true);
+                    if (editaOrcamento == null) {
+                        editaOrcamento = new EditaOrcamento(orcamentoo, null, this);
+                        editaOrcamento.setVisible(true);
                         //this.setVisible(false);
                         montaTabela();
                     } else {
-                        novoOrcamento.requestFocus();
-                        novoOrcamento.setVisible(true);
+                        editaOrcamento.requestFocus();
+                        editaOrcamento.setVisible(true);
                     }
                 } else {
                     Mensagens.msgAviso("Selecione um orçamento a ser alterado!");
@@ -426,6 +430,76 @@ public class Consulta extends javax.swing.JFrame {
 
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
                 {null, null},
                 {null, null},
                 {null, null},
@@ -596,7 +670,7 @@ public class Consulta extends javax.swing.JFrame {
         } else if (c == null && telaPrincipal != null) {
             telaPrincipal.telaFechando("Consulta", "");
         } else if (telaPrincipal == null && c != null) {
-            c.telaFechando(this);
+            c.telaFechando("Consulta");
         }
         this.setVisible(false);
     }//GEN-LAST:event_btnContinuarActionPerformed
@@ -641,7 +715,7 @@ public class Consulta extends javax.swing.JFrame {
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         if (c != null) {
-            c.telaFechando(this);
+            c.telaFechando("Consulta");
         } else {
             telaPrincipal.telaFechando("Consulta", "");
         }

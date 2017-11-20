@@ -10,7 +10,7 @@ import oficina.util.Mensagens;
 import oficina.modelo.ClienteDTO;
 
 public class ClienteDAO {
-    
+
     MotoDAO moto = new MotoDAO();
 
     public boolean cadastraCliente(ClienteDTO c) {
@@ -69,9 +69,9 @@ public class ClienteDAO {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conexao = DriverManager.getConnection(str);
-            if(verificaMoto(codigo)){
-                if(moto.removeMoto(codigo)){
-                    
+            if (verificaMoto(codigo)) {
+                if (moto.removeMoto(codigo)) {
+
                 }
             }
             String sql = "delete from cliente where cod_cliente = ?";
@@ -88,7 +88,7 @@ public class ClienteDAO {
         return aux;
     }
 
-    public boolean verificaMoto(int cod){
+    public boolean verificaMoto(int cod) {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
@@ -111,7 +111,7 @@ public class ClienteDAO {
         }
         return aux;
     }
-    
+
     public boolean verificaDispon(String cpf_cnpj, int cod) {
         boolean aux = false;
         String str = "jdbc:mysql://localhost:3307/oficina?"
@@ -184,7 +184,7 @@ public class ClienteDAO {
         }
         return cliente;
     }
-    
+
     public String puxaNomeCliente(int codigo) {
         String nomCliente = "";
         String str = "jdbc:mysql://localhost:3307/oficina?"
@@ -207,7 +207,7 @@ public class ClienteDAO {
         }
         return nomCliente;
     }
-    
+
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
@@ -234,5 +234,5 @@ public class ClienteDAO {
             Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
         }
         return aux;
-}
+    }
 }

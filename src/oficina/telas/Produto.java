@@ -113,6 +113,11 @@ public class Produto extends javax.swing.JFrame {
         });
 
         preco.setToolTipText("Informe o preço do produto.");
+        preco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precoKeyTyped(evt);
+            }
+        });
 
         marca.setToolTipText("Informe a marca do produto.");
 
@@ -213,7 +218,7 @@ public class Produto extends javax.swing.JFrame {
         if (c == null) {
             formularioPrincipal.telaFechando("Produto", "");
         } else {
-            c.telaFechando(this);
+            c.telaFechando("Produto");
         }
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
@@ -223,13 +228,24 @@ public class Produto extends javax.swing.JFrame {
             if (c == null) {
                 formularioPrincipal.telaFechando("Produto", "");
             } else {
-                c.telaFechando(this);
+                c.telaFechando("Produto");
                 c.montaTabela();
             }
             this.dispose();
         }
 
     }//GEN-LAST:event_botaoSalvarActionPerformed
+
+    private void precoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precoKeyTyped
+        String caracteres = "0987654321.";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (preco.getText().length() == 10) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_precoKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;

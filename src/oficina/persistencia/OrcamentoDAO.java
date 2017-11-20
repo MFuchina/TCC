@@ -11,23 +11,31 @@ import oficina.modelo.OrcamentoDTO;
 
 public class OrcamentoDAO {
 
+    int ultimoCod = 0;
+
     public boolean cadastraOrcamento(OrcamentoDTO orcamento) {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
-            String sql = "insert into orcamento (cod_cliente, cod_moto, data_orcamento, valorTotal_orcamento) values"
+            String sql = "insert into orcamento (data_orcamento, cod_cliente, cod_moto, valorTotal_orcamento) values"
                     + " (?, ?, ?, ?)";
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, orcamento.getCod_cliente());
-            p.setInt(2, orcamento.getCod_moto());
-            p.setString(3, orcamento.getData());
+            p.setString(1, orcamento.getData());
+            p.setInt(2, orcamento.getCod_cliente());
+            p.setInt(3, orcamento.getCod_moto());
             p.setFloat(4, orcamento.getTotal());
             p.execute();
+
+            ultimoCod++;
+
+            aux = cadastraLista(orcamento.getLista(), ultimoCod);
+
+            //rs.close();
             p.close();
             conn.close();
-            aux = true;
+
         } catch (Exception ex) {
             Mensagens.msgErro("Ocorreu um erro ao cadastrar o orçamento no banco de dados.");
         }
@@ -40,8 +48,8 @@ public class OrcamentoDAO {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
-            String sql = "update orcamento set cod_cliente = ?, cod_moto = ?, valorTotal_orcamento = ?"
-                    + " where cod_orcamento = ?";
+            String sql = "update orcamento set cod_cliente = ?, cod_moto = ?, valorTotal_orcamento = ? "
+                    + "where cod_orcamento = ?";
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, orcamento.getCod_cliente());
             p.setInt(2, orcamento.getCod_moto());
@@ -50,65 +58,99 @@ public class OrcamentoDAO {
             p.execute();
             p.close();
             conn.close();
-            alteraLista(orcamento.getCod_Orcamento(), orcamento.getLista());
-            aux = true;
+            if (removeLista(orcamento.getCod_Orcamento())) {
+                orcamento.setLista(null);
+                if (cadastraLista(orcamento.getLista(), orcamento.getCod_Orcamento())) {
+                    aux = true;
+                }
+            }
         } catch (Exception ex) {
             Mensagens.msgErro("Ocorreu um erro ao alterar o orçamento no banco de dados.");
         }
         return aux;
     }
 
-    public void alteraLista(int cod, ArrayList<String> lista) {
+    public boolean alteraLista(ArrayList<String> lista, int cod) {
+        boolean re = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
-            String sql = "select cod_lista, qnt, item, preco, preco_total from lista where cod_orcamento = ?";
+            String sql = "select cod_lista from lista where cod_orcamento = ?";
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, cod);
             ResultSet rs = p.executeQuery();
             while (rs.next()) {
-                String aux = "update lista set qnt = ?, item = ?, preco = ?, preco_total = ?"
-                        + " where cod_orcamento = ? and cod_lista = ?";
-                PreparedStatement ps = conn.prepareStatement(aux);
                 for (String l : lista) {
+                    String aux = "update lista set qnt = ?, item = ?, preco = ?, preco_total = ?"
+                            + " where cod_orcamento = ? and cod_lista = ?";
+                    PreparedStatement ps = conn.prepareStatement(aux);
                     String[] parte = l.split(";");
                     if (parte[1].equals("Relação") || parte[1].equals("Mão de obra")) {
-                        p.setString(1, "");
-                        p.setString(2, parte[1]);
-                        p.setString(3, "");
-                        p.setString(4, parte[3]);
-                    }else{
-                        p.setString(1, parte[0]);
-                        p.setString(2, parte[1]);
-                        p.setString(3, parte[2]);
-                        p.setString(4, parte[3]);
+                        ps.setString(1, "");
+                        ps.setString(2, parte[1]);
+                        ps.setString(3, "");
+                        ps.setString(4, parte[3]);
+                    } else {
+                        ps.setString(1, parte[0]);
+                        ps.setString(2, parte[1]);
+                        ps.setString(3, parte[2]);
+                        ps.setString(4, parte[3]);
                     }
-                    p.execute();
+                    ps.execute();
+                    ps.close();
                 }
-                p.close();
             }
+            p.close();
             rs.close();
             conn.close();
-
+            re = true;
         } catch (Exception ex) {
-            Mensagens.msgErro("Ocorreu um erro ao alterar o orçamento no banco de dados.");
+            Mensagens.msgErro("Ocorreu um erro ao alterar a lista no banco de dados.");
+            System.out.println(ex.getMessage());
         }
+        return re;
     }
 
-    public boolean removeOrcamento(int codigo) {
+    public boolean removeLista(int codOrcamento) {
         boolean aux = false;
         try {
             String str = "jdbc:mysql://localhost:3307/oficina?"
                     + "user=root&password=root";
             Connection conn = DriverManager.getConnection(str);
-            String sql = "delete from orcamento where COD_ORCAMENTO = ?";
+            String sql = "delete from lista where cod_orcamento = ?";
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, codigo);
+            p.setInt(1, codOrcamento);
             p.execute();
+            System.out.println("SQL1: " + p.toString());
             p.close();
             conn.close();
             aux = true;
+        } catch (SQLException ex) {
+            Mensagens.msgErro("Ocorreu um erro ao remover a lista do banco de dados.");
+            System.out.println(ex.getMessage());
+        }
+        return aux;
+    }
+
+    public boolean removeOrcamento(int codigo) {
+        boolean aux = false;
+        try {
+            if (removeLista(codigo)) {
+                String str = "jdbc:mysql://localhost:3307/oficina?"
+                        + "user=root&password=root";
+                Connection conn = DriverManager.getConnection(str);
+                String sql = "delete from orcamento where cod_orcamento = ?";
+                PreparedStatement p = conn.prepareStatement(sql);
+                p.setInt(1, codigo);
+                p.execute();
+                p.close();
+                conn.close();
+                aux = true;
+                if(codigo == (Integer.valueOf(retornaUltimoCodigo())-1)){
+                    ultimoCod = ultimoCod++;
+                }
+            }
         } catch (SQLException ex) {
             Mensagens.msgErro("Ocorreu um erro ao remover o orçamento do banco de dados.");
         }
@@ -188,7 +230,7 @@ public class OrcamentoDAO {
         }
         return lista;
     }
-    
+
     public String retornaUltimoCodigo() {
         int cod = 0;
         String aux = "";
@@ -215,5 +257,34 @@ public class OrcamentoDAO {
             Mensagens.msgErro("Ocorreu um erro ao verificar o contador no banco de dados.");
         }
         return aux;
-}
+    }
+
+    public boolean cadastraLista(ArrayList<String> lista, int codOrcamento) {
+        boolean aux = false;
+        try {
+            for (String s : lista) {
+                String[] parte = s.split(";");
+                String str = "jdbc:mysql://localhost:3307/oficina?"
+                        + "user=root&password=root";
+                Connection conn = DriverManager.getConnection(str);
+                String sql = "insert into lista (cod_orcamento, qnt, item, preco, preco_total) values "
+                        + "(?, ?, ?, ?, ?)";
+                PreparedStatement p = conn.prepareStatement(sql);
+                p.setInt(1, codOrcamento);
+                p.setString(2, parte[0]);
+                p.setString(3, parte[1]);
+                p.setString(4, parte[2]);
+                p.setString(5, parte[3]);
+                p.execute();
+                System.out.println("SQL2: " + p.toString());
+                p.close();
+                conn.close();
+                aux = true;
+            }
+        } catch (Exception ex) {
+            Mensagens.msgErro("Ocorreu um erro ao cadastrar a lista no banco de dados.");
+            System.out.println(ex.getMessage());
+        }
+        return aux;
+    }
 }

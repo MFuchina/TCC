@@ -4,10 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/telas/Consulta.java</file>
-            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/telas/NovaEntrada.java</file>
-            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/modelo/EntradaDTO.java</file>
-            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/telas/ConsultaEntrada.java</file>
-            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/persistencia/GerenteDAO.java</file>
+            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/telas/Orcamento.java</file>
+            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/persistencia/OrcamentoDAO.java</file>
+            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/telas/EditaOrcamento.java</file>
+            <file>file:/C:/Users/mathe/Documents/NetBeansProjects/Oficina/src/oficina/telas/Principal.java</file>
         </group>
     </open-files>
 </project-private>

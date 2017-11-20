@@ -103,6 +103,11 @@ public class Servico extends javax.swing.JFrame {
         jLabel4.setText("Preço:");
 
         preco.setToolTipText("Informe o preço do serviço.");
+        preco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precoKeyTyped(evt);
+            }
+        });
 
         btnSalvar.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-checked.png"))); // NOI18N
@@ -212,7 +217,7 @@ public class Servico extends javax.swing.JFrame {
             if (c == null) {
                 formularioPrincipal.telaFechando("Servico", "");
             } else {
-                c.telaFechando(this);
+                c.telaFechando("Servico");
             }
             this.dispose();
             if (c != null) {
@@ -225,10 +230,21 @@ public class Servico extends javax.swing.JFrame {
         if (c == null) {
             formularioPrincipal.telaFechando("Servico", "");
         } else {
-            c.telaFechando(this);
+            c.telaFechando("Servico");
         }
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void precoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precoKeyTyped
+       String caracteres = "0987654321.";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (preco.getText().length() == 10) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_precoKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

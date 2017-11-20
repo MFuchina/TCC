@@ -210,6 +210,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Informe o pre&#xe7;o do produto."/>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="precoKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="marca">
           <Properties>

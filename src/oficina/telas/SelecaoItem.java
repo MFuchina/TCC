@@ -14,14 +14,16 @@ public class SelecaoItem extends javax.swing.JDialog {
     private final ServicoDAO servicoDAO = new ServicoDAO();
     private final Orcamento orcamento;
     private boolean ePdto;
+    private final EditaOrcamento editaOrcamento;
 
     public boolean ePdto() {
         return ePdto;
     }
 
-    public SelecaoItem(java.awt.Frame parent, boolean modal, Orcamento orcamento) {
+    public SelecaoItem(java.awt.Frame parent, boolean modal, EditaOrcamento eo, Orcamento orcamento) {
         super(parent, modal);
         this.orcamento = orcamento;
+        this.editaOrcamento = eo;
         initComponents();
         this.setLocationRelativeTo(null);
         btnContinuar.setEnabled(false);
@@ -221,7 +223,11 @@ public class SelecaoItem extends javax.swing.JDialog {
                             int qnt = Integer.valueOf(caixaQnt.getValue().toString());
                             pdto.setQnt(qnt);
                             pdto.setPreco(qnt * (pdto.getPrecoUnit()));
-                            orcamento.setProdutoDTO(pdto);
+                            if (orcamento != null) {
+                                orcamento.setProdutoDTO(pdto);
+                            } else {
+                                editaOrcamento.setProdutoDTO(pdto);
+                            }
                             break;
                         }
                     }
@@ -235,7 +241,11 @@ public class SelecaoItem extends javax.swing.JDialog {
                             for (ServicoDTO servico : servicoDAO.carregaServicos()) {
                                 if (servico.getCod() == Integer.valueOf(cod[1])) {
                                     servico.setPreco(Float.valueOf(caixaPreco.getText()));
-                                    orcamento.setServicoDTO(servico);
+                                    if (orcamento != null) {
+                                        orcamento.setServicoDTO(servico);
+                                    } else {
+                                        editaOrcamento.setServicoDTO(servico);
+                                    }
                                     this.dispose();
                                     break;
                                 }

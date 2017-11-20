@@ -12,10 +12,12 @@ public class ListaDeMotos extends javax.swing.JFrame {
     private MotoDTO motoDTO = null;
     private final int codigoDono;
     private final Orcamento orcamento;
+    private final EditaOrcamento editaOrcamento;
 
-    public ListaDeMotos(int codigo, Orcamento orcamento) {
+    public ListaDeMotos(int codigo, EditaOrcamento eo, Orcamento orcamento) {
         this.codigoDono = codigo;
         this.orcamento = orcamento;
+        this.editaOrcamento = eo;
         initComponents();
         carregaLista();
         if (selecao.getItemCount() == 0) {
@@ -207,10 +209,14 @@ public class ListaDeMotos extends javax.swing.JFrame {
 
             for (MotoDTO motoO : motoDAO.carregaMotos(codigoDono)) {
                 if (motoO.getCod_moto() == Integer.valueOf(codMoto[1])) {
-                    if (orcamento != null) {
+                    if (orcamento != null ) {
                         orcamento.mostraMoto(motoO);
                     } else {
-                        moto = motoO;
+                        if(editaOrcamento != null){
+                           editaOrcamento.mostraMoto(motoO); 
+                        }else{
+                           moto = motoO; 
+                        }  
                     }
                     break;
                 }

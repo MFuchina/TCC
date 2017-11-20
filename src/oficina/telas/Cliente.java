@@ -169,6 +169,11 @@ public class Cliente extends javax.swing.JFrame {
         telefone.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         telefone.setToolTipText("Informe o número de telefone do cliente.");
         telefone.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        telefone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                telefoneKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(240, 240, 240));
@@ -185,6 +190,11 @@ public class Cliente extends javax.swing.JFrame {
         cpf.setFont(new java.awt.Font("Maiandra GD", 0, 14)); // NOI18N
         cpf.setToolTipText("Digite o CPF ou CNPJ do cliente.");
         cpf.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        cpf.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cpfKeyTyped(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(240, 240, 240));
@@ -377,7 +387,7 @@ public class Cliente extends javax.swing.JFrame {
             if (c == null) {
                 formularioPrincipal.telaFechando("Cliente", "");
             } else {
-                c.telaFechando(this);
+                c.telaFechando("Cliente");
             }
             this.dispose();
         }
@@ -387,7 +397,7 @@ public class Cliente extends javax.swing.JFrame {
         if (c == null) {
             formularioPrincipal.telaFechando("Cliente", "");
         } else {
-            c.telaFechando(this);
+            c.telaFechando("Cliente");
         }
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
@@ -414,7 +424,7 @@ public class Cliente extends javax.swing.JFrame {
     }//GEN-LAST:event_radioOutroActionPerformed
 
     private void btnListaMotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaMotosActionPerformed
-        listaMotos = new ListaDeMotos(/*null, true,*/ cliente.getCodigo(), null);
+        listaMotos = new ListaDeMotos(/*null, true,*/cliente.getCodigo(), null, null);
         listaMotos.setVisible(true);
     }//GEN-LAST:event_btnListaMotosActionPerformed
 
@@ -422,9 +432,31 @@ public class Cliente extends javax.swing.JFrame {
         if (c == null) {
             formularioPrincipal.telaFechando("Cliente", "");
         } else {
-            c.telaFechando(this);
+            c.telaFechando("Cliente");
         }
     }//GEN-LAST:event_formWindowClosed
+
+    private void cpfKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cpfKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        } else {
+            if (cpf.getText().length() == 14) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_cpfKeyTyped
+
+    private void telefoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefoneKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (telefone.getText().length() == 12) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_telefoneKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;

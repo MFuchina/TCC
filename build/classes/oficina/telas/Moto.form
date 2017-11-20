@@ -195,6 +195,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Informe a placa da moto."/>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="placaKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="chassi">
           <Properties>
@@ -264,6 +267,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Informe o ano de fabrica&#xe7;&#xe3;o da moto."/>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="anoFabrKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
@@ -291,6 +297,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Informe o ano do modelo da moto."/>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="anoModeloKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoSalvarMoto">
           <Properties>

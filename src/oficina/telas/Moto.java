@@ -123,6 +123,11 @@ public class Moto extends javax.swing.JFrame {
         jLabel5.setText("Placa:");
 
         placa.setToolTipText("Informe a placa da moto.");
+        placa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                placaKeyTyped(evt);
+            }
+        });
 
         chassi.setToolTipText("Informe o chassi da moto.");
 
@@ -149,6 +154,11 @@ public class Moto extends javax.swing.JFrame {
         cor.setToolTipText("Informe a cor da moto.");
 
         anoFabr.setToolTipText("Informe o ano de fabricação da moto.");
+        anoFabr.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anoFabrKeyTyped(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Semilight", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(240, 240, 240));
@@ -159,6 +169,11 @@ public class Moto extends javax.swing.JFrame {
         jLabel8.setText("Ano do modelo:");
 
         anoModelo.setToolTipText("Informe o ano do modelo da moto.");
+        anoModelo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                anoModeloKeyTyped(evt);
+            }
+        });
 
         botaoSalvarMoto.setFont(new java.awt.Font("Maiandra GD", 1, 14)); // NOI18N
         botaoSalvarMoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/oficina/telas/icones/002-checked.png"))); // NOI18N
@@ -305,6 +320,39 @@ public class Moto extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_botaoSalvarMotoActionPerformed
+
+    private void anoFabrKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_anoFabrKeyTyped
+       String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (anoFabr.getText().length() == 4) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_anoFabrKeyTyped
+
+    private void anoModeloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_anoModeloKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (anoModelo.getText().length() == 4) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_anoModeloKeyTyped
+
+    private void placaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaKeyTyped
+        String caracteres = "0987654321-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrstuvwxyz";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (placa.getText().length() == 8) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_placaKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField anoFabr;

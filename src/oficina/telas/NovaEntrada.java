@@ -66,6 +66,11 @@ public class NovaEntrada extends javax.swing.JDialog {
         });
 
         textValor.setToolTipText("Informe o valor a ser adiconado.");
+        textValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textValorKeyTyped(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 18)); // NOI18N
         jLabel2.setText("Valor:");
@@ -209,6 +214,17 @@ public class NovaEntrada extends javax.swing.JDialog {
             rDinheiro.setSelected(false);
         }
     }//GEN-LAST:event_rChequeActionPerformed
+
+    private void textValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textValorKeyTyped
+       String caracteres = "0987654321.";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }else {
+            if (textValor.getText().length() == 10) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_textValorKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
